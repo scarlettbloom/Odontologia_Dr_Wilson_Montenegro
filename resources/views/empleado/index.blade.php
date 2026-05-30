@@ -13,7 +13,7 @@
     {{-- Header --}}
     <div class="flex justify-between items-center mb-6">
         <h1 class="text-2xl font-bold text-slate-800 border-b-2 border-blue-500 pb-1">Inventario</h1>
-        <span class="text-sm font-bold text-slate-600">Administrador
+        <span class="text-sm font-bold text-slate-600">Empleado
             <i class="fa-solid fa-user ml-1"></i>
         </span>
     </div>
