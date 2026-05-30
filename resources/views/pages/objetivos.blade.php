@@ -1,0 +1,44 @@
+@extends('layouts.app')
+
+@section('title', 'Objetivos Estratégicos - Dr. Wilson Montenegro')
+
+@section('styles')
+    <link rel="stylesheet" href="{{ asset('css/objetivos.css') }}">
+@endsection
+
+@section('content')
+<br>
+
+<section class="seccion-objetivos">
+    <div class="objetivos-box">
+
+        <div class="objetivos-text">
+            <h1>OBJETIVOS ESTRATÉGICOS</h1>
+
+            <h2>Objetivo General</h2>
+            <p>
+                Nuestro objetivo es ayudarte a lucir la mejor sonrisa. Te ofrecemos
+                Blanqueamiento dental, Limpieza, Prótesis dentales, Ortodoncia,
+                Cirugía de cordales, Implantes y Coronas. Nuestros procedimientos
+                son de alto nivel de detalle para brindarte la mejor experiencia.
+            </p>
+
+            <h2>Objetivos Específicos</h2>
+            <ul>
+                <li>Corregir maloclusiones dentales y problemas de alineación para optimizar la mordida y la función masticatoria.</li>
+                <li>Prevenir futuros problemas dentales derivados de la mala alineación, como caries o desgaste dental irregular.</li>
+                <li>Brindar atención personalizada basada en las necesidades de cada paciente.</li>
+                <li>Utilizar tecnologías avanzadas para diagnósticos precisos y tratamientos eficaces.</li>
+                <li>Fomentar hábitos de cuidado bucal antes, durante y después del tratamiento.</li>
+            </ul>
+        </div>
+
+        <div class="objetivos-imgs">
+            <img src="{{ asset('img/obj1.png') }}" alt="Atención odontológica">
+            <img src="{{ asset('img/obj2.png') }}" alt="Tecnología dental">
+        </div>
+
+    </div>
+</section>
+
+@endsection

@@ -1,0 +1,66 @@
+<?php
+
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PageController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AdminCitaController;
+use App\Http\Controllers\EmpleadoCitaController;
+use App\Http\Controllers\ClienteCitaController;
+
+// ═══════════════════════════════════════════════════════════════════
+//  PÁGINAS PÚBLICAS
+//  Origen: inicio.php, mision.php, vision.php, objetivos.php, servicios.php
+// ═══════════════════════════════════════════════════════════════════
+Route::get('/',          [PageController::class, 'inicio'])->name('inicio');
+Route::get('/mision',    [PageController::class, 'mision'])->name('mision');
+Route::get('/vision',    [PageController::class, 'vision'])->name('vision');
+Route::get('/objetivos', [PageController::class, 'objetivos'])->name('objetivos');
+Route::get('/servicios', [PageController::class, 'servicios'])->name('servicios');
+
+// ═══════════════════════════════════════════════════════════════════
+//  AUTENTICACIÓN
+//  Origen: login.php, register.php, logout.php
+//  La validación de sesión (session.php) se maneja con middleware en
+//  cada controlador de rol.
+// ═══════════════════════════════════════════════════════════════════
+Route::get('/login',    [AuthController::class, 'showLogin'])->name('login');
+Route::post('/login',   [AuthController::class, 'login']);
+
+Route::get('/register',  [AuthController::class, 'showRegister'])->name('register');
+Route::post('/register', [AuthController::class, 'register']);
+
+Route::post('/logout',   [AuthController::class, 'logout'])->name('logout');
+
+// ═══════════════════════════════════════════════════════════════════
+//  ADMINISTRADOR — CRUD completo de citas
+//  Origen: citas.php
+// ═══════════════════════════════════════════════════════════════════
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::get('/citas',              [AdminCitaController::class, 'index'])->name('citas.index');
+    Route::post('/citas',             [AdminCitaController::class, 'store'])->name('citas.store');
+    Route::get('/citas/{id}/editar',  [AdminCitaController::class, 'edit'])->name('citas.edit');
+    Route::put('/citas/{id}',         [AdminCitaController::class, 'update'])->name('citas.update');
+    Route::delete('/citas/{id}',      [AdminCitaController::class, 'destroy'])->name('citas.destroy');
+});
+
+// ═══════════════════════════════════════════════════════════════════
+//  EMPLEADO — agendar y editar (sin eliminar, sin cambiar estado)
+//  Origen: empleado.php
+// ═══════════════════════════════════════════════════════════════════
+Route::prefix('empleado')->name('empleado.')->group(function () {
+    Route::get('/citas',              [EmpleadoCitaController::class, 'index'])->name('citas.index');
+    Route::post('/citas',             [EmpleadoCitaController::class, 'store'])->name('citas.store');
+    Route::get('/citas/{id}/editar',  [EmpleadoCitaController::class, 'edit'])->name('citas.edit');
+    Route::put('/citas/{id}',         [EmpleadoCitaController::class, 'update'])->name('citas.update');
+});
+
+// ═══════════════════════════════════════════════════════════════════
+//  CLIENTE — agendar y editar (siempre queda en Pendiente)
+//  Origen: Citacliente.php
+// ═══════════════════════════════════════════════════════════════════
+Route::prefix('cliente')->name('cliente.')->middleware('cliente')->group(function () {
+    Route::get('/citas',              [ClienteCitaController::class, 'index'])->name('citas.index');
+    Route::post('/citas',             [ClienteCitaController::class, 'store'])->name('citas.store');
+    Route::get('/citas/{id}/editar',  [ClienteCitaController::class, 'edit'])->name('citas.edit');
+    Route::put('/citas/{id}',         [ClienteCitaController::class, 'update'])->name('citas.update');
+});
