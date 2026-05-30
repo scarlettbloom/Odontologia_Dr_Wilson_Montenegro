@@ -18,7 +18,7 @@
         <a href="{{ route('inventario.index') }}" class="text-slate-600 hover:text-blue-600 font-medium flex items-center">
             <i class="fa-solid fa-chevron-left mr-2"></i> Volver
         </a>
-        <span class="font-bold text-slate-700 text-sm">Administrador <i class="fa-solid fa-user ml-1"></i></span>
+        <span class="font-bold text-slate-700 text-sm">Cliente <i class="fa-solid fa-user ml-1"></i></span>
     </header>
 
     <main class="p-12">
