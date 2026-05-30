@@ -25,7 +25,7 @@
             <span class="px-6 py-2.5 bg-red-500 text-white rounded-lg font-semibold text-sm shadow">Eliminar</span>
         </div>
 
-        <span class="font-bold text-slate-700 text-sm">Administrador <i class="fa-solid fa-user ml-1"></i></span>
+        <span class="font-bold text-slate-700 text-sm">Empleado <i class="fa-solid fa-user ml-1"></i></span>
     </header>
 
     <main class="p-12">
