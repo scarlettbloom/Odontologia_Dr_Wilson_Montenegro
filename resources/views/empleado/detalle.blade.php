@@ -47,7 +47,7 @@
                     </p>
 
                     <p class="text-xl">
-                        Laptop Gamer
+                        Mascarillas
                     </p>
                 </div>
 
@@ -57,7 +57,7 @@
                     </p>
 
                     <p class="text-xl text-green-600 font-bold">
-                        $3.000.000
+                        $10,0000
                     </p>
                 </div>
 
@@ -67,7 +67,7 @@
                     </p>
 
                     <p class="text-xl">
-                        5 unidades
+                        10 unidades
                     </p>
                 </div>
 
@@ -77,7 +77,7 @@
                     </p>
 
                     <p class="text-xl">
-                        Tecnología
+                       Medicina
                     </p>
                 </div>
 
