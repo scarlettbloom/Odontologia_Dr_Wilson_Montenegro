@@ -51,9 +51,9 @@ class AdminCitaController extends Controller
         ]);
 
         // 1. Fecha no puede ser pasada
-        if (Carbon::parse($request->fechaEntrada)->startOfDay()->lt(Carbon::today())) {
+        if (Carbon::parse($request->fechaEntrada)->lt(now())) {
             return redirect()->route('cliente.citas.index')
-                ->with('error', 'No es posible agendar una cita en una fecha pasada.');
+             ->with('error', 'No es posible agendar una cita en una fecha pasada.');
         }
         
         // 2. Salida no puede ser igual ni anterior a entrada
@@ -70,9 +70,9 @@ class AdminCitaController extends Controller
         }
 
         DB::insert("
-            INSERT INTO Cita (Fecha_entrada, Fecha_salida, Estado, Tipo, IDcliente)
+            INSERT INTO Cita (Fecha_entrada, Fecha_salida, Tipo, Estado, IDcliente)
             VALUES (?, ?, ?, ?, ?)
-        ", [$request->fechaEntrada, $request->fechaSalida, $request->estado, $request->tipo, $request->idcliente]);
+        ", [$request->fechaEntrada, $request->fechaSalida, $request->tipo, $request->estado, $request->idcliente]);
 
         return redirect()->route('admin.citas.index')->with('success', 'Cita agendada correctamente.');
     }
@@ -122,6 +122,18 @@ class AdminCitaController extends Controller
             'idcliente'    => 'required|integer',
             'estado'       => 'required|string',
         ]);
+
+        // 1. Fecha de entrada no puede ser pasada
+    if (Carbon::parse($request->fechaEntrada)->lt(now())) {
+        return redirect()->route('cliente.citas.index')
+            ->with('error', 'No es posible editar una cita con una fecha y hora pasada.');
+    }
+
+    // 2. Salida no puede ser igual ni anterior a entrada
+    if (Carbon::parse($request->fechaSalida)->lte(Carbon::parse($request->fechaEntrada))) {
+        return redirect()->route('cliente.citas.index')
+            ->with('error', 'La fecha y hora de salida debe ser posterior a la de entrada.');
+    }
 
         $conflicto = $this->verificarSolapamiento($request->fechaEntrada, $request->fechaSalida, $id);
         if ($conflicto) {

@@ -42,9 +42,9 @@ class ClienteCitaController extends Controller
         ]);
 
         // 1. Fecha no puede ser pasada
-        if (Carbon::parse($request->fechaEntrada)->startOfDay()->lt(Carbon::today())) {
+        if (Carbon::parse($request->fechaEntrada)->lt(now())) {
             return redirect()->route('cliente.citas.index')
-                ->with('error', 'No es posible agendar una cita en una fecha pasada.');
+             ->with('error', 'No es posible agendar una cita en una fecha pasada.');
         }
         
         // 2. Salida no puede ser igual ni anterior a entrada
@@ -107,9 +107,9 @@ class ClienteCitaController extends Controller
     ]);
 
     // 1. Fecha de entrada no puede ser pasada
-    if (Carbon::parse($request->fechaEntrada)->startOfDay()->lt(Carbon::today())) {
+    if (Carbon::parse($request->fechaEntrada)->lt(now())) {
         return redirect()->route('cliente.citas.index')
-            ->with('error', 'No es posible editar una cita con una fecha pasada.');
+            ->with('error', 'No es posible editar una cita con una fecha y hora pasada.');
     }
 
     // 2. Salida no puede ser igual ni anterior a entrada
