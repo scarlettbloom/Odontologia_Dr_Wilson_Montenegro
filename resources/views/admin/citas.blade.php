@@ -80,6 +80,15 @@
         </form>
     </div>
 
+    <!-- BUSCADOR -->
+    <div class="search-bar">
+        <form method="GET" action="{{ route('empleado.citas.index') }}">
+            <input type="text" name="search" placeholder="Buscar por correo, estado o tipo..."
+                   value="{{ request('search') }}">
+            <button type="submit">Buscar</button>
+        </form>
+    </div>
+
     <!-- ALERTAS -->
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>

@@ -44,7 +44,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
 });
 
 // ═══════════════════════════════════════════════════════════════════
-//  EMPLEADO — agendar y editar (sin eliminar, sin cambiar estado)
+//  EMPLEADO — CRUD completo de citas
 //  Origen: empleado.php
 // ═══════════════════════════════════════════════════════════════════
 Route::prefix('empleado')->name('empleado.')->group(function () {
@@ -52,6 +52,7 @@ Route::prefix('empleado')->name('empleado.')->group(function () {
     Route::post('/citas',             [EmpleadoCitaController::class, 'store'])->name('citas.store');
     Route::get('/citas/{id}/editar',  [EmpleadoCitaController::class, 'edit'])->name('citas.edit');
     Route::put('/citas/{id}',         [EmpleadoCitaController::class, 'update'])->name('citas.update');
+    Route::delete('/citas/{id}',      [EmpleadoCitaController::class, 'destroy'])->name('citas.destroy');
 });
 
 // ═══════════════════════════════════════════════════════════════════
