@@ -2,7 +2,6 @@
 @section('title', 'Citas - Empleado')
 
 @section('styles')
-    <link rel="stylesheet" href="{{ asset('css/empleado.css') }}">
     <link rel="stylesheet" href="{{ asset('css/empleado_citascliente.css') }}">
 @endsection
 
@@ -29,13 +28,32 @@
                         <th>Fecha Salida:</th>
                         <th>Tipo:</th>
                         <th>Correo Cliente:</th>
+                        <th>Estado:</th>
                         <th>Acción:</th>
                     </tr>
                     <tr>
                         <td><input type="datetime-local" name="fechaEntrada" required></td>
                         <td><input type="datetime-local" name="fechaSalida" required></td>
                         <td><input type="text" name="tipo" required></td>
-                        <td><input type="email" name="correo" placeholder="cliente@ejemplo.com" required></td>
+                    <td>
+                        <select name="idcliente" required>
+                            <option value=""> Seleccione Cliente</option>
+                            @foreach($cliente as $c)
+                                <option value="{{ $c->IDcliente }}"
+                                    {{ isset($citaEditar) && $citaEditar->IDcliente == $c->IDcliente ? 'selected' : '' }}>
+                                    {{ $c->Email }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </td>
+                        <td>
+                            <select name="estado" required>
+                                <option value="Pendiente">Pendiente</option>
+                                <option value="Confirmada">Confirmada</option>
+                                <option value="Cancelada">Cancelada</option>
+                                <option value="Atendida">Atendida</option>
+                            </select>
+                        </td>
                         <td><button type="submit" class="btn-agendar">Agendar</button></td>
                     </tr>
                 </table>
@@ -44,31 +62,78 @@
     @else
         <div class="form-section">
             <h2 class="list-title">Editar Cita</h2>
+
             <form method="POST" action="{{ route('empleado.citas.update', $citaEditar->IDcita) }}">
-                @csrf
-                @method('PUT')
-                <table class="form-table">
-                    <tr>
-                        <th>Fecha Entrada:</th>
-                        <th>Fecha Salida:</th>
-                        <th>Tipo:</th>
-                        <th>Acción:</th>
-                    </tr>
-                    <tr>
-                        <td><input type="datetime-local" name="fechaEntrada"
-                                   value="{{ \Carbon\Carbon::parse($citaEditar->Fecha_entrada)->format('Y-m-d\TH:i') }}"
-                                   required></td>
-                        <td><input type="datetime-local" name="fechaSalida"
-                                   value="{{ \Carbon\Carbon::parse($citaEditar->Fecha_salida)->format('Y-m-d\TH:i') }}"
-                                   required></td>
-                        <td><input type="text" name="tipo" value="{{ $citaEditar->Tipo }}" required></td>
-                        <td>
-                            <button type="submit" class="btn-agendar">Guardar cambios</button>
-                            <a href="{{ route('empleado.citas.index') }}" class="btn-warning">Cancelar</a>
-                        </td>
-                    </tr>
-                </table>
-            </form>
+            @csrf
+            @method('PUT')
+
+            <table class="form-table">
+            <tr>
+                <th>Fecha Entrada:</th>
+                <th>Fecha Salida:</th>
+                <th>Tipo:</th>
+                <th>Cliente:</th>
+                <th>Estado:</th>
+                <th>Acción:</th>
+            </tr>
+
+        <tr>
+            <td>
+                <input type="datetime-local"
+                       name="fechaEntrada"
+                       value="{{ \Carbon\Carbon::parse($citaEditar->Fecha_entrada)->format('Y-m-d\TH:i') }}"
+                       required>
+            </td>
+
+            <td>
+                <input type="datetime-local"
+                       name="fechaSalida"
+                       value="{{ \Carbon\Carbon::parse($citaEditar->Fecha_salida)->format('Y-m-d\TH:i') }}"
+                       required>
+            </td>
+
+            <td>
+                <input type="text"
+                       name="tipo"
+                       value="{{ $citaEditar->Tipo }}"
+                       required>
+            </td>
+
+            <td>
+                <select name="idcliente" required>
+                    @foreach($cliente as $c)
+                        <option value="{{ $c->IDcliente }}"
+                            {{ $citaEditar->IDcliente == $c->IDcliente ? 'selected' : '' }}>
+                            {{ $c->Email }}
+                        </option>
+                    @endforeach
+                </select>
+            </td>
+
+            <td>
+                <select name="estado" required>
+                    @foreach(['Pendiente','Confirmada','Cancelada','Atendida'] as $estado)
+                        <option value="{{ $estado }}"
+                            {{ $citaEditar->Estado == $estado ? 'selected' : '' }}>
+                            {{ $estado }}
+                        </option>
+                    @endforeach
+                </select>
+            </td>
+
+            <td>
+                <button type="submit" class="btn-agendar">
+                    Guardar cambios
+                </button>
+
+                <a href="{{ route('empleado.citas.index') }}"
+                   class="btn-warning">
+                    Cancelar
+                </a>
+            </td>
+        </tr>
+    </table>
+</form>
         </div>
     @endif
 
@@ -107,7 +172,7 @@
             <tbody>
                 @forelse($citas as $cita)
                     <tr>
-                        <td>{{ $cita->IDusuario }}</td>
+                        <td>{{ $cita->ID }}</td>
                         <td>{{ $cita->Email }}</td>
                         <td>{{ \Carbon\Carbon::parse($cita->Fecha_entrada)->format('d/m/Y H:i') }}</td>
                         <td>{{ \Carbon\Carbon::parse($cita->Fecha_salida)->format('d/m/Y H:i') }}</td>
@@ -119,6 +184,12 @@
                         <td>{{ $cita->Tipo }}</td>
                         <td>
                             <a href="{{ route('empleado.citas.edit', $cita->IDcita) }}" class="btn-warning">Editar</a>
+                            <form action="{{ route('empleado.citas.destroy', $cita->IDcita) }}" method="POST" style="display:inline;"
+                                  onsubmit="return confirm('¿Seguro que deseas eliminar esta cita?')">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn-danger">🗑️ Eliminar</button>
+                            </form>
                         </td>
                     </tr>
                 @empty

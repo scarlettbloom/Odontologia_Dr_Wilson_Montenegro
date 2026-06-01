@@ -164,7 +164,7 @@ input:focus, select:focus {
 .estado-confirmada { background: #27ae60; color: white; }
 .estado-pendiente { background: #f39c12; color: white; }
 .estado-cancelada { background: #e74c3c; color: white; }
-.estado-completada { background: #3498db; color: white; }
+.estado-atendida { background: #3498db; color: white; }
 
 @media (max-width: 768px) {
     .form-table, .form-table td { display: block; width: 100%; }
