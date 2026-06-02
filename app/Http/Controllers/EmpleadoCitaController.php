@@ -8,7 +8,7 @@ use Carbon\Carbon;
 
 /**
  * EmpleadoCitaController
- * Gestión de citas para el rol Empleado (puede agendar y editar, no eliminar).
+ * Gestión de citas para el rol Empleado (puede agendar, editar y eliminar).
  *
  * Origen: empleado.php
  */
@@ -18,6 +18,8 @@ class EmpleadoCitaController extends Controller
     // ── Listar citas con búsqueda ─────────────────────────────────────────
     public function index(Request $request)
     {
+
+        dd($request->all());
         $search = $request->get('search', '');
         $like   = "%{$search}%";
 
