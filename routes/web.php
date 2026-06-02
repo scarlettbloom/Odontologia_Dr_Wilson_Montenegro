@@ -64,4 +64,34 @@ Route::prefix('cliente')->name('cliente.')->middleware('cliente')->group(functio
     Route::post('/citas',             [ClienteCitaController::class, 'store'])->name('citas.store');
     Route::get('/citas/{id}/editar',  [ClienteCitaController::class, 'edit'])->name('citas.edit');
     Route::put('/citas/{id}',         [ClienteCitaController::class, 'update'])->name('citas.update');
+
+    use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\InventarioController;
+
+Route::get('/', function () {
+    return view('welcome');
 });
+Route::get('/inventario/{id}/delete', [InventarioController::class, 'confirmDelete'])
+     ->name('inventario.delete');
+
+// Movimiento de stock (vista aparte)
+Route::get('/inventario/movimientostock', function () {
+    return view('inventario.movimientostock');
+})->name('inventario.movimientostock');
+
+Route::resource('inventario', InventarioController::class);
+
+use App\Http\Controllers\ClienteController;
+
+Route::prefix('cliente')->group(function () {
+
+    Route::get('/productos', [ClienteController::class, 'productos'])
+        ->name('cliente.productos');
+
+    Route::get('/producto/{id}', [ClienteController::class, 'detalle'])
+        ->name('cliente.producto.detalle');
+
+    Route::get('/carrito', [ClienteController::class, 'carrito'])
+        ->name('cliente.carrito');
+});
+
