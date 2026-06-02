@@ -19,7 +19,7 @@ class EmpleadoCitaController extends Controller
     public function index(Request $request)
     {
 
-        dd($request->all());
+        dd($request->all()); //codigo hpta pa arreglar busqueda
         $search = $request->get('search', '');
         $like   = "%{$search}%";
 
