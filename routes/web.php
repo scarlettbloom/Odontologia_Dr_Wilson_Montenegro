@@ -6,6 +6,8 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminCitaController;
 use App\Http\Controllers\EmpleadoCitaController;
 use App\Http\Controllers\ClienteCitaController;
+use App\Http\Controllers\InventarioController;
+use App\Http\Controllers\ClienteController;
 
 // ═══════════════════════════════════════════════════════════════════
 //  PÁGINAS PÚBLICAS
@@ -65,8 +67,7 @@ Route::prefix('cliente')->name('cliente.')->middleware('cliente')->group(functio
     Route::get('/citas/{id}/editar',  [ClienteCitaController::class, 'edit'])->name('citas.edit');
     Route::put('/citas/{id}',         [ClienteCitaController::class, 'update'])->name('citas.update');
 
-    use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\InventarioController;
+});
 
 Route::get('/', function () {
     return view('welcome');
@@ -81,7 +82,7 @@ Route::get('/inventario/movimientostock', function () {
 
 Route::resource('inventario', InventarioController::class);
 
-use App\Http\Controllers\ClienteController;
+
 
 Route::prefix('cliente')->group(function () {
 
@@ -94,4 +95,3 @@ Route::prefix('cliente')->group(function () {
     Route::get('/carrito', [ClienteController::class, 'carrito'])
         ->name('cliente.carrito');
 });
-
