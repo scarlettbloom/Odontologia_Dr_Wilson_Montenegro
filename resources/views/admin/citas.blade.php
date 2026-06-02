@@ -12,6 +12,11 @@
         <h1>ADMINISTRADOR</h1>
         <h2>Gestión de Citas</h2>
         <form action="{{ route('logout') }}" method="POST" style="display:inline;">
+        <form action="{{ route('inventario.index') }}" method="GET" style="display:inline;">
+         <button type="submit" class="btn-inventario">
+        Administador
+        </button>
+</form>
             @csrf
             <button type="submit" class="btn-cerrarsesion">Cerrar sesión</button>
         </form>
