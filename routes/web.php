@@ -69,9 +69,6 @@ Route::prefix('cliente')->name('cliente.')->middleware('cliente')->group(functio
 
 });
 
-Route::get('/', function () {
-    return view('welcome');
-});
 Route::get('/inventario/{id}/delete', [InventarioController::class, 'confirmDelete'])
      ->name('inventario.delete');
 
