@@ -12,6 +12,11 @@
         <h1>CLIENTE</h1>
         <h2>Agenda de Citas</h2>
         <form action="{{ route('logout') }}" method="POST" style="display:inline;">
+            <form action="{{ route('cliente.productos') }}" method="GET" style="display:inline;">
+    <button type="submit" class="btn-cliente">
+         Cliente
+    </button>
+</form>
             @csrf
             <button type="submit" class="btn-cerrarsesion">Cerrar sesión</button>
         </form>
