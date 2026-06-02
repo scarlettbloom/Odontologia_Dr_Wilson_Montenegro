@@ -12,7 +12,7 @@ return new class extends Migration
             $table->increments('idcita');
             $table->dateTime('fecha_entrada')->nullable();
             $table->dateTime('fecha_salida')->nullable();
-            $table->enum('estado', ['pendiente', 'confirmada', 'cancelada'])->default('pendiente');
+            $table->enum('estado', ['pendiente', 'confirmada', 'cancelada', 'atendida'])->default('pendiente');
             $table->string('tipo', 50)->nullable();
             $table->unsignedInteger('iddetalle_cita')->nullable();
             $table->unsignedInteger('idcliente')->nullable();
