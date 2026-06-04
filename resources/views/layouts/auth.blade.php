@@ -31,13 +31,13 @@
     </div>
 </header>
 
-<br><br><br>
+<br><br><br><br><br><br>
 
 <main>
     @yield('content')
 </main>
 
-<br><br><br>
+<br><br><br><br><br><br>
 
 <footer>
     <div class="footer-container">
@@ -53,7 +53,7 @@
         </div>
         <div class="footer-col">
             <h4>Créditos</h4>
-            <p>Hecho por:<br> Lucas Toro y Andrés Barrios</p>
+            <p>Hecho por:<br> Joel Pabon, Juan Siaucho, Laura Castro y Andrés Barrios</p>
         </div>
     </div>
     <div class="footer-bottom">
