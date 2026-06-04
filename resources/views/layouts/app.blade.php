@@ -59,7 +59,7 @@
         </div>
         <div class="footer-col">
             <h4>Créditos</h4>
-            <p>Hecho por:<br> Joel Pabon y Andrés Barrios</p>
+            <p>Hecho por:<br> Joel Pabon, Juan Siaucho, Laura Castro y Andrés Barrios</p>
         </div>
     </div>
     <div class="footer-bottom">
