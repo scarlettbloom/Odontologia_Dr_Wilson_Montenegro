@@ -18,8 +18,6 @@ class EmpleadoCitaController extends Controller
     // ── Listar citas con búsqueda ─────────────────────────────────────────
     public function index(Request $request)
     {
-
-        dd($request->all()); //codigo hpta pa arreglar busqueda
         $search = $request->get('search', '');
         $like   = "%{$search}%";
 
