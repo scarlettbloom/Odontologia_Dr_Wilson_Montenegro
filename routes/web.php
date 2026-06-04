@@ -8,6 +8,8 @@ use App\Http\Controllers\EmpleadoCitaController;
 use App\Http\Controllers\ClienteCitaController;
 use App\Http\Controllers\InventarioController;
 use App\Http\Controllers\ClienteController;
+use App\Http\Controllers\ServicioController;
+use App\Http\Controllers\SolicitudServicioController;
 
 // ═══════════════════════════════════════════════════════════════════
 //  PÁGINAS PÚBLICAS
@@ -91,4 +93,28 @@ Route::prefix('cliente')->group(function () {
 
     Route::get('/carrito', [ClienteController::class, 'carrito'])
         ->name('cliente.carrito');
+});
+
+//servicios//
+
+Route::prefix('admin')->name('admin.servicios.')->group(function () {
+
+    Route::get('/servicios', [ServicioController::class, 'index'])
+        ->name('index');
+
+    Route::get('/servicios/create', [ServicioController::class, 'create'])
+        ->name('create');
+
+    Route::post('/servicios', [ServicioController::class, 'store'])
+        ->name('store');
+
+    Route::get('/servicios/{id}/edit', [ServicioController::class, 'edit'])
+        ->name('edit');
+
+    Route::put('/servicios/{id}', [ServicioController::class, 'update'])
+        ->name('update');
+
+    Route::delete('/servicios/{id}', [ServicioController::class, 'destroy'])
+        ->name('destroy');
+
 });

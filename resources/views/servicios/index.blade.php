@@ -71,10 +71,6 @@ td{
     border-bottom:1px solid #eee;
 }
 
-tr:hover{
-    background:#f5f9ff;
-}
-
 .btn-editar{
     background:#ffc107;
     color:black;

@@ -20,6 +20,11 @@
             @csrf
             <button type="submit" class="btn-cerrarsesion">Cerrar sesión</button>
         </form>
+        <form action="{{ route('servicios') }}" method="GET" style="display:inline;">
+    <button type="submit" class="btn-servicios">
+        🦷 Ver Servicios
+    </button>
+</form>
     </div>
 
     <!-- FORMULARIO AGENDAR / EDITAR -->
