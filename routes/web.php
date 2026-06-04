@@ -6,6 +6,8 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminCitaController;
 use App\Http\Controllers\EmpleadoCitaController;
 use App\Http\Controllers\ClienteCitaController;
+use App\Http\Controllers\InventarioController;
+use App\Http\Controllers\ClienteController;
 
 // ═══════════════════════════════════════════════════════════════════
 //  PÁGINAS PÚBLICAS
@@ -44,7 +46,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
 });
 
 // ═══════════════════════════════════════════════════════════════════
-//  EMPLEADO — agendar y editar (sin eliminar, sin cambiar estado)
+//  EMPLEADO — CRUD completo de citas
 //  Origen: empleado.php
 // ═══════════════════════════════════════════════════════════════════
 Route::prefix('empleado')->name('empleado.')->group(function () {
@@ -52,6 +54,7 @@ Route::prefix('empleado')->name('empleado.')->group(function () {
     Route::post('/citas',             [EmpleadoCitaController::class, 'store'])->name('citas.store');
     Route::get('/citas/{id}/editar',  [EmpleadoCitaController::class, 'edit'])->name('citas.edit');
     Route::put('/citas/{id}',         [EmpleadoCitaController::class, 'update'])->name('citas.update');
+    Route::delete('/citas/{id}',      [EmpleadoCitaController::class, 'destroy'])->name('citas.destroy');
 });
 
 // ═══════════════════════════════════════════════════════════════════
@@ -63,4 +66,29 @@ Route::prefix('cliente')->name('cliente.')->middleware('cliente')->group(functio
     Route::post('/citas',             [ClienteCitaController::class, 'store'])->name('citas.store');
     Route::get('/citas/{id}/editar',  [ClienteCitaController::class, 'edit'])->name('citas.edit');
     Route::put('/citas/{id}',         [ClienteCitaController::class, 'update'])->name('citas.update');
+
+});
+
+Route::get('/inventario/{id}/delete', [InventarioController::class, 'confirmDelete'])
+     ->name('inventario.delete');
+
+// Movimiento de stock (vista aparte)
+Route::get('/inventario/movimientostock', function () {
+    return view('inventario.movimientostock');
+})->name('inventario.movimientostock');
+
+Route::resource('inventario', InventarioController::class);
+
+
+
+Route::prefix('cliente')->group(function () {
+
+    Route::get('/productos', [ClienteController::class, 'productos'])
+        ->name('cliente.productos');
+
+    Route::get('/producto/{id}', [ClienteController::class, 'detalle'])
+        ->name('cliente.producto.detalle');
+
+    Route::get('/carrito', [ClienteController::class, 'carrito'])
+        ->name('cliente.carrito');
 });

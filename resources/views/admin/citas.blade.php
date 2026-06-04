@@ -12,6 +12,11 @@
         <h1>ADMINISTRADOR</h1>
         <h2>Gestión de Citas</h2>
         <form action="{{ route('logout') }}" method="POST" style="display:inline;">
+        <form action="{{ route('inventario.index') }}" method="GET" style="display:inline;">
+         <button type="submit" class="btn-inventario">
+        Administador
+        </button>
+</form>
             @csrf
             <button type="submit" class="btn-cerrarsesion">Cerrar sesión</button>
         </form>
@@ -77,6 +82,15 @@
                     </td>
                 </tr>
             </table>
+        </form>
+    </div>
+
+    <!-- BUSCADOR -->
+    <div class="search-bar">
+        <form method="GET" action="{{ route('admin.citas.index') }}">
+            <input type="text" name="search" placeholder="Buscar por correo, estado o tipo..."
+                   value="{{ request('search') }}">
+            <button type="submit">Buscar</button>
         </form>
     </div>
 

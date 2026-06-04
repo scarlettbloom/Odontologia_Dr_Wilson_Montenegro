@@ -52,13 +52,13 @@ class AdminCitaController extends Controller
 
         // 1. Fecha no puede ser pasada
         if (Carbon::parse($request->fechaEntrada)->lt(now())) {
-            return redirect()->route('cliente.citas.index')
+            return redirect()->route('admin.citas.index')
              ->with('error', 'No es posible agendar una cita en una fecha pasada.');
         }
         
         // 2. Salida no puede ser igual ni anterior a entrada
         if (Carbon::parse($request->fechaSalida)->lte(Carbon::parse($request->fechaEntrada))) {
-            return redirect()->route('cliente.citas.index')
+            return redirect()->route('admin.citas.index')
                 ->with('error', 'La fecha y hora de salida debe ser posterior a la de entrada.');
         }
 
@@ -117,7 +117,7 @@ class AdminCitaController extends Controller
     {
         $request->validate([
             'fechaEntrada' => 'required|date',
-            'fechaSalida'  => 'required|date|after:fechaEntrada',
+            'fechaSalida'  => 'required|date',
             'tipo'         => 'required|string',
             'idcliente'    => 'required|integer',
             'estado'       => 'required|string',
@@ -125,13 +125,13 @@ class AdminCitaController extends Controller
 
         // 1. Fecha de entrada no puede ser pasada
     if (Carbon::parse($request->fechaEntrada)->lt(now())) {
-        return redirect()->route('cliente.citas.index')
+        return redirect()->route('admin.citas.index')
             ->with('error', 'No es posible editar una cita con una fecha y hora pasada.');
     }
 
     // 2. Salida no puede ser igual ni anterior a entrada
     if (Carbon::parse($request->fechaSalida)->lte(Carbon::parse($request->fechaEntrada))) {
-        return redirect()->route('cliente.citas.index')
+        return redirect()->route('admin.citas.index')
             ->with('error', 'La fecha y hora de salida debe ser posterior a la de entrada.');
     }
 
@@ -157,6 +157,20 @@ class AdminCitaController extends Controller
         DB::delete("DELETE FROM Cita WHERE IDcita = ?", [$id]);
         return redirect()->route('admin.citas.index')->with('success', 'Cita eliminada correctamente.');
     }
+
+        private function getCitas(): array
+    {
+        return DB::select("
+            SELECT c.IDcita AS IDcita, u.ID, u.Email,
+                   c.Fecha_entrada AS Fecha_entrada, c.Fecha_salida AS Fecha_salida,
+                   c.Estado AS Estado, c.Tipo AS Tipo
+            FROM Cita c
+            INNER JOIN Cliente cl ON c.IDcliente = cl.IDcliente
+            INNER JOIN users u  ON cl.ID = u.ID
+            ORDER BY c.Fecha_entrada DESC
+        ");
+    }
+
 
     // ── Helper: verificar solapamiento de horarios ────────────────────────
     private function verificarSolapamiento(string $entrada, string $salida, ?int $excluirId = null): ?string
