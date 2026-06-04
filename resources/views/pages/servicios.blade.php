@@ -36,8 +36,66 @@
             <label for="s3" class="bar"></label>
         </div>
     </div>
+
 </section>
 
 <br><br><br>
+<section class="lista-servicios">
+
+    <div class="servicio-card">
+        <h3>🦷 Limpieza Dental</h3>
+        <p>Eliminación de placa bacteriana y sarro para mantener una sonrisa saludable.</p>
+        <span>$80.000 COP</span>
+    </div>
+
+    <div class="servicio-card">
+        <h3>✨ Blanqueamiento Dental</h3>
+        <p>Tratamiento estético para aclarar el color de los dientes y mejorar la apariencia de la sonrisa.</p>
+        <span>$250.000 COP</span>
+    </div>
+
+    <div class="servicio-card">
+        <h3>😁 Ortodoncia</h3>
+        <p>Corrección de la posición dental mediante brackets o alineadores.</p>
+        <span>Desde $1.500.000 COP</span>
+    </div>
+
+    <div class="servicio-card">
+        <h3>🔧 Extracción Dental</h3>
+        <p>Procedimiento seguro para retirar dientes dañados o que afectan la salud bucal.</p>
+        <span>$120.000 COP</span>
+    </div>
+
+    <div class="servicio-card">
+        <h3>🩺 Endodoncia</h3>
+        <p>Tratamiento de conductos para eliminar infecciones y conservar el diente natural.</p>
+        <span>$350.000 COP</span>
+    </div>
+
+    <div class="servicio-card">
+        <h3>🦷 Implante Dental</h3>
+        <p>Reemplazo permanente de dientes perdidos con implantes de alta calidad.</p>
+        <span>Desde $2.000.000 COP</span>
+    </div>
+
+    <div class="servicio-card">
+        <h3>😊 Diseño de Sonrisa</h3>
+        <p>Mejora estética integral para obtener una sonrisa más armónica y atractiva.</p>
+        <span>Desde $1.000.000 COP</span>
+    </div>
+
+    <div class="servicio-card">
+        <h3>📋 Control Odontológico</h3>
+        <p>Consulta preventiva para evaluar el estado de la salud oral y detectar problemas a tiempo.</p>
+        <span>$60.000 COP</span>
+    </div>
+
+    <div class="servicio-card">
+        <h3>📷 Radiografía Dental</h3>
+        <p>Diagnóstico preciso mediante imágenes radiográficas para tratamientos odontológicos.</p>
+        <span>$50.000 COP</span>
+    </div>
+
+</section>
 
 @endsection
