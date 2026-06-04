@@ -8,7 +8,7 @@ use Carbon\Carbon;
 
 /**
  * EmpleadoCitaController
- * Gestión de citas para el rol Empleado (puede agendar y editar, no eliminar).
+ * Gestión de citas para el rol Empleado (puede agendar, editar y eliminar).
  *
  * Origen: empleado.php
  */
@@ -18,17 +18,19 @@ class EmpleadoCitaController extends Controller
     // ── Listar citas con búsqueda ─────────────────────────────────────────
     public function index(Request $request)
     {
+
+        dd($request->all()); //codigo hpta pa arreglar busqueda
         $search = $request->get('search', '');
         $like   = "%{$search}%";
 
         $citas = DB::select("
-            SELECT c.IDcita AS IDcita, u.IDusuario, u.Email,
+            SELECT c.IDcita AS IDcita, u.ID, u.Email,
                    c.Fecha_entrada AS Fecha_entrada, c.Fecha_salida AS Fecha_salida,
                    c.Estado AS Estado, c.Tipo AS Tipo
             FROM Cita c
             INNER JOIN Cliente cl ON c.IDcliente = cl.IDcliente
-            INNER JOIN Usuario u  ON cl.IDusuario = u.IDusuario
-            WHERE u.IDusuario LIKE ?
+            INNER JOIN users u ON cl.ID = u.ID
+            WHERE u.ID LIKE ?
                OR u.Email     LIKE ?
                OR c.Tipo      LIKE ?
                OR c.Estado    LIKE ?
@@ -37,29 +39,37 @@ class EmpleadoCitaController extends Controller
             ORDER BY c.Fecha_entrada DESC
         ", [$like, $like, $like, $like, $like, $like]);
 
-        return view('empleado.citas', compact('citas', 'search'));
+            $cliente = DB::select("
+            SELECT cl.IDcliente, u.Email
+            FROM Cliente cl
+            INNER JOIN users u ON cl.ID = u.ID
+            ORDER BY u.Email ASC
+            ");
+
+        return view('empleado.citas', compact('citas', 'search', 'cliente'));
     }
 
     // ── Agendar nueva cita ───────────────────────────────────────────────
     public function store(Request $request)
     {
         $request->validate([
-            'fechaEntrada' => 'required|date',
-            'fechaSalida'  => 'required|date|after:fechaEntrada',
-            'tipo'         => 'required|string',
-            'correo'       => 'required|email',
+        'fechaEntrada' => 'required|date',
+        'fechaSalida'  => 'required|date',
+        'tipo'         => 'required|string',
+        'idcliente'    => 'required|integer',
+        'estado'       => 'required|string',
         ]);
 
-        $cliente = DB::selectOne("
-            SELECT cl.IDcliente
-            FROM Cliente cl
-            INNER JOIN Usuario u ON cl.IDusuario = u.IDusuario
-            WHERE u.Email = ? LIMIT 1
-        ", [$request->correo]);
-
-        if (!$cliente) {
+        // 1. Fecha no puede ser pasada
+        if (Carbon::parse($request->fechaEntrada)->lt(now())) {
             return redirect()->route('empleado.citas.index')
-                ->with('error', 'No existe un cliente con el correo ingresado.');
+             ->with('error', 'No es posible agendar una cita en una fecha pasada.');
+        }
+        
+        // 2. Salida no puede ser igual ni anterior a entrada
+        if (Carbon::parse($request->fechaSalida)->lte(Carbon::parse($request->fechaEntrada))) {
+            return redirect()->route('empleado.citas.index')
+                ->with('error', 'La fecha y hora de salida debe ser posterior a la de entrada.');
         }
 
         $conflicto = $this->verificarSolapamiento($request->fechaEntrada, $request->fechaSalida);
@@ -70,9 +80,9 @@ class EmpleadoCitaController extends Controller
         }
 
         DB::insert("
-            INSERT INTO Cita (Fecha_entrada, Fecha_salida, Estado, Tipo, IDcliente)
-            VALUES (?, ?, 'Pendiente', ?, ?)
-        ", [$request->fechaEntrada, $request->fechaSalida, $request->tipo, $cliente->IDcliente]);
+            INSERT INTO Cita (Fecha_entrada, Fecha_salida, Tipo, Estado, IDcliente)
+            VALUES (?, ?, ?, ?, ?)
+        ", [$request->fechaEntrada, $request->fechaSalida, $request->tipo, $request->estado, $request->idcliente]);
 
         return redirect()->route('empleado.citas.index')->with('success', 'Cita agendada correctamente.');
     }
@@ -80,54 +90,108 @@ class EmpleadoCitaController extends Controller
     // ── Mostrar formulario de edición ────────────────────────────────────
     public function edit($id)
     {
-        $citas      = $this->getCitas();
-        $citaEditar = DB::selectOne("
-            SELECT IDcita AS IDcita, Fecha_entrada AS Fecha_entrada,
-                   Fecha_salida AS Fecha_salida, Estado AS Estado,
-                   Tipo AS Tipo, IDcliente AS IDcliente
-            FROM Cita
-            WHERE IDcita = ?
-        ", [$id]);
-        if (!$citaEditar) abort(404);
+    $citas = $this->getCitas();
 
-        $search = '';
-        return view('empleado.citas', compact('citas', 'citaEditar', 'search'));
+    $cliente = DB::select("
+        SELECT cl.IDcliente, u.Email
+        FROM Cliente cl
+        INNER JOIN users u ON cl.ID = u.ID
+        ORDER BY u.Email ASC
+    ");
+
+    $citaEditar = DB::selectOne("
+        SELECT c.IDcita,
+               c.Fecha_entrada,
+               c.Fecha_salida,
+               c.Estado,
+               c.Tipo,
+               c.IDcliente
+        FROM Cita c
+        WHERE c.IDcita = ?
+    ", [$id]);
+
+    if (!$citaEditar) {
+        abort(404);
     }
 
+    $search = '';
+
+    return view(
+        'empleado.citas',
+        compact('citas', 'citaEditar', 'search', 'cliente')
+    );
+    }
     // ── Guardar cambios ──────────────────────────────────────────────────
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'fechaEntrada' => 'required|date',
-            'fechaSalida'  => 'required|date|after:fechaEntrada',
-            'tipo'         => 'required|string',
-        ]);
+    $request->validate([
+        'fechaEntrada' => 'required|date',
+        'fechaSalida'  => 'required|date',
+        'tipo'         => 'required|string',
+        'estado'       => 'required|string',
+        'idcliente'    => 'required|integer',
+    ]);
+    // 1. Fecha no puede ser pasada
+    if (Carbon::parse($request->fechaEntrada)->lt(now())) {
+        return redirect()->route('empleado.citas.index')
+            ->with('error', 'No es posible editar una cita con una fecha pasada.');
+    }
 
-        $conflicto = $this->verificarSolapamiento($request->fechaEntrada, $request->fechaSalida, $id);
-        if ($conflicto) {
-            return redirect()->route('empleado.citas.index')
-                ->with('error', 'Esta hora está ocupada. Disponible desde: ' .
-                    Carbon::parse($conflicto)->format('d/m/Y H:i'));
-        }
+    // 2. Salida no puede ser igual ni anterior a entrada
+    if (Carbon::parse($request->fechaSalida)->lte(Carbon::parse($request->fechaEntrada))) {
+        return redirect()->route('empleado.citas.index')
+            ->with('error', 'La fecha y hora de salida debe ser posterior a la de entrada.');
+    }
 
-        DB::update("
-            UPDATE Cita
-            SET Fecha_entrada=?, Fecha_salida=?, Estado='Pendiente', Tipo=?
-            WHERE IDcita=?
-        ", [$request->fechaEntrada, $request->fechaSalida, $request->tipo, $id]);
+    $conflicto = $this->verificarSolapamiento(
+        $request->fechaEntrada,
+        $request->fechaSalida,
+        $id
+    );
 
-        return redirect()->route('empleado.citas.index')->with('success', 'Cita actualizada correctamente.');
+    if ($conflicto) {
+        return redirect()->route('empleado.citas.index')
+            ->with('error', 'Esta hora está ocupada. Disponible desde: ' .
+                Carbon::parse($conflicto)->format('d/m/Y H:i'));
+    }
+
+    DB::update("
+        UPDATE Cita
+        SET Fecha_entrada = ?,
+            Fecha_salida  = ?,
+            Tipo          = ?,
+            Estado        = ?,
+            IDcliente     = ?
+        WHERE IDcita = ?
+    ", [
+        $request->fechaEntrada,
+        $request->fechaSalida,
+        $request->tipo,
+        $request->estado,
+        $request->idcliente,
+        $id
+    ]);
+
+    return redirect()->route('empleado.citas.index')
+        ->with('success', 'Cita actualizada correctamente.');
+    }
+
+    // ── Eliminar cita ────────────────────────────────────────────────────
+    public function destroy($id)
+    {
+        DB::delete("DELETE FROM Cita WHERE IDcita = ?", [$id]);
+        return redirect()->route('empleado.citas.index')->with('success', 'Cita eliminada correctamente.');
     }
 
     private function getCitas(): array
     {
         return DB::select("
-            SELECT c.IDcita AS IDcita, u.IDusuario, u.Email,
+            SELECT c.IDcita AS IDcita, u.ID, u.Email,
                    c.Fecha_entrada AS Fecha_entrada, c.Fecha_salida AS Fecha_salida,
                    c.Estado AS Estado, c.Tipo AS Tipo
             FROM Cita c
             INNER JOIN Cliente cl ON c.IDcliente = cl.IDcliente
-            INNER JOIN Usuario u  ON cl.IDusuario = u.IDusuario
+            INNER JOIN users u  ON cl.ID = u.ID
             ORDER BY c.Fecha_entrada DESC
         ");
     }
