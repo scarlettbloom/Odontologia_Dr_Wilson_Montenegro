@@ -73,7 +73,7 @@
 
                 <tr class="hover:bg-slate-50 transition-colors">
                     <td class="px-6 py-4 text-slate-500 font-mono text-xs">25/05/2026</td>
-                    <td class="px-6 py-4 font-semibold text-slate-800">Laptop Gamer</td>
+                    <td class="px-6 py-4 font-semibold text-slate-800">Mascarillas</td>
                     <td class="px-6 py-4">
                         <span class="inline-flex items-center gap-1 bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-semibold">
                             <i class="fa-solid fa-circle-arrow-down text-xs"></i> Entrada
@@ -90,7 +90,7 @@
 
                 <tr class="hover:bg-slate-50 transition-colors">
                     <td class="px-6 py-4 text-slate-500 font-mono text-xs">26/05/2026</td>
-                    <td class="px-6 py-4 font-semibold text-slate-800">Laptop Gamer</td>
+                    <td class="px-6 py-4 font-semibold text-slate-800">Mascarillas</td>
                     <td class="px-6 py-4">
                         <span class="inline-flex items-center gap-1 bg-red-100 text-red-600 px-3 py-1 rounded-full text-xs font-semibold">
                             <i class="fa-solid fa-circle-arrow-up text-xs"></i> Salida
