@@ -109,19 +109,6 @@ Route::get('/inventario/movimientostock', function () {
 Route::resource('inventario', InventarioController::class);
 
 
-
-Route::prefix('cliente')->group(function () {
-
-    Route::get('/productos', [ClienteController::class, 'productos'])
-        ->name('cliente.productos');
-
-    Route::get('/producto/{id}', [ClienteController::class, 'detalle'])
-        ->name('cliente.producto.detalle');
-
-    Route::get('/carrito', [ClienteController::class, 'carrito'])
-        ->name('cliente.carrito');
-});
-
 //servicios//
 
 Route::prefix('admin')->name('admin.servicios.')->group(function () {
