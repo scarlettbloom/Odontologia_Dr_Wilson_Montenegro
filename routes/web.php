@@ -110,7 +110,6 @@ Route::prefix('cliente')->middleware('cliente')->group(function () {
         ->name('cliente.inventario.carrito');
 });
 
-<<<<<<< HEAD
 Route::get('/inventario/{id}/delete', [InventarioController::class, 'confirmDelete'])
      ->name('inventario.delete');
 
@@ -121,8 +120,6 @@ Route::get('/admin/movimientostock', function () {
 
 Route::resource('inventario', InventarioController::class);
 
-=======
->>>>>>> efd563914bec8639910f97248fa434ba24f2e07e
 
 //servicios//
 
