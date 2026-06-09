@@ -57,6 +57,22 @@ body {
     transform: translateY(-2px);
 }
 
+.btn-inventario {
+   position: absolute;
+    top: 20px;
+    right: 180px;
+    background: #27ae60;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: all 0.3s;
+}
+
+.btn-inventario:hover {
+    background: #218838;
+}
 /* FORM */
 .form-section {
     background: #f2f2f211;
