@@ -10,6 +10,12 @@
 
 <div class="max-w-6xl mx-auto mt-8 bg-white shadow-xl rounded-xl p-8">
 
+    <a href="{{ route('admin.citas.index') }}">
+    <button type="button" class="btn-volver">
+        ← Volver a Citas
+    </button>
+</a>
+
     {{-- Header --}}
     <div class="flex justify-between items-center mb-6">
         <h1 class="text-2xl font-bold text-slate-800 border-b-2 border-blue-500 pb-1">Inventario</h1>
