@@ -102,9 +102,9 @@ Route::get('/inventario/{id}/delete', [InventarioController::class, 'confirmDele
      ->name('inventario.delete');
 
 // Movimiento de stock (vista aparte)
-Route::get('/inventario/movimientostock', function () {
-    return view('inventario.movimientostock');
-})->name('inventario.movimientostock');
+Route::get('/admin/movimientostock', function () {
+    return view('admin.movimientostock');
+})->name('admin.movimientostock');
 
 Route::resource('inventario', InventarioController::class);
 
