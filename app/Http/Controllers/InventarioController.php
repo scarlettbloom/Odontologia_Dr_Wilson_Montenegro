@@ -16,12 +16,26 @@ class InventarioController extends Controller
                          ->orWhere('nombre_proveedor', 'LIKE', "%{$buscar}%");
         })->get();
 
-        return view('inventario.index', compact('items'));
+        $rol = session('Rol');
+
+        if ($rol == 'Administrador') {
+            return view('admin.index', compact('items'));
+        }
+
+        if ($rol == 'Empleado') {
+            return view('empleado.index', compact('items'));
+        }
+
+        if ($rol == 'Cliente') {
+            return redirect()->route('cliente.inventario');
+        }
+
+        abort(403, 'Rol no autorizado');
     }
 
     public function create()
     {
-        return view('inventario.create');
+        return view('admin.create');
     }
 
     public function store(Request $request)
@@ -34,7 +48,10 @@ class InventarioController extends Controller
         ]);
 
         Inventario::create($request->only([
-            'nombre', 'stock', 'precio_unitario', 'nombre_proveedor'
+            'nombre',
+            'stock',
+            'precio_unitario',
+            'nombre_proveedor'
         ]));
 
         return redirect()->route('inventario.index')
@@ -44,7 +61,7 @@ class InventarioController extends Controller
     public function edit($id)
     {
         $item = Inventario::findOrFail($id);
-        return view('inventario.edit', compact('item'));
+        return view('admin.edit', compact('item'));
     }
 
     public function update(Request $request, $id)
@@ -59,7 +76,10 @@ class InventarioController extends Controller
         ]);
 
         $item->update($request->only([
-            'nombre', 'stock', 'precio_unitario', 'nombre_proveedor'
+            'nombre',
+            'stock',
+            'precio_unitario',
+            'nombre_proveedor'
         ]));
 
         return redirect()->route('inventario.index')
@@ -74,9 +94,34 @@ class InventarioController extends Controller
         return redirect()->route('inventario.index')
                          ->with('success', 'Producto eliminado con éxito.');
     }
+
     public function confirmDelete($id)
+    {
+        $item = Inventario::findOrFail($id);
+        return view('admin.delete', compact('item'));
+    }
+
+    // ============================
+    //  VISTAS PARA EL CLIENTE
+    // ============================
+
+    public function clienteIndex()
+    {
+        $productos = Inventario::all();
+        return view('cliente.inventario.index', compact('productos'));
+    }
+
+    public function clienteShow($id)
+    {
+        $producto = Inventario::findOrFail($id);
+        return view('cliente.inventario.show', compact('producto'));
+    }
+
+public function carrito()
 {
-    $item = Inventario::findOrFail($id);
-    return view('inventario.delete', compact('item'));
+    // Por ahora solo mostramos algunos productos como ejemplo
+    $carrito = Inventario::all();
+    return view('cliente.inventario.carrito', compact('carrito'));
 }
+
 }
