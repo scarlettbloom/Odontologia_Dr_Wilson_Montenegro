@@ -84,6 +84,18 @@ Route::get('/inventario/movimientostock', function () {
 Route::resource('inventario', InventarioController::class);
 
 // ═══════════════════════════════════════════════════════════════════
+//  INVENTARIO — ADMIN Y EMPLEADO (NO SE TOCA NADA)
+// ═══════════════════════════════════════════════════════════════════
+Route::get('/inventario/{id}/delete', [InventarioController::class, 'confirmDelete'])
+     ->name('inventario.delete');
+
+Route::get('/inventario/movimientostock', function () {
+    return view('admin.movimientostock');
+})->name('inventario.movimientostock');
+
+Route::resource('inventario', InventarioController::class);
+
+// ═══════════════════════════════════════════════════════════════════
 //  INVENTARIO — CLIENTE (USANDO EL MISMO CONTROLADOR)
 // ═══════════════════════════════════════════════════════════════════
 Route::prefix('cliente')->middleware('cliente')->group(function () {
@@ -98,6 +110,7 @@ Route::prefix('cliente')->middleware('cliente')->group(function () {
         ->name('cliente.inventario.carrito');
 });
 
+<<<<<<< HEAD
 Route::get('/inventario/{id}/delete', [InventarioController::class, 'confirmDelete'])
      ->name('inventario.delete');
 
@@ -108,6 +121,8 @@ Route::get('/admin/movimientostock', function () {
 
 Route::resource('inventario', InventarioController::class);
 
+=======
+>>>>>>> efd563914bec8639910f97248fa434ba24f2e07e
 
 //servicios//
 

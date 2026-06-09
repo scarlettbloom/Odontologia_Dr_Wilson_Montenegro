@@ -16,6 +16,12 @@
          inventario
     </button>
 </form>
+         <a href="{{ route('inventario.index') }}">
+    <button type="button" class="btn-inventario">
+        Inventario
+    </button>
+</a>
+
     <form action="{{ route('logout') }}" method="POST" style="display:inline;">
             @csrf
             <button type="submit" class="btn-cerrarsesion">Cerrar sesión</button>
