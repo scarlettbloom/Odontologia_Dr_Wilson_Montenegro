@@ -17,22 +17,22 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $request->validate([
-            'Email' => 'required|email',
+            'email' => 'required|email',
             'password' => 'required',
         ]);
 
-        $users = User::where('email', $request->Email)->first();
+        $users = User::where('email', $request->email)->first();
 
         // VALIDAR USUARIO Y CONTRASEÑA
         if (!$users || !Hash::check($request->password, $users->password)) {
             return back()
-                ->withErrors(['Email' => 'Credenciales inválidas'])
+                ->withErrors(['email' => 'Credenciales inválidas'])
                 ->withInput();
         }
 
         session([
             'IDusuario' => $users->id,
-            'Email' => $users->email,
+            'email' => $users->email,
             'Nombre' => $users->name,
             'Rol' => ucfirst($users->rol),
         ]);
@@ -42,7 +42,7 @@ class AuthController extends Controller
             'empleado' => redirect()->route('empleado.citas.index'),
             'cliente' => redirect()->route('cliente.citas.index'),
             default => back()->withErrors([
-                'Email' => 'Rol desconocido. Contacta al administrador.'
+                'email' => 'Rol desconocido. Contacta al administrador.'
             ]),
         };
     }
@@ -57,7 +57,7 @@ class AuthController extends Controller
         $request->validate([
             'Nombre' => 'required|string|max:100',
             'Apellido' => 'required|string|max:100',
-            'Email' => 'required|email|unique:users,email',
+            'email' => 'required|email|unique:users,email',
             'Telefono' => ['required', 'regex:/^[0-9]{10}$/'],
             'password' => 'required|min:6',
         ], [
@@ -70,7 +70,7 @@ class AuthController extends Controller
 
         $users = User::create([
             'name' => trim($request->Nombre . ' ' . $request->Apellido),
-            'email' => $request->Email,
+            'email' => $request->email,
             'telefono' => $request->Telefono,
             'password' => $hashedPassword,
             'rol' => 'cliente',
