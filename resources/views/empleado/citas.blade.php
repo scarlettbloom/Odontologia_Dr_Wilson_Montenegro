@@ -14,6 +14,12 @@
     <button type="submit" class="btn-inventario">
         Empleado
     </button>
+<a href="{{ route('inventario.index') }}">
+    <button type="button" class="btn-inventario">
+        Inventario
+    </button>
+</a>
+                
 </form>
     <form action="{{ route('logout') }}" method="POST" style="display:inline;"></form>
             @csrf
