@@ -9,6 +9,11 @@
 <body class="bg-slate-100 font-sans">
 
 <div class="max-w-6xl mx-auto mt-8 bg-white shadow-xl rounded-xl p-8">
+    <a href="{{ route('empleado.citas.index') }}">
+    <button type="button" class="btn-volver">
+        ← Volver a Citas
+    </button>
+</a>
 
     {{-- Header --}}
     <div class="flex justify-between items-center mb-6">
