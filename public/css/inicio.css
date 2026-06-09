@@ -106,7 +106,6 @@
         justify-content: center;
         align-items: flex-start; /* 👈 texto arranca arriba */
         padding: 40px 20px; /* menos aire */
-        background: linear-gradient(135deg, #29b6f6, #1e88e5);
     }
 
     .mision-box {
@@ -223,3 +222,18 @@
         font-size: 13px;
         color: #cfd8dc;
     }
+.mapa {
+        text-align: center;
+        background: #ffffff;
+        padding: 10px 20px; /* compactado */
+        border-radius: 20px;
+        max-width: 800px;
+        width: 100%;
+        gap: 20px; /* menos separación */
+        box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+        align-items: center; /* imagen y texto centrados */
+        justify-content: center;
+        border-top: 8px solid #0a0b61;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        margin-left: 550px;
+}

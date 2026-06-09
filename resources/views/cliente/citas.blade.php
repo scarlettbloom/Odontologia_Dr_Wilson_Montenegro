@@ -11,9 +11,9 @@
     <div class="header">
         <h1>CLIENTE</h1>
         <h2>Agenda de Citas</h2>
-            <form action="{{ route('cliente.productos') }}" method="GET" style="display:inline;">
+            <form action="{{ route('cliente.inventario') }}" method="GET" style="display:inline;">
     <button type="submit" class="btn-cliente">
-         Cliente
+         inventario
     </button>
 </form>
     <form action="{{ route('logout') }}" method="POST" style="display:inline;">
