@@ -14,7 +14,7 @@
         @csrf
         <input type="text"  name="Nombre"   placeholder="Nombre"   value="{{ old('Nombre') }}"   required>
         <input type="text"  name="Apellido" placeholder="Apellido" value="{{ old('Apellido') }}" required>
-        <input type="email" name="Email"    placeholder="Correo electrónico" value="{{ old('Email') }}" required>
+        <input type="email" name="email"    placeholder="Correo electrónico" value="{{ old('email') }}" required>
         <input type="tel"   name="Telefono" placeholder="Celular"
                pattern="[0-9]{10}" maxlength="10"
                title="El número debe tener exactamente 10 dígitos"
