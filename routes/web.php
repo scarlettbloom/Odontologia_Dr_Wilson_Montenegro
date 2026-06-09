@@ -71,6 +71,33 @@ Route::prefix('cliente')->name('cliente.')->middleware('cliente')->group(functio
 
 });
 
+// ═══════════════════════════════════════════════════════════════════
+//  INVENTARIO — ADMIN Y EMPLEADO (NO SE TOCA NADA)
+// ═══════════════════════════════════════════════════════════════════
+Route::get('/inventario/{id}/delete', [InventarioController::class, 'confirmDelete'])
+     ->name('inventario.delete');
+
+Route::get('/inventario/movimientostock', function () {
+    return view('admin.movimientostock');
+})->name('inventario.movimientostock');
+
+Route::resource('inventario', InventarioController::class);
+
+// ═══════════════════════════════════════════════════════════════════
+//  INVENTARIO — CLIENTE (USANDO EL MISMO CONTROLADOR)
+// ═══════════════════════════════════════════════════════════════════
+Route::prefix('cliente')->middleware('cliente')->group(function () {
+
+    Route::get('/inventario', [InventarioController::class, 'clienteIndex'])
+        ->name('cliente.inventario');
+
+    Route::get('/inventario/{id}', [InventarioController::class, 'clienteShow'])
+        ->name('cliente.inventario.detalle');
+
+    Route::get('/inventario/carrito', [InventarioController::class, 'carrito'])
+        ->name('cliente.inventario.carrito');
+});
+
 Route::get('/inventario/{id}/delete', [InventarioController::class, 'confirmDelete'])
      ->name('inventario.delete');
 
