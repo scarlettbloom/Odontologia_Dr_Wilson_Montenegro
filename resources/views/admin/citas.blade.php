@@ -12,7 +12,11 @@
         <h1>ADMINISTRADOR</h1>
         <h2>Gestión de Citas</h2>
         
-</form>
+         <a href="{{ route('admin.servicios.create') }}">
+    <button type="button" class="btn-servicios">
+        Servicios
+    </button>
+</a>
          <a href="{{ route('inventario.index') }}">
             <button type="button" class="btn-inventario">
                 Inventario
@@ -22,11 +26,6 @@
             @csrf
             <button type="submit" class="btn-cerrarsesion">Cerrar sesión</button>
             </form>
-            <form action="{{ route('admin.servicios.create') }}" method="GET" style="display:inline;">
-    <button type="submit" class="btn-servicios">
-        🦷 Ver Servicios
-    </button>
-        </form>
     </div>
 
     <!-- FORMULARIO AGENDAR / EDITAR -->

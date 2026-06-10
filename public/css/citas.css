@@ -53,7 +53,7 @@ body {
     transition: all 0.3s;
 }
 .btn-cerrarsesion:hover {
-    background: #e53935;
+    background: #960a08;
 }
 
 .btn-inventario {
@@ -71,6 +71,23 @@ body {
 
 .btn-inventario:hover {
     background: #218838;
+}
+
+.btn-servicios {
+   position: absolute;
+    top: 20px;
+    right: 310px;
+    background: #278eae;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: all 0.3s;
+}
+
+.btn-servicios:hover {
+    background: #2778aeb0;
 }
 /* FORM */
 .form-section {
