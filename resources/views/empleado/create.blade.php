@@ -55,6 +55,16 @@
                 @error('nombre_proveedor') <span class="text-red-500 text-xs mt-1">{{ $message }}</span> @enderror
             </div>
 
+ <div class="flex flex-col">
+    <label class="text-sm font-semibold text-slate-500 mb-1">Descripción del producto:</label>
+    <textarea name="descripcion" rows="4"
+              class="input-line w-full bg-transparent text-lg">{{ old('descripcion') }}</textarea>
+    @error('descripcion') 
+        <span class="text-red-500 text-xs mt-1">{{ $message }}</span> 
+    @enderror
+</div>
+
+            
             <div class="flex justify-center space-x-6 pt-10">
                 <button type="submit"
                         class="w-40 bg-slate-800 hover:bg-slate-900 text-white font-bold py-3 rounded-lg shadow-lg">

@@ -17,6 +17,7 @@ class Producto extends Model
         'marca',
         'precio',
         'idproveedor',
-        'idadmin'
+        'idadmin',
+        'descripcion',
     ];
 }

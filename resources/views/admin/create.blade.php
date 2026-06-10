@@ -18,7 +18,7 @@
         <a href="{{ route('inventario.index') }}" class="text-slate-600 hover:text-blue-600 font-medium flex items-center">
             <i class="fa-solid fa-chevron-left mr-2"></i> Volver
         </a>
-        <span class="font-bold text-slate-700 text-sm">Administrador <i class="fa-solid fa-user ml-1"></i></span>
+        <span class="font-bold text-slate-700 text-sm"> Administrador<i class="fa-solid fa-user ml-1"></i></span>
     </header>
 
     <main class="p-12">
@@ -54,6 +54,19 @@
                        class="input-line w-full bg-transparent text-lg">
                 @error('nombre_proveedor') <span class="text-red-500 text-xs mt-1">{{ $message }}</span> @enderror
             </div>
+            
+            <div class="flex flex-col">
+    <label class="text-sm font-semibold text-slate-500 mb-1">Descripción del producto:</label>
+    <textarea name="descripcion" rows="4"
+              class="input-line w-full bg-transparent text-lg">{{ old('descripcion') }}</textarea>
+    @error('descripcion') 
+        <span class="text-red-500 text-xs mt-1">{{ $message }}</span> 
+    @enderror
+</div>
+
+
+
+
 
             <div class="flex justify-center space-x-6 pt-10">
                 <button type="submit"

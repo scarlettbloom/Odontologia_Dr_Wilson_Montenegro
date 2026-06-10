@@ -11,10 +11,7 @@
     <div class="header">
         <h1>ADMINISTRADOR</h1>
         <h2>Gestión de Citas</h2>
-        <form action="{{ route('inventario.index') }}" method="GET" style="display:inline;">
-         <button type="submit" class="btn-inventario">
-        Administador
-        </button>
+        
 </form>
          <a href="{{ route('inventario.index') }}">
             <button type="button" class="btn-inventario">
