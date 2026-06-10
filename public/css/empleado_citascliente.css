@@ -234,6 +234,12 @@ input:focus, select:focus {
     margin-right: 5px;
 }
 
+.btn-warning:hover {
+    background: #d68910;
+    transform: translateY(-2px);
+}
+
+
 .btn-warning2 {
     background: #000000;
     color: white;
@@ -248,6 +254,11 @@ input:focus, select:focus {
     margin-right: 5px;
 }
 
+.btn-warning2:hover {
+    background: #000000;
+    transform: translateY(-2px);
+}
+
 .btn-danger {
     background: #e74c3c;
     color: white;
@@ -259,4 +270,8 @@ input:focus, select:focus {
     transition: all 0.3s ease;
     box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     font-size: 14px;
+}
+.btn-danger:hover {
+    background: #c0392b;
+    transform: translateY(-2px);
 }
