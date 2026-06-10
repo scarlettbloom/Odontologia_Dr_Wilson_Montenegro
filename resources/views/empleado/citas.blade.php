@@ -206,6 +206,7 @@
                                 @method('DELETE')
                                 <button type="submit" class="btn-danger">🗑️ Eliminar</button>
                             </form>
+                            <a href="{{ route('empleado.citas.pdf', $cita->IDcita) }}" class="btn-warning2" target="_blank">🖨️ Imprimir</a>
                         </td>
                     </tr>
                 @empty

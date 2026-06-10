@@ -8,6 +8,7 @@ use App\Models\Cita;
 use App\Models\Cliente;
 use App\Models\Usuario;
 use Carbon\Carbon;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 /**
  * AdminCitaController
@@ -16,7 +17,44 @@ use Carbon\Carbon;
  * Origen: citas.php (vista) + lógica PHP interna del mismo archivo.
  */
 class AdminCitaController extends Controller
-{   // ── Listar citas ─────────────────────────────────────────────────────
+
+{  
+
+// ── Reporte PDF de las citas ────────────────────────────────────────────
+    public function generarPdf($id)
+{
+    $cita = DB::selectOne("
+        SELECT
+            c.IDcita,
+            c.Fecha_entrada,
+            c.Fecha_salida,
+            c.Estado,
+            c.Tipo,
+
+            u.Name AS NombrePaciente,
+            u.Email,
+
+            s.Nombre AS Servicio,
+            s.Costo AS Precio
+
+        FROM Cita c
+        INNER JOIN Cliente cl ON c.IDcliente = cl.IDcliente
+        INNER JOIN Users u ON cl.ID = u.ID
+        LEFT JOIN Servicio s ON cl.IDservicio = s.IDservicio
+
+        WHERE c.IDcita = ?
+    ", [$id]);
+
+    if (!$cita) {
+        abort(404);
+    }
+
+    $pdf = Pdf::loadView('pdf.cita', compact('cita'));
+
+    return $pdf->stream('cita_'.$id.'.pdf');
+}
+    
+// ── Listar citas ─────────────────────────────────────────────────────
     public function index()
     {
         $citas = DB::select("
