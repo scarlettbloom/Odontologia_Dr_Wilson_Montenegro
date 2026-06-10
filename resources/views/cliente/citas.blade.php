@@ -127,6 +127,7 @@
                         <td>{{ $cita->Tipo }}</td>
                         <td>
                             <a href="{{ route('cliente.citas.edit', $cita->IDcita) }}" class="btn-warning">✏️ Editar</a>
+                            <a href="{{ route('cliente.citas.pdf', $cita->IDcita) }}" class="btn-warning2" target="_blank">🖨️ Imprimir</a>
                         </td>
                     </tr>
                 @empty
