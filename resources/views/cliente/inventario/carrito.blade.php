@@ -6,6 +6,8 @@
 <div class="card shadow p-4">
     <h1 class="text-center mb-4">Carrito</h1>
 
+
+
     <table class="table table-bordered text-center align-middle">
         <thead class="table-primary">
             <tr>
@@ -32,5 +34,11 @@
     <div class="text-center mt-4">
         <button class="btn btn-outline-success btn-lg">Comprar</button>
     </div>
+
+   <div class="text-center mt-4">
+        <a href="{{ route('cliente.inventario') }}" class="btn btn-secondary">Volver</a>
+    </div>
+
+
 </div>
 @endsection

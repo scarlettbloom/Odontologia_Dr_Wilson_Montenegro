@@ -1,5 +1,6 @@
 @extends('layouts.inventario_cliente')
 
+
 @section('title', 'Inventario - Cliente')
 
 @section('content')

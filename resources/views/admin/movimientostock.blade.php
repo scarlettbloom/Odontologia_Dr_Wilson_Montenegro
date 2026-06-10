@@ -35,7 +35,7 @@
             </div>
             <div>
                 <p class="text-xs text-slate-400 font-semibold uppercase">Total Entradas</p>
-                <p class="text-2xl font-bold text-green-600">+10</p>
+                <p class="text-2xl font-bold text-green-600">+10000</p>
             </div>
         </div>
         <div class="bg-white rounded-xl border border-red-200 shadow-sm px-6 py-4 flex items-center gap-4">

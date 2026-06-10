@@ -45,13 +45,15 @@ class InventarioController extends Controller
             'stock'            => 'required|integer|min:0',
             'precio_unitario'  => 'required|numeric|min:0',
             'nombre_proveedor' => 'required|string|max:50',
+            'descripcion'      => 'required|string|max:250',
         ]);
 
         Inventario::create($request->only([
             'nombre',
             'stock',
             'precio_unitario',
-            'nombre_proveedor'
+            'nombre_proveedor',
+            'descripcion'
         ]));
 
         return redirect()->route('inventario.index')
@@ -73,13 +75,15 @@ class InventarioController extends Controller
             'stock'            => 'required|integer|min:0',
             'precio_unitario'  => 'required|numeric|min:0',
             'nombre_proveedor' => 'required|string|max:50',
+            'descripcion'      => 'required|string|max:250',
         ]);
 
         $item->update($request->only([
             'nombre',
             'stock',
             'precio_unitario',
-            'nombre_proveedor'
+            'nombre_proveedor',
+            'descripcion'
         ]));
 
         return redirect()->route('inventario.index')

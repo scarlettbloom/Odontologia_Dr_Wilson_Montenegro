@@ -21,9 +21,9 @@
 </a>
                 
 </form>
-    <form action="{{ route('logout') }}" method="POST" style="display:inline;"></form>
+    <form action="{{ route('logout') }}" method="POST" style="display:inline;">
             @csrf
-            <button type="submit" class="btn-cerrarsesion">Cerrar sesión</button>
+            <button type="submit" class="btn-cerrarsesion">Cerrar sesión</button></form>
             <form action="{{ route('admin.servicios.create') }}" method="GET" style="display:inline;">
     <button type="submit" class="btn-servicios">
         🦷 Ver Servicios
