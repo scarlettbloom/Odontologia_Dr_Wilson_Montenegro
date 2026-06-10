@@ -220,6 +220,11 @@ input:focus, select:focus {
     margin-right: 5px;
 }
 
+.btn-warning2:hover {
+    background: #000000;
+    transform: translateY(-2px);
+}
+
 .btn-danger {
     background: #e74c3c;
     color: white;
