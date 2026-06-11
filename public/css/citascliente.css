@@ -55,20 +55,20 @@ body {
     background: #960a08;
 }
 
-.btn-primary {
+.btn-ventas {
    position: absolute;
     top: 20px;
     right: 300px;
     background: #eec809;
     color: white;
-    padding: 10px 20px;
+      padding: 10px 20px;
     border-radius: 6px;
-    text-decoration: none;
+    text-decoration: none;                                      
     font-weight: bold;
     transition: all 0.3s;
 }
 
-.btn-primary:hover {
+.btn-ventas:hover {
     background: #eec809;
 }
 
@@ -93,7 +93,7 @@ body {
 .btn-servicios {
    position: absolute;
     top: 20px;
-    right: 310px;
+    right: 410px;
     background: #278eae;
     color: white;
     padding: 10px 20px;

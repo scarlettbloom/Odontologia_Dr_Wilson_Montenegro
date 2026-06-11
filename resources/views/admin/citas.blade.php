@@ -25,7 +25,7 @@
 </a>
 
 
-<a href="{{ route('inventario.index') }}">
+<a href="{{ route('admin.inventario.index') }}">
     <button type="button" class="btn-inventario">
         Inventario
     </button>

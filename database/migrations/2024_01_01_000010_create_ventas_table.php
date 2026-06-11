@@ -9,7 +9,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('ventas', function (Blueprint $table) {
-            $table->id('idventa');
+            $table->increments('idventa');   // INT UNSIGNED AUTO_INCREMENT
             $table->unsignedInteger('producto_id');
             $table->integer('cantidad');
             $table->decimal('subtotal', 10, 2);

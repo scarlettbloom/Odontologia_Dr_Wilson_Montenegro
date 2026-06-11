@@ -12,9 +12,11 @@
             <h1>CLIENTE</h1>
             <h2>Agenda de Citas</h2>
 
-            <a href="{{ route('cliente.inventario') }}" class="btn btn-primary" style="margin-bottom: 15px;">
-                Ir a Ventas
-            </a>
+            <a href="{{ route('cliente.inventario') }}">
+                        <button type="button" class="btn-ventas ">
+                            Ventas
+                        </button>
+                    </a>
 
                     <a href="{{ route('servicios.publicos') }}">
                         <button type="button" class="btn-servicios">
@@ -22,7 +24,7 @@
                         </button>
                     </a>
 
-                <a href="{{ route('inventario.index') }}">
+                <a href="{{ route('cliente.inventario') }}">
                     <button type="button" class="btn-inventario">
                         Inventario
                     </button>

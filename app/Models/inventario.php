@@ -18,4 +18,10 @@ class Inventario extends Model
         'idproducto',
         'descripcion',
     ];
+
+    public function movimientos()
+{
+    return $this->hasMany(MovimientoStock::class, 'producto_id', 'idinventario');
+}
+
 }

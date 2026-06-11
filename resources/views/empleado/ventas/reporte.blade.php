@@ -17,6 +17,8 @@
                 ⬅ Volver al módulo de ventas
             </a>
 
+
+
             <div class="reporte-box">
 
                 <table class="ventas-table">

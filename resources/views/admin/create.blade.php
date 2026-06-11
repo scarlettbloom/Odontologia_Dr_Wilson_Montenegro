@@ -15,7 +15,7 @@
 <div class="max-w-5xl mx-auto mt-8 bg-white shadow-xl rounded-xl overflow-hidden border border-slate-200">
 
     <header class="flex items-center justify-between px-8 py-4 bg-white border-b border-slate-100">
-        <a href="{{ route('inventario.index') }}" class="text-slate-600 hover:text-blue-600 font-medium flex items-center">
+        <a href="{{ route('admin.inventario.index') }}" class="text-slate-600 hover:text-blue-600 font-medium flex items-center">
             <i class="fa-solid fa-chevron-left mr-2"></i> Volver
         </a>
         <span class="font-bold text-slate-700 text-sm"> Administrador<i class="fa-solid fa-user ml-1"></i></span>
@@ -24,7 +24,7 @@
     <main class="p-12">
         <h2 class="text-2xl font-bold text-center text-slate-800 mb-10">Agregar producto</h2>
 
-        <form action="{{ route('inventario.store') }}" method="POST" class="max-w-2xl mx-auto space-y-8">
+        <form action="{{ route('admin.inventario.store') }}" method="POST" class="max-w-2xl mx-auto space-y-8">
             @csrf
 
             <div class="flex flex-col">
@@ -73,7 +73,7 @@
                         class="w-40 bg-slate-800 hover:bg-slate-900 text-white font-bold py-3 rounded-lg shadow-lg">
                     Guardar
                 </button>
-                <a href="{{ route('inventario.index') }}"
+                <a href="{{ route('admin.inventario.index') }}"
                    class="w-40 bg-white border-2 border-slate-800 text-slate-800 font-bold py-3 rounded-lg text-center">
                     Cancelar
                 </a>
