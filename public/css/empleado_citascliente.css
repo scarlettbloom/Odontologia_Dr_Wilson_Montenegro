@@ -73,6 +73,24 @@ body {
 .btn-inventario:hover {
     background: #218838;
 }
+
+.btn-ventas {
+   position: absolute;
+    top: 20px;
+    right: 312px;
+    background: #eec809;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: all 0.3s;
+}
+
+.btn-ventas:hover {
+    background: #e2d523;
+}
+
 /* FORM */
 .form-section {
     background: #f2f2f211;

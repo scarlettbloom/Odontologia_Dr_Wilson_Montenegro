@@ -14,6 +14,13 @@
     <button type="submit" class="btn-inventario">
         Empleado
     </button>
+
+<a href="{{ route('admin.ventas.index') }}" >
+     <button type="button" class="btn-ventas">
+                Ventas
+            </button>
+</a>
+
 <a href="{{ route('inventario.index') }}">
     <button type="button" class="btn-inventario">
         Inventario

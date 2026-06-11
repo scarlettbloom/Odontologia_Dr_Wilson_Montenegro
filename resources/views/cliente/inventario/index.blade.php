@@ -1,6 +1,5 @@
 @extends('layouts.inventario_cliente')
 
-
 @section('title', 'Inventario - Cliente')
 
 @section('content')
@@ -25,7 +24,11 @@
                         <td>${{ number_format($producto->precio_unitario, 0, ',', '.') }}</td>
                         <td>
                             <a href="{{ route('cliente.inventario.detalle', $producto->idinventario) }}" class="btn btn-outline-secondary btn-sm">Detalles</a>
-                            <a href="{{ route('cliente.inventario.carrito') }}" class="btn btn-outline-primary btn-sm">🛒 Añadir al carrito</a>
+                           <a href="{{ route('cliente.inventario.carrito', $producto->idinventario) }}" class="btn btn-outline-primary btn-sm">
+    🛒 Añadir al carrito
+</a>
+
+
                         </td>
                     </tr>
                 @empty

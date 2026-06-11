@@ -11,6 +11,11 @@
     <div class="header">
         <h1>CLIENTE</h1>
         <h2>Agenda de Citas</h2>
+
+       <a href="{{ route('cliente.inventario') }}" class="btn btn-primary" style="margin-bottom: 15px;">
+    Ir a Ventas
+</a>
+
             <form action="{{ route('cliente.inventario') }}" method="GET" style="display:inline;">
     <button type="submit" class="btn-cliente">
          inventario
