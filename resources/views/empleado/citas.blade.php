@@ -11,9 +11,6 @@
         <h1>EMPLEADO</h1>
         <h2>Gestión de Citas</h2>
             <form action="{{ route('inventario.index') }}" method="GET" style="display:inline;">
-    <button type="submit" class="btn-inventario">
-        Empleado
-    </button>
 
 <a href="{{ route('admin.ventas.index') }}" >
      <button type="button" class="btn-ventas">
@@ -24,6 +21,12 @@
 <a href="{{ route('inventario.index') }}">
     <button type="button" class="btn-inventario">
         Inventario
+    </button>
+</a>
+
+<a href="{{ route('admin.servicios.create') }}">
+    <button type="button" class="btn-servicios">
+        Servicios
     </button>
 </a>
                 
@@ -44,7 +47,7 @@
                     <tr>
                         <th>Fecha Entrada:</th>
                         <th>Fecha Salida:</th>
-                        <th>Tipo:</th>
+                        <th>Servicio:</th>
                         <th>Correo Cliente:</th>
                         <th>Estado:</th>
                         <th>Acción:</th>
@@ -52,7 +55,17 @@
                     <tr>
                         <td><input type="datetime-local" name="fechaEntrada" required></td>
                         <td><input type="datetime-local" name="fechaSalida" required></td>
-                        <td><input type="text" name="tipo" required></td>
+                        <td>
+                            <select name="idservicio" required>
+                                <option value="">Seleccione servicio</option>
+
+                                @foreach($servicios as $servicio)
+                                    <option value="{{ $servicio->IDservicio }}">
+                                        {{ $servicio->Nombre }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </td>
                     <td>
                         <select name="idcliente" required>
                             <option value=""> Seleccione Cliente</option>
@@ -89,7 +102,7 @@
             <tr>
                 <th>Fecha Entrada:</th>
                 <th>Fecha Salida:</th>
-                <th>Tipo:</th>
+                <th>Servicio:</th>
                 <th>Cliente:</th>
                 <th>Estado:</th>
                 <th>Acción:</th>
@@ -111,10 +124,14 @@
             </td>
 
             <td>
-                <input type="text"
-                       name="tipo"
-                       value="{{ $citaEditar->Tipo }}"
-                       required>
+                <select name="idservicio" required>
+                    @foreach($servicios as $servicio)
+                        <option value="{{ $servicio->IDservicio }}"
+                            {{ $citaEditar->IDservicio == $servicio->IDservicio ? 'selected' : '' }}>
+                            {{ $servicio->Nombre }}
+                        </option>
+                    @endforeach
+                </select>
             </td>
 
             <td>
@@ -158,7 +175,7 @@
     <!-- BUSCADOR -->
     <div class="search-bar">
         <form method="GET" action="{{ route('empleado.citas.index') }}">
-            <input type="text" name="search" placeholder="Buscar por correo, estado o tipo..."
+            <input type="text" name="search" placeholder="Buscar por correo, estado o servicio..."
                    value="{{ request('search') }}">
             <button type="submit">Buscar</button>
         </form>
@@ -183,7 +200,7 @@
                     <th>FECHA ENTRADA</th>
                     <th>FECHA SALIDA</th>
                     <th>ESTADO</th>
-                    <th>TIPO</th>
+                    <th>SERVICIO</th>
                     <th>ACCIONES</th>
                 </tr>
             </thead>
@@ -199,7 +216,7 @@
                                 {{ $cita->Estado }}
                             </span>
                         </td>
-                        <td>{{ $cita->Tipo }}</td>
+                        <td>{{ $cita->Servicio }}</td>
                         <td>
                             <a href="{{ route('empleado.citas.edit', $cita->IDcita) }}" class="btn-warning">Editar</a>
                             <form action="{{ route('empleado.citas.destroy', $cita->IDcita) }}" method="POST" style="display:inline;"

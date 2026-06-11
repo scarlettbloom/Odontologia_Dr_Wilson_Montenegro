@@ -42,12 +42,12 @@
 
     <tr>
         <th>Fecha Entrada</th>
-        <td>{{ $cita->Fecha_entrada }}</td>
+        <td>{{ \Carbon\Carbon::parse($cita->Fecha_entrada)->format('d/m/Y H:i') }}</td>
     </tr>
 
     <tr>
         <th>Fecha Salida</th>
-        <td>{{ $cita->Fecha_salida }}</td>
+        <td>{{ \Carbon\Carbon::parse($cita->Fecha_salida)->format('d/m/Y H:i') }}</td>
     </tr>
 
     <tr>
@@ -55,12 +55,7 @@
         <td>{{ $cita->Estado }}</td>
     </tr>
 
-    <tr>
-        <th>Tipo</th>
-        <td>{{ $cita->Tipo }}</td>
-    </tr>
-
-    <tr>
+<tr>
     <th>Paciente</th>
     <td>{{ $cita->NombrePaciente }}</td>
 </tr>
