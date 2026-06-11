@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 /**
  * EmpleadoCitaController
@@ -15,37 +16,78 @@ use Carbon\Carbon;
 class EmpleadoCitaController extends Controller
 {
 
+ // ── Reporte PDF de las citas ────────────────────────────────────────────
+    public function generarPdf($id)
+{
+    $cita = DB::selectOne("
+        SELECT
+            c.IDcita,
+            c.Fecha_entrada,
+            c.Fecha_salida,
+            c.Estado,
+            c.Tipo,
+
+            u.Name AS NombrePaciente,
+            u.Email,
+
+            s.Nombre AS Servicio,
+            s.Costo AS Precio
+
+        FROM Cita c
+        INNER JOIN Cliente cl ON c.IDcliente = cl.IDcliente
+        INNER JOIN Users u ON cl.ID = u.ID
+        LEFT JOIN Servicio s ON cl.IDservicio = s.IDservicio
+
+        WHERE c.IDcita = ?
+    ", [$id]);
+
+    if (!$cita) {
+        abort(404);
+    }
+
+    $pdf = Pdf::loadView('pdf.cita', compact('cita'));
+
+    return $pdf->stream('cita_'.$id.'.pdf');
+}
+
     // ── Listar citas con búsqueda ─────────────────────────────────────────
     public function index(Request $request)
-    {
-        $search = $request->get('search', '');
-        $like   = "%{$search}%";
+{
+    $search = $request->get('search', '');
 
-        $citas = DB::select("
-            SELECT c.IDcita AS IDcita, u.ID, u.Email,
-                   c.Fecha_entrada AS Fecha_entrada, c.Fecha_salida AS Fecha_salida,
-                   c.Estado AS Estado, c.Tipo AS Tipo
-            FROM Cita c
-            INNER JOIN Cliente cl ON c.IDcliente = cl.IDcliente
-            INNER JOIN users u ON cl.ID = u.ID
-            WHERE u.ID LIKE ?
-               OR u.Email     LIKE ?
-               OR c.Tipo      LIKE ?
-               OR c.Estado    LIKE ?
-               OR DATE_FORMAT(c.Fecha_entrada, '%d/%m/%Y %H:%i') LIKE ?
-               OR DATE_FORMAT(c.Fecha_salida,  '%d/%m/%Y %H:%i') LIKE ?
-            ORDER BY c.Fecha_entrada DESC
-        ", [$like, $like, $like, $like, $like, $like]);
-
-            $cliente = DB::select("
-            SELECT cl.IDcliente, u.Email
-            FROM Cliente cl
-            INNER JOIN users u ON cl.ID = u.ID
-            ORDER BY u.Email ASC
-            ");
-
-        return view('empleado.citas', compact('citas', 'search', 'cliente'));
+    // Validar que no sean solo números
+    if (!empty($search) && is_numeric($search)) {
+        return redirect()->route('empleado.citas.index')
+            ->with('error', 'Solo se puede buscar por correo, estado o tipo.');
     }
+    
+    $like   = "%{$search}%";
+
+    $citas = DB::select("
+    SELECT c.IDcita AS IDcita, u.ID, u.Email,
+           c.Fecha_entrada AS Fecha_entrada,
+           c.Fecha_salida AS Fecha_salida,
+           c.Estado AS Estado,
+           c.Tipo AS Tipo
+    FROM Cita c
+    INNER JOIN Cliente cl ON c.IDcliente = cl.IDcliente
+    INNER JOIN users u ON cl.ID = u.ID
+    WHERE CAST(u.ID AS CHAR) LIKE ?
+       OR u.Email LIKE ?
+       OR c.Tipo LIKE ?
+       OR c.Estado LIKE ?
+    ORDER BY c.Fecha_entrada DESC
+    ", [$like, $like, $like, $like]);
+
+    $cliente = DB::select("
+        SELECT cl.IDcliente, u.Email
+        FROM Cliente cl
+        INNER JOIN users u ON cl.ID = u.ID
+        ORDER BY u.Email ASC
+    ");
+
+    return view('empleado.citas', compact('citas', 'search', 'cliente'));
+}
 
     // ── Agendar nueva cita ───────────────────────────────────────────────
     public function store(Request $request)

@@ -11,11 +11,22 @@
     <div class="header">
         <h1>CLIENTE</h1>
         <h2>Agenda de Citas</h2>
+
+       <a href="{{ route('cliente.inventario') }}" class="btn btn-primary" style="margin-bottom: 15px;">
+    Ir a Ventas
+</a>
+
             <form action="{{ route('cliente.inventario') }}" method="GET" style="display:inline;">
     <button type="submit" class="btn-cliente">
          inventario
+
+         <a href="{{ route('admin.servicios.create') }}">
+    <button type="button" class="btn-servicios">
+        Servicios
+
     </button>
-</form>
+</a>
+
          <a href="{{ route('inventario.index') }}">
     <button type="button" class="btn-inventario">
         Inventario
@@ -26,11 +37,6 @@
             @csrf
             <button type="submit" class="btn-cerrarsesion">Cerrar sesión</button>
         </form>
-        <form action="{{ route('servicios') }}" method="GET" style="display:inline;">
-    <button type="submit" class="btn-servicios">
-        🦷 Ver Servicios
-    </button>
-</form>
     </div>
 
     <!-- FORMULARIO AGENDAR / EDITAR -->
@@ -127,6 +133,7 @@
                         <td>{{ $cita->Tipo }}</td>
                         <td>
                             <a href="{{ route('cliente.citas.edit', $cita->IDcita) }}" class="btn-warning">✏️ Editar</a>
+                            <a href="{{ route('cliente.citas.pdf', $cita->IDcita) }}" class="btn-warning2" target="_blank">🖨️ Imprimir</a>
                         </td>
                     </tr>
                 @empty
