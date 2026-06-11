@@ -13,6 +13,12 @@
         <h2>Gestión de Citas</h2>
         
 </form>
+<a href="{{ route('admin.ventas.index') }}" >
+     <button type="button" class="btn-ventas">
+                Ventas
+            </button>
+</a>
+
          <a href="{{ route('inventario.index') }}">
             <button type="button" class="btn-inventario">
                 Inventario

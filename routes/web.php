@@ -10,6 +10,9 @@ use App\Http\Controllers\InventarioController;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\ServicioController;
 use App\Http\Controllers\SolicitudServicioController;
+use App\Http\Controllers\VentaController;
+use App\Http\Controllers\ClienteVentaController;
+
 
 // ═══════════════════════════════════════════════════════════════════
 //  PÁGINAS PÚBLICAS
@@ -75,14 +78,12 @@ Route::get('/inventario/movimientostock', function () {
 
 Route::get('/inventario/carrito', [InventarioController::class, 'carrito'])
         ->name('cliente.inventario.carrito');
+
 Route::resource('inventario', InventarioController::class);
 
 // ═══════════════════════════════════════════════════════════════════
 //  INVENTARIO — CLIENTE
 // ═══════════════════════════════════════════════════════════════════
-
-
-
 Route::prefix('cliente')->middleware('cliente')->group(function () {
 
     Route::get('/inventario', [InventarioController::class, 'clienteIndex'])
@@ -91,8 +92,11 @@ Route::prefix('cliente')->middleware('cliente')->group(function () {
     Route::get('/inventario/{id}', [InventarioController::class, 'clienteShow'])
         ->name('cliente.inventario.detalle');
 
-    // CORREGIDO: antes decía clientecarrito (que NO existe)
-    
+    Route::get('/carrito', [ClienteVentaController::class, 'verCarrito'])
+        ->name('cliente.carrito.ver');
+
+    Route::post('/checkout', [ClienteVentaController::class, 'checkout'])
+        ->name('cliente.checkout');
 });
 
 // ═══════════════════════════════════════════════════════════════════
@@ -115,3 +119,45 @@ Route::prefix('admin')->name('admin.servicios.')->group(function () {
     Route::delete('/servicios/{id}', [ServicioController::class, 'destroy'])->name('destroy');
 
 });
+
+// ═══════════════════════════════════════════════════════════════════
+//  VENTAS — ADMINISTRADOR
+// ═══════════════════════════════════════════════════════════════════
+Route::prefix('admin')->middleware('admin')->group(function () {
+    Route::get('/ventas', [VentaController::class, 'index'])->name('admin.ventas.index');
+    Route::post('/ventas', [VentaController::class, 'store'])->name('admin.ventas.store');
+    Route::get('/ventas/descuento', [VentaController::class, 'descuento'])->name('admin.ventas.descuento');
+    Route::get('/ventas/reporte', [VentaController::class, 'reporte'])->name('admin.ventas.reporte');
+    Route::get('/ventas/create', [VentaController::class, 'create'])->name('admin.ventas.create');
+});
+
+// ═══════════════════════════════════════════════════════════════════
+//  VENTAS — EMPLEADO
+// ═══════════════════════════════════════════════════════════════════
+Route::prefix('empleado')->middleware('empleado')->group(function () {
+    Route::get('/ventas', [VentaController::class, 'index'])->name('empleado.ventas.index');
+    Route::post('/ventas', [VentaController::class, 'store'])->name('empleado.ventas.store');
+    Route::get('/ventas/descuento', [VentaController::class, 'descuento'])->name('empleado.ventas.descuento');
+    Route::get('/ventas/reporte', [VentaController::class, 'reporte'])->name('empleado.ventas.reporte');
+    Route::get('/ventas/create', [VentaController::class, 'create'])->name('empleado.ventas.create');
+});
+
+Route::get('/admin/ventas/reporte', [VentaController::class, 'reporte'])
+    ->name('admin.ventas.reporte');
+
+// CLIENTE ventas
+Route::get('/cliente/inventario', [ClienteVentaController::class, 'index'])->name('cliente.inventario');
+Route::post('/cliente/venta', [ClienteVentaController::class, 'store'])->name('cliente.venta.store');
+
+Route::get('/cliente/compras', [ClienteVentaController::class, 'compras'])
+    ->name('cliente.compras');
+
+Route::post('/cliente/venta', [ClienteVentaController::class, 'store'])
+    ->name('cliente.venta.store');
+
+Route::post('/checkout', [ClienteVentaController::class, 'checkout'])
+    ->name('cliente.checkout');
+
+Route::get('/compras', [ClienteVentaController::class, 'compras'])
+    ->name('cliente.compras');
+
