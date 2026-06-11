@@ -16,18 +16,11 @@
                 Ir a Ventas
             </a>
 
-            <form action="{{ route('cliente.inventario') }}" method="GET" style="display:inline;">
-                <button type="submit" class="btn-cliente">
-                    inventario
-
                     <a href="{{ route('servicios.publicos') }}">
                         <button type="button" class="btn-servicios">
                             Servicios
                         </button>
                     </a>
-
-                </button>
-                </a>
 
                 <a href="{{ route('inventario.index') }}">
                     <button type="button" class="btn-inventario">
