@@ -55,6 +55,24 @@ body {
     background: #960a08;
 }
 
+.btn-primary {
+   position: absolute;
+    top: 20px;
+    right: 300px;
+    background: #eec809;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: all 0.3s;
+}
+
+.btn-primary:hover {
+    background: #eec809;
+}
+
+
 .btn-inventario {
    position: absolute;
     top: 20px;
@@ -254,5 +272,6 @@ input:focus, select:focus {
     box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     font-size: 14px;
 }
+
 
 

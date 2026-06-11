@@ -73,6 +73,13 @@ body {
     background: #218838;
 }
 
+
+.btn-ventas {
+   position: absolute;
+    top: 20px;
+    right: 312px;
+    background: #eec809;
+}
 .btn-servicios {
    position: absolute;
     top: 20px;
@@ -86,9 +93,16 @@ body {
     transition: all 0.3s;
 }
 
+
+.btn-ventas:hover {
+    background: #e2d523;
+}
+
+
 .btn-servicios:hover {
     background: #2778aeb0;
 }
+
 /* FORM */
 .form-section {
     background: #f2f2f211;

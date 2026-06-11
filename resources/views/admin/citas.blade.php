@@ -11,12 +11,21 @@
     <div class="header">
         <h1>ADMINISTRADOR</h1>
         <h2>Gestión de Citas</h2>
-        
-         <a href="{{ route('admin.servicios.create') }}">
+ </form>
+
+<a href="{{ route('admin.ventas.index') }}">
+    <button type="button" class="btn-ventas">
+        Ventas
+    </button>
+</a>
+
+<a href="{{ route('admin.servicios.create') }}">
     <button type="button" class="btn-servicios">
         Servicios
     </button>
 </a>
+
+
          <a href="{{ route('inventario.index') }}">
             <button type="button" class="btn-inventario">
                 Inventario
