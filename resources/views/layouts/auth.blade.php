@@ -23,8 +23,8 @@
                     <li><a href="{{ route('vision') }}">Visión</a></li>
                     <li><a href="{{ route('objetivos') }}">Objetivos estratégicos</a></li>
                     <li><a href="{{ route('servicios') }}">Servicios</a></li>
-                    <li><a href="{{ route('register') }}">Registrarse</a></li>
-                    <li><a href="{{ route('login') }}">Iniciar Sesión</a></li>
+                    <li><a href="{{ route('register') }}" class="{{ request()->routeIs('register') ? 'active' : '' }}">Registrarse</a></li>
+                    <li><a href="{{ route('login') }}" class="{{ request()->routeIs('login') ? 'active' : '' }}">Iniciar Sesión</a></li>
                 </ul>
             </nav>
         </div>
