@@ -14,10 +14,11 @@
     <button type="submit" class="btn-inventario">
         Empleado
     </button>
-             <a href="{{ route('admin.servicios.create') }}">
-    <button type="button" class="btn-servicios">
-        Servicios
-    </button>
+
+<a href="{{ route('admin.ventas.index') }}" >
+     <button type="button" class="btn-ventas">
+                Ventas
+            </button>
 </a>
 
 <a href="{{ route('inventario.index') }}">
