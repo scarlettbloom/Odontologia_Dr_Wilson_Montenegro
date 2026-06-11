@@ -38,6 +38,7 @@ Route::post('/logout',   [AuthController::class, 'logout'])->name('logout');
 //  ADMINISTRADOR — CRUD Citas
 // ═══════════════════════════════════════════════════════════════════
 Route::prefix('admin')->name('admin.')->group(function () {
+    Route::get('/citas/pdf/{id}',[AdminCitaController::class, 'generarPdf'])->name('citas.pdf');
     Route::get('/citas',              [AdminCitaController::class, 'index'])->name('citas.index');
     Route::post('/citas',             [AdminCitaController::class, 'store'])->name('citas.store');
     Route::get('/citas/{id}/editar',  [AdminCitaController::class, 'edit'])->name('citas.edit');
@@ -49,6 +50,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
 //  EMPLEADO — CRUD Citas
 // ═══════════════════════════════════════════════════════════════════
 Route::prefix('empleado')->name('empleado.')->group(function () {
+    Route::get('/citas/pdf/{id}',[EmpleadoCitaController::class, 'generarPdf'])->name('citas.pdf');
     Route::get('/citas',              [EmpleadoCitaController::class, 'index'])->name('citas.index');
     Route::post('/citas',             [EmpleadoCitaController::class, 'store'])->name('citas.store');
     Route::get('/citas/{id}/editar',  [EmpleadoCitaController::class, 'edit'])->name('citas.edit');
@@ -60,6 +62,7 @@ Route::prefix('empleado')->name('empleado.')->group(function () {
 //  CLIENTE — CRUD Citas
 // ═══════════════════════════════════════════════════════════════════
 Route::prefix('cliente')->name('cliente.')->middleware('cliente')->group(function () {
+    Route::get('/citas/pdf/{id}',[ClienteCitaController::class, 'generarPdf'])->name('citas.pdf');
     Route::get('/citas',              [ClienteCitaController::class, 'index'])->name('citas.index');
     Route::post('/citas',             [ClienteCitaController::class, 'store'])->name('citas.store');
     Route::get('/citas/{id}/editar',  [ClienteCitaController::class, 'edit'])->name('citas.edit');
