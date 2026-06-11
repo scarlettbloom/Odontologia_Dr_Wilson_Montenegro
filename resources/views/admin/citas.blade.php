@@ -11,7 +11,6 @@
     <div class="header">
         <h1>ADMINISTRADOR</h1>
         <h2>Gestión de Citas</h2>
- </form>
 
 <a href="{{ route('admin.ventas.index') }}">
     <button type="button" class="btn-ventas">
@@ -26,11 +25,12 @@
 </a>
 
 
-         <a href="{{ route('inventario.index') }}">
-            <button type="button" class="btn-inventario">
-                Inventario
-            </button>
-        </a>
+<a href="{{ route('inventario.index') }}">
+    <button type="button" class="btn-inventario">
+        Inventario
+    </button>
+</a>
+
 <form action="{{ route('logout') }}" method="POST" style="display:inline;">
             @csrf
             <button type="submit" class="btn-cerrarsesion">Cerrar sesión</button>

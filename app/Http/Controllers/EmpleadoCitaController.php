@@ -25,7 +25,7 @@ class EmpleadoCitaController extends Controller
             c.Fecha_entrada,
             c.Fecha_salida,
             c.Estado,
-            c.Tipo,
+            c.IDservicio,
 
             u.Name AS NombrePaciente,
             u.Email,
@@ -36,7 +36,7 @@ class EmpleadoCitaController extends Controller
         FROM Cita c
         INNER JOIN Cliente cl ON c.IDcliente = cl.IDcliente
         INNER JOIN Users u ON cl.ID = u.ID
-        LEFT JOIN Servicio s ON cl.IDservicio = s.IDservicio
+        LEFT JOIN Servicio s ON c.IDservicio = s.IDservicio
 
         WHERE c.IDcita = ?
     ", [$id]);
@@ -58,23 +58,27 @@ class EmpleadoCitaController extends Controller
     // Validar que no sean solo números
     if (!empty($search) && is_numeric($search)) {
         return redirect()->route('empleado.citas.index')
-            ->with('error', 'Solo se puede buscar por correo, estado o tipo.');
+            ->with('error', 'Solo se puede buscar por correo, estado o servicio.');
     }
     
     $like   = "%{$search}%";
 
     $citas = DB::select("
-    SELECT c.IDcita AS IDcita, u.ID, u.Email,
-           c.Fecha_entrada AS Fecha_entrada,
-           c.Fecha_salida AS Fecha_salida,
-           c.Estado AS Estado,
-           c.Tipo AS Tipo
+    SELECT c.IDcita AS IDcita,
+       u.ID,
+       u.Email,
+       c.Fecha_entrada AS Fecha_entrada,
+       c.Fecha_salida AS Fecha_salida,
+       c.Estado AS Estado,
+       s.Nombre AS Servicio,
+       c.IDservicio
     FROM Cita c
     INNER JOIN Cliente cl ON c.IDcliente = cl.IDcliente
     INNER JOIN users u ON cl.ID = u.ID
+    LEFT JOIN Servicio s ON c.IDservicio = s.IDservicio
     WHERE CAST(u.ID AS CHAR) LIKE ?
        OR u.Email LIKE ?
-       OR c.Tipo LIKE ?
+       OR s.Nombre LIKE ?
        OR c.Estado LIKE ?
     ORDER BY c.Fecha_entrada DESC
     ", [$like, $like, $like, $like]);
@@ -86,7 +90,13 @@ class EmpleadoCitaController extends Controller
         ORDER BY u.Email ASC
     ");
 
-    return view('empleado.citas', compact('citas', 'search', 'cliente'));
+    $servicios = DB::select("
+        SELECT IDservicio, Nombre
+        FROM Servicio
+        ORDER BY Nombre ASC
+    ");
+
+    return view('empleado.citas',compact('citas', 'search', 'cliente', 'servicios'));
 }
 
     // ── Agendar nueva cita ───────────────────────────────────────────────
@@ -95,7 +105,7 @@ class EmpleadoCitaController extends Controller
         $request->validate([
         'fechaEntrada' => 'required|date',
         'fechaSalida'  => 'required|date',
-        'tipo'         => 'required|string',
+        'idservicio' => 'required|integer',
         'idcliente'    => 'required|integer',
         'estado'       => 'required|string',
         ]);
@@ -120,9 +130,9 @@ class EmpleadoCitaController extends Controller
         }
 
         DB::insert("
-            INSERT INTO Cita (Fecha_entrada, Fecha_salida, Tipo, Estado, IDcliente)
+            INSERT INTO Cita (Fecha_entrada, Fecha_salida, IDservicio, Estado, IDcliente)
             VALUES (?, ?, ?, ?, ?)
-        ", [$request->fechaEntrada, $request->fechaSalida, $request->tipo, $request->estado, $request->idcliente]);
+        ", [$request->fechaEntrada, $request->fechaSalida, $request->idservicio, $request->estado, $request->idcliente]);
 
         return redirect()->route('empleado.citas.index')->with('success', 'Cita agendada correctamente.');
     }
@@ -139,12 +149,18 @@ class EmpleadoCitaController extends Controller
         ORDER BY u.Email ASC
     ");
 
+    $servicios = DB::select("
+        SELECT IDservicio, Nombre
+        FROM Servicio
+        ORDER BY Nombre ASC
+    ");
+
     $citaEditar = DB::selectOne("
         SELECT c.IDcita,
                c.Fecha_entrada,
                c.Fecha_salida,
                c.Estado,
-               c.Tipo,
+               c.IDservicio,
                c.IDcliente
         FROM Cita c
         WHERE c.IDcita = ?
@@ -156,10 +172,7 @@ class EmpleadoCitaController extends Controller
 
     $search = '';
 
-    return view(
-        'empleado.citas',
-        compact('citas', 'citaEditar', 'search', 'cliente')
-    );
+    return view('empleado.citas',compact('citas', 'citaEditar', 'search', 'cliente', 'servicios'));
     }
     // ── Guardar cambios ──────────────────────────────────────────────────
     public function update(Request $request, $id)
@@ -167,7 +180,7 @@ class EmpleadoCitaController extends Controller
     $request->validate([
         'fechaEntrada' => 'required|date',
         'fechaSalida'  => 'required|date',
-        'tipo'         => 'required|string',
+        'idservicio' => 'required|integer',
         'estado'       => 'required|string',
         'idcliente'    => 'required|integer',
     ]);
@@ -199,14 +212,14 @@ class EmpleadoCitaController extends Controller
         UPDATE Cita
         SET Fecha_entrada = ?,
             Fecha_salida  = ?,
-            Tipo          = ?,
+            IDservicio    = ?,
             Estado        = ?,
             IDcliente     = ?
         WHERE IDcita = ?
     ", [
         $request->fechaEntrada,
         $request->fechaSalida,
-        $request->tipo,
+        $request->idservicio,
         $request->estado,
         $request->idcliente,
         $id
@@ -226,12 +239,18 @@ class EmpleadoCitaController extends Controller
     private function getCitas(): array
     {
         return DB::select("
-            SELECT c.IDcita AS IDcita, u.ID, u.Email,
-                   c.Fecha_entrada AS Fecha_entrada, c.Fecha_salida AS Fecha_salida,
-                   c.Estado AS Estado, c.Tipo AS Tipo
+            SELECT c.IDcita AS IDcita,
+               u.ID,
+               u.Email,
+               c.Fecha_entrada AS Fecha_entrada,
+               c.Fecha_salida AS Fecha_salida,
+               c.Estado AS Estado,
+               s.Nombre AS Servicio,
+               c.IDservicio
             FROM Cita c
             INNER JOIN Cliente cl ON c.IDcliente = cl.IDcliente
-            INNER JOIN users u  ON cl.ID = u.ID
+            INNER JOIN users u ON cl.ID = u.ID
+            LEFT JOIN Servicio s ON c.IDservicio = s.IDservicio
             ORDER BY c.Fecha_entrada DESC
         ");
     }
