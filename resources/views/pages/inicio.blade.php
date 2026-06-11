@@ -8,9 +8,9 @@
 <h1 class="title3">BIENVENIDO</h1>
 <h2 class="title3">Dr. Wilson Montenegro
     Odontología General y Especializada</h2>
-    <section class="seccion-mision">
-    <div class="mision-box">
-        <div class="mision-text">
+    <section class="seccion-inicio">
+    <div class="inicio-box">
+        <div class="inicio-text">
             <h1>Introduccion</h1>
             <p>
             Luce la mejor sonrisa con Dr. Wilson Montenegro. Si quieres tener esa sonrisa que siempre has deseado, en
