@@ -29,7 +29,7 @@ class AdminCitaController extends Controller
             c.Fecha_entrada,
             c.Fecha_salida,
             c.Estado,
-            c.Tipo,
+            c.IDservicio,
 
             u.Name AS NombrePaciente,
             u.Email,
@@ -40,7 +40,7 @@ class AdminCitaController extends Controller
         FROM Cita c
         INNER JOIN Cliente cl ON c.IDcliente = cl.IDcliente
         INNER JOIN Users u ON cl.ID = u.ID
-        LEFT JOIN Servicio s ON cl.IDservicio = s.IDservicio
+        LEFT JOIN Servicio s ON c.IDservicio = s.IDservicio
 
         WHERE c.IDcita = ?
     ", [$id]);
@@ -62,24 +62,28 @@ class AdminCitaController extends Controller
     // No permitir búsquedas solo numéricas
     if (!empty($search) && is_numeric($search)) {
         return redirect()->route('admin.citas.index')
-            ->with('error', 'Solo se puede buscar por correo, estado o tipo.');
+            ->with('error', 'Solo se puede buscar por correo, estado o servicio.');
     }
 
     $like = "%{$search}%";
 
     $citas = DB::select("
-        SELECT c.IDcita AS IDcita, u.ID, u.Email,
-               c.Fecha_entrada AS Fecha_entrada,
-               c.Fecha_salida AS Fecha_salida,
-               c.Estado AS Estado,
-               c.Tipo AS Tipo,
-               c.IDcliente AS IDcliente
+        SELECT c.IDcita,
+            u.ID,
+            u.Email,
+            c.Fecha_entrada,
+            c.Fecha_salida,
+            c.Estado,
+            c.IDcliente,
+            c.IDservicio,
+            s.Nombre AS Servicio
         FROM Cita c
         INNER JOIN Cliente cl ON c.IDcliente = cl.IDcliente
         INNER JOIN users u ON cl.ID = u.ID
+        LEFT JOIN Servicio s ON c.IDservicio = s.IDservicio
         WHERE u.Email LIKE ?
-           OR c.Tipo LIKE ?
-           OR c.Estado LIKE ?
+            OR s.Nombre LIKE ?
+            OR c.Estado LIKE ?
         ORDER BY c.Fecha_entrada DESC
     ", [$like, $like, $like]);
 
@@ -90,7 +94,13 @@ class AdminCitaController extends Controller
         ORDER BY u.Email ASC
     ");
 
-    return view('admin.citas', compact('citas', 'cliente', 'search'));
+    $servicios = DB::select("
+        SELECT IDservicio, Nombre
+        FROM Servicio
+        ORDER BY Nombre ASC
+    ");
+
+    return view('admin.citas', compact('citas', 'cliente', 'search', 'servicios'));
 }
     // ── Agendar nueva cita ───────────────────────────────────────────────
     public function store(Request $request)
@@ -98,7 +108,7 @@ class AdminCitaController extends Controller
         $request->validate([
             'fechaEntrada' => 'required|date',
             'fechaSalida'  => 'required|date',
-            'tipo'         => 'required|string',
+            'idservicio' => 'required|integer',
             'idcliente'    => 'required|integer',
             'estado'       => 'required|string',
         ]);
@@ -123,9 +133,9 @@ class AdminCitaController extends Controller
         }
 
         DB::insert("
-            INSERT INTO Cita (Fecha_entrada, Fecha_salida, Tipo, Estado, IDcliente)
+            INSERT INTO Cita (Fecha_entrada, Fecha_salida, IDservicio, Estado, IDcliente)
             VALUES (?, ?, ?, ?, ?)
-        ", [$request->fechaEntrada, $request->fechaSalida, $request->tipo, $request->estado, $request->idcliente]);
+        ", [$request->fechaEntrada, $request->fechaSalida, $request->idservicio, $request->estado, $request->idcliente]);
 
         return redirect()->route('admin.citas.index')->with('success', 'Cita agendada correctamente.');
     }
@@ -134,12 +144,19 @@ class AdminCitaController extends Controller
     public function edit($id)
     {
         $citas = DB::select("
-            SELECT c.IDcita AS IDcita, u.ID, u.Email,
-                   c.Fecha_entrada AS Fecha_entrada, c.Fecha_salida AS Fecha_salida,
-                   c.Estado AS Estado, c.Tipo AS Tipo, c.IDcliente AS IDcliente
+            SELECT c.IDcita AS IDcita,
+                u.ID,
+                u.Email,
+                c.Fecha_entrada AS Fecha_entrada,
+                c.Fecha_salida AS Fecha_salida,
+                c.Estado AS Estado,
+                s.Nombre AS Servicio,
+                c.IDservicio,
+                c.IDcliente
             FROM Cita c
             INNER JOIN Cliente cl ON c.IDcliente = cl.IDcliente
-            INNER JOIN users u  ON cl.ID = u.ID
+            INNER JOIN users u ON cl.ID = u.ID
+            LEFT JOIN Servicio s ON c.IDservicio = s.IDservicio
             ORDER BY c.Fecha_entrada DESC
         ");
 
@@ -150,10 +167,16 @@ class AdminCitaController extends Controller
             ORDER BY u.Email ASC
         ");
 
+        $servicios = DB::select("
+            SELECT IDservicio, Nombre
+            FROM Servicio
+            ORDER BY Nombre ASC
+        ");
+
         $citaEditar = DB::selectOne("
             SELECT c.IDcita AS IDcita, c.Fecha_entrada AS Fecha_entrada,
                    c.Fecha_salida AS Fecha_salida, c.Estado AS Estado,
-                   c.Tipo AS Tipo, c.IDcliente AS IDcliente, u.Email
+                   c.IDservicio AS IDservicio, c.IDcliente AS IDcliente, u.Email
             FROM Cita c
             INNER JOIN Cliente cl ON c.IDcliente = cl.IDcliente
             INNER JOIN users u  ON cl.ID = u.ID
@@ -162,7 +185,7 @@ class AdminCitaController extends Controller
 
         if (!$citaEditar) abort(404);
 
-        return view('admin.citas', compact('citas', 'cliente', 'citaEditar'))->with('search', '');
+        return view('admin.citas', compact('citas', 'cliente', 'servicios', 'citaEditar'))->with('search', '');
     }
 
     // ── Guardar cambios ──────────────────────────────────────────────────
@@ -171,7 +194,7 @@ class AdminCitaController extends Controller
         $request->validate([
             'fechaEntrada' => 'required|date',
             'fechaSalida'  => 'required|date',
-            'tipo'         => 'required|string',
+            'idservicio'   => 'required|integer',
             'idcliente'    => 'required|integer',
             'estado'       => 'required|string',
         ]);
@@ -197,9 +220,9 @@ class AdminCitaController extends Controller
 
         DB::update("
             UPDATE Cita
-            SET Fecha_entrada=?, Fecha_salida=?, Estado=?, Tipo=?, IDcliente=?
+            SET Fecha_entrada=?, Fecha_salida=?, Estado=?, IDservicio=?, IDcliente=?
             WHERE IDcita=?
-        ", [$request->fechaEntrada, $request->fechaSalida, $request->estado, $request->tipo, $request->idcliente, $id]);
+        ", [$request->fechaEntrada, $request->fechaSalida, $request->estado, $request->idservicio, $request->idcliente, $id]);
 
         return redirect()->route('admin.citas.index')->with('success', 'Cita actualizada correctamente.');
     }
@@ -211,19 +234,24 @@ class AdminCitaController extends Controller
         return redirect()->route('admin.citas.index')->with('success', 'Cita eliminada correctamente.');
     }
 
-        private function getCitas(): array
+    private function getCitas(): array
     {
         return DB::select("
-            SELECT c.IDcita AS IDcita, u.ID, u.Email,
-                   c.Fecha_entrada AS Fecha_entrada, c.Fecha_salida AS Fecha_salida,
-                   c.Estado AS Estado, c.Tipo AS Tipo
+            SELECT c.IDcita,
+                u.ID,
+                u.Email,
+                c.Fecha_entrada,
+                c.Fecha_salida,
+                c.Estado,
+                c.IDservicio,
+                s.Nombre AS Servicio
             FROM Cita c
             INNER JOIN Cliente cl ON c.IDcliente = cl.IDcliente
-            INNER JOIN users u  ON cl.ID = u.ID
+            INNER JOIN users u ON cl.ID = u.ID
+            LEFT JOIN Servicio s ON c.IDservicio = s.IDservicio
             ORDER BY c.Fecha_entrada DESC
         ");
     }
-
 
     // ── Helper: verificar solapamiento de horarios ────────────────────────
     private function verificarSolapamiento(string $entrada, string $salida, ?int $excluirId = null): ?string
