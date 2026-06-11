@@ -24,10 +24,8 @@
                     <li><a href="{{ route('vision') }}" class="{{ request()->routeIs('vision') ? 'active' : '' }}">Visión</a></li>
                     <li><a href="{{ route('objetivos') }}" class="{{ request()->routeIs('objetivos') ? 'active' : '' }}">Objetivos estratégicos</a></li>
                     <li><a href="{{ route('servicios') }}" class="{{ request()->routeIs('servicios') ? 'active' : '' }}">Servicios</a></li>
-                    @guest
-                        <li><a href="{{ route('register') }}">Registrarse</a></li>
-                        <li><a href="{{ route('login') }}">Iniciar Sesión</a></li>
-                    @endguest
+                        <li><a href="{{ route('register') }}" class="{{ request()->routeIs('register') ? 'active' : '' }}">Registrarse</a></li>
+                        <li><a href="{{ route('login') }}" class="{{ request()->routeIs('login') ? 'active' : '' }}">Iniciar Sesión</a></li>
                     @auth
                         <li><a href="{{ route('logout') }}"
                                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
