@@ -8,6 +8,7 @@ use App\Models\Cita;
 use App\Models\Cliente;
 use App\Models\Usuario;
 use Carbon\Carbon;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 /**
  * AdminCitaController
@@ -16,29 +17,81 @@ use Carbon\Carbon;
  * Origen: citas.php (vista) + lógica PHP interna del mismo archivo.
  */
 class AdminCitaController extends Controller
-{   // ── Listar citas ─────────────────────────────────────────────────────
-    public function index()
-    {
-        $citas = DB::select("
-            SELECT c.IDcita AS IDcita, u.ID, u.Email,
-                   c.Fecha_entrada AS Fecha_entrada, c.Fecha_salida AS Fecha_salida,
-                   c.Estado AS Estado, c.Tipo AS Tipo, c.IDcliente AS IDcliente
-            FROM cita c
-            INNER JOIN Cliente cl ON c.IDcliente = cl.IDcliente
-            INNER JOIN users u  ON cl.ID = u.ID
-            ORDER BY c.Fecha_entrada DESC
-        ");
 
-        $cliente = DB::select("
-            SELECT cl.IDcliente, u.Email
-            FROM Cliente cl
-            INNER JOIN users u ON cl.ID = u.ID
-            ORDER BY u.Email ASC
-        ");
+{  
 
-        return view('admin.citas', compact('citas', 'cliente'));
+// ── Reporte PDF de las citas ────────────────────────────────────────────
+    public function generarPdf($id)
+{
+    $cita = DB::selectOne("
+        SELECT
+            c.IDcita,
+            c.Fecha_entrada,
+            c.Fecha_salida,
+            c.Estado,
+            c.Tipo,
+
+            u.Name AS NombrePaciente,
+            u.Email,
+
+            s.Nombre AS Servicio,
+            s.Costo AS Precio
+
+        FROM Cita c
+        INNER JOIN Cliente cl ON c.IDcliente = cl.IDcliente
+        INNER JOIN Users u ON cl.ID = u.ID
+        LEFT JOIN Servicio s ON cl.IDservicio = s.IDservicio
+
+        WHERE c.IDcita = ?
+    ", [$id]);
+
+    if (!$cita) {
+        abort(404);
     }
 
+    $pdf = Pdf::loadView('pdf.cita', compact('cita'));
+
+    return $pdf->stream('cita_'.$id.'.pdf');
+}
+    
+// ── Listar citas con búsqueda ─────────────────────────────────────
+    public function index(Request $request)
+{
+    $search = trim($request->get('search', ''));
+
+    // No permitir búsquedas solo numéricas
+    if (!empty($search) && is_numeric($search)) {
+        return redirect()->route('admin.citas.index')
+            ->with('error', 'Solo se puede buscar por correo, estado o tipo.');
+    }
+
+    $like = "%{$search}%";
+
+    $citas = DB::select("
+        SELECT c.IDcita AS IDcita, u.ID, u.Email,
+               c.Fecha_entrada AS Fecha_entrada,
+               c.Fecha_salida AS Fecha_salida,
+               c.Estado AS Estado,
+               c.Tipo AS Tipo,
+               c.IDcliente AS IDcliente
+        FROM Cita c
+        INNER JOIN Cliente cl ON c.IDcliente = cl.IDcliente
+        INNER JOIN users u ON cl.ID = u.ID
+        WHERE u.Email LIKE ?
+           OR c.Tipo LIKE ?
+           OR c.Estado LIKE ?
+        ORDER BY c.Fecha_entrada DESC
+    ", [$like, $like, $like]);
+
+    $cliente = DB::select("
+        SELECT cl.IDcliente, u.Email
+        FROM Cliente cl
+        INNER JOIN users u ON cl.ID = u.ID
+        ORDER BY u.Email ASC
+    ");
+
+    return view('admin.citas', compact('citas', 'cliente', 'search'));
+}
     // ── Agendar nueva cita ───────────────────────────────────────────────
     public function store(Request $request)
     {
@@ -109,7 +162,7 @@ class AdminCitaController extends Controller
 
         if (!$citaEditar) abort(404);
 
-        return view('admin.citas', compact('citas', 'cliente', 'citaEditar'));
+        return view('admin.citas', compact('citas', 'cliente', 'citaEditar'))->with('search', '');
     }
 
     // ── Guardar cambios ──────────────────────────────────────────────────

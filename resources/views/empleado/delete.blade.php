@@ -6,7 +6,17 @@
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        .input-line { border:none; border-bottom:2px solid #cbd5e1; border-radius:0; padding-left:0; }
+        .input-line {
+            border: none;
+            border-bottom: 2px solid #cbd5e1;
+            border-radius: 0;
+            padding-left: 0;
+        }
+        .input-line:focus {
+            outline: none;
+            border-bottom-color: #3b82f6;
+            box-shadow: none;
+        }
     </style>
 </head>
 <body class="bg-slate-50 font-sans">
@@ -25,7 +35,7 @@
             <span class="px-6 py-2.5 bg-red-500 text-white rounded-lg font-semibold text-sm shadow">Eliminar</span>
         </div>
 
-        <span class="font-bold text-slate-700 text-sm">Empleado <i class="fa-solid fa-user ml-1"></i></span>
+        <span class="font-bold text-slate-700 text-sm">Administrador <i class="fa-solid fa-user ml-1"></i></span>
     </header>
 
     <main class="p-12">
@@ -39,25 +49,36 @@
                 <input type="text" value="{{ $item->idinventario }}" disabled
                        class="input-line w-full bg-transparent text-lg text-slate-400 cursor-not-allowed">
             </div>
+
             <div class="flex flex-col">
                 <label class="text-sm font-semibold text-slate-500 mb-1">Nombre del producto:</label>
                 <input type="text" value="{{ $item->nombre }}" disabled
                        class="input-line w-full bg-transparent text-lg text-slate-400 cursor-not-allowed">
             </div>
+
             <div class="flex flex-col">
                 <label class="text-sm font-semibold text-slate-500 mb-1">Stock:</label>
                 <input type="text" value="{{ $item->stock }}" disabled
                        class="input-line w-32 bg-transparent text-lg text-slate-400 cursor-not-allowed">
             </div>
+
             <div class="flex flex-col">
                 <label class="text-sm font-semibold text-slate-500 mb-1">Precio unitario:</label>
                 <input type="text" value="${{ number_format($item->precio_unitario, 2) }}" disabled
                        class="input-line w-full bg-transparent text-lg text-slate-400 cursor-not-allowed">
             </div>
+
             <div class="flex flex-col">
                 <label class="text-sm font-semibold text-slate-500 mb-1">Nombre proveedor:</label>
                 <input type="text" value="{{ $item->nombre_proveedor }}" disabled
                        class="input-line w-full bg-transparent text-lg text-slate-400 cursor-not-allowed">
+            </div>
+
+            {{-- Descripción del producto --}}
+            <div class="flex flex-col">
+                <label class="text-sm font-semibold text-slate-500 mb-1">Descripción del producto:</label>
+                <textarea rows="3" disabled
+                          class="input-line w-full bg-transparent text-lg text-slate-400 cursor-not-allowed resize-none">{{ $item->descripcion }}</textarea>
             </div>
         </div>
 
@@ -90,3 +111,4 @@
 
 </body>
 </html>
+

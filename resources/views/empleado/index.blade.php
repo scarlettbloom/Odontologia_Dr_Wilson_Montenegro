@@ -9,12 +9,11 @@
 <body class="bg-slate-100 font-sans">
 
 <div class="max-w-6xl mx-auto mt-8 bg-white shadow-xl rounded-xl p-8">
-    <a href="{{ route('empleado.citas.index') }}">
+<a href="{{ route('empleado.citas.index') }}">
     <button type="button" class="btn-volver">
         ← Volver a Citas
     </button>
 </a>
-
     {{-- Header --}}
     <div class="flex justify-between items-center mb-6">
         <h1 class="text-2xl font-bold text-slate-800 border-b-2 border-blue-500 pb-1">Inventario</h1>
@@ -48,50 +47,55 @@
             <i class="fa-solid fa-arrows-rotate mr-1"></i> Movimiento de stock
         </a>
     </div>
-
-    {{-- Tabla --}}
-    <div class="overflow-x-auto rounded-lg border border-slate-200">
-        <table class="w-full text-sm text-left">
-            <thead class="bg-slate-800 text-white uppercase text-xs">
-                <tr>
-                    <th class="px-4 py-3">ID</th>
-                    <th class="px-4 py-3">Nombre</th>
-                    <th class="px-4 py-3">Stock</th>
-                    <th class="px-4 py-3">Precio Unitario</th>
-                    <th class="px-4 py-3">Proveedor</th>
-                    <th class="px-4 py-3 text-center">Acciones</th>
-                </tr>
-            </thead>
-            <tbody class="divide-y divide-slate-100">
-                @forelse($items as $item)
-                <tr class="hover:bg-slate-50">
-                    <td class="px-4 py-3 font-mono text-slate-500">{{ $item->idinventario }}</td>
-                    <td class="px-4 py-3 font-semibold">{{ $item->nombre }}</td>
-                    <td class="px-4 py-3">{{ $item->stock }}</td>
-                    <td class="px-4 py-3">${{ number_format($item->precio_unitario, 2) }}</td>
-                    <td class="px-4 py-3">{{ $item->nombre_proveedor }}</td>
-                    <td class="px-4 py-3 text-center flex justify-center gap-2">
+ //tabla//
+   <div class="overflow-x-auto rounded-lg border border-slate-200">
+    <table class="w-full text-sm text-left">
+        <thead class="bg-slate-800 text-white uppercase text-xs">
+            <tr>
+                <th class="px-4 py-3">ID</th>
+                <th class="px-4 py-3">Nombre</th>
+                <th class="px-4 py-3">Stock</th>
+                <th class="px-4 py-3">Precio Unitario</th>
+                <th class="px-4 py-3">Proveedor</th>
+                <th class="px-4 py-3">Descripción</th>   
+                <th class="px-4 py-3 text-center">Acciones</th>
+            </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-100">
+            @forelse($items as $item)
+            <tr class="hover:bg-slate-50">
+                <td class="px-4 py-3 font-mono text-slate-500">{{ $item->idinventario }}</td>
+                <td class="px-4 py-3 font-semibold">{{ $item->nombre }}</td>
+                <td class="px-4 py-3">{{ $item->stock }}</td>
+                <td class="px-4 py-3">${{ number_format($item->precio_unitario, 2) }}</td>
+                <td class="px-4 py-3">{{ $item->nombre_proveedor }}</td>
+                <td class="px-4 py-3" style="max-width: 250px; word-wrap: break-word;">
+                    {{ $item->descripcion }}
+                </td> <!-- ✅ Aquí se muestra la descripción -->
+                <td class="px-4 py-3 text-center">
+                    <div class="flex justify-center gap-2">
                         <a href="{{ route('inventario.edit', $item->idinventario) }}"
                            class="bg-yellow-400 hover:bg-yellow-500 text-white px-3 py-1 rounded text-xs font-semibold">
                             <i class="fa-solid fa-pen"></i> Editar
                         </a>
-                       <a href="{{ route('inventario.delete', $item->idinventario) }}"
-   class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-xs font-semibold">
-    <i class="fa-solid fa-trash"></i> Eliminar
-</a>
-                    </td>
-                </tr>
-                @empty
-                <tr>
-                    <td colspan="6" class="text-center py-10 text-slate-400">
-                        <i class="fa-solid fa-box-open text-3xl mb-2 block"></i>
-                        No se encontraron productos en el inventario.
-                    </td>
-                </tr>
-                @endforelse
-            </tbody>
-        </table>
-    </div>
+                        <a href="{{ route('inventario.delete', $item->idinventario) }}"
+                           class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-xs font-semibold">
+                            <i class="fa-solid fa-trash"></i> Eliminar
+                        </a>
+                    </div>
+                </td>
+            </tr>
+            @empty
+            <tr>
+                <td colspan="7" class="text-center py-10 text-slate-400">
+                    <i class="fa-solid fa-box-open text-3xl mb-2 block"></i>
+                    No se encontraron productos en el inventario.
+                </td>
+            </tr>
+            @endforelse
+        </tbody>
+    </table>
+</div>
 </div>
 </body>
 </html>

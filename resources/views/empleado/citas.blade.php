@@ -14,6 +14,13 @@
     <button type="submit" class="btn-inventario">
         Empleado
     </button>
+
+<a href="{{ route('admin.ventas.index') }}" >
+     <button type="button" class="btn-ventas">
+                Ventas
+            </button>
+</a>
+
 <a href="{{ route('inventario.index') }}">
     <button type="button" class="btn-inventario">
         Inventario
@@ -21,14 +28,9 @@
 </a>
                 
 </form>
-    <form action="{{ route('logout') }}" method="POST" style="display:inline;"></form>
+    <form action="{{ route('logout') }}" method="POST" style="display:inline;">
             @csrf
-            <button type="submit" class="btn-cerrarsesion">Cerrar sesión</button>
-            <form action="{{ route('admin.servicios.create') }}" method="GET" style="display:inline;">
-    <button type="submit" class="btn-servicios">
-        🦷 Ver Servicios
-    </button>
-</form>
+            <button type="submit" class="btn-cerrarsesion">Cerrar sesión</button></form>
         </form>
     </div>
 
@@ -206,6 +208,7 @@
                                 @method('DELETE')
                                 <button type="submit" class="btn-danger">🗑️ Eliminar</button>
                             </form>
+                            <a href="{{ route('empleado.citas.pdf', $cita->IDcita) }}" class="btn-warning2" target="_blank">🖨️ Imprimir</a>
                         </td>
                     </tr>
                 @empty

@@ -61,6 +61,17 @@
             </div>
         </div>
 
+
+        <div class="flex flex-col">
+    <label class="text-sm font-semibold text-slate-500 mb-1">Descripción del producto:</label>
+    <textarea name="descripcion" rows="4"
+              class="input-line w-full bg-transparent text-lg">{{ $item->descripcion }}</textarea>
+    @error('descripcion') 
+        <span class="text-red-500 text-xs mt-1">{{ $message }}</span> 
+    @enderror
+</div>
+
+
         {{-- Alerta de confirmación --}}
         <div class="max-w-2xl mx-auto bg-red-50 border border-red-200 rounded-xl p-6 mb-8 flex items-start gap-4">
             <i class="fa-solid fa-triangle-exclamation text-red-500 text-2xl mt-1"></i>

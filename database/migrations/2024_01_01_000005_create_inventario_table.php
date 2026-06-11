@@ -19,11 +19,7 @@ return new class extends Migration
                   ->references('idproducto')
                   ->on('producto')
                   ->onDelete('set null');
+            $table->text('descripcion')->nullable();    
         });
-    }
-
-    public function down(): void
-    {
-        Schema::dropIfExists('inventario');
     }
 };

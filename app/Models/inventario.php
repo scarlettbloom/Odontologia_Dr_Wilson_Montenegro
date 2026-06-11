@@ -16,5 +16,6 @@ class Inventario extends Model
         'precio_unitario',
         'nombre_proveedor',
         'idproducto',
+        'descripcion',
     ];
 }
