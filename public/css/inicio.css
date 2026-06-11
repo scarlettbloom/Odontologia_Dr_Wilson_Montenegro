@@ -101,14 +101,13 @@
     }
 
     /* ------------------ SECCIÓN MISIÓN ------------------ */
-    .seccion-mision {
+    .seccion-inicio {
         display: flex;
-        justify-content: center;
         align-items: flex-start; /* 👈 texto arranca arriba */
         padding: 40px 20px; /* menos aire */
     }
 
-    .mision-box {
+    .inicio-box {
         background: #ffffff;
         padding: 30px 35px; /* compactado */
         border-radius: 20px;
@@ -123,12 +122,12 @@
         transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
 
-    .mision-box:hover {
+    .inicio-box:hover {
         transform: translateY(-5px);
         box-shadow: 0 10px 22px rgba(0,0,0,0.25);
     }
 
-    .mision-text h1 {
+    .inicio-text h1 {
         color: #0a0b61;
         font-size: 32px;
         font-weight: bold;
@@ -137,7 +136,7 @@
         letter-spacing: 1px;
     }
 
-    .mision-text p {
+    .inicio-text p {
         font-size: 22px;  /* 👈 más grande */
         color: #222222;
         line-height: 1.8;
@@ -148,14 +147,14 @@
     }
 
     /* Imagen */
-    .mision-img {
+    .inicio-img {
         width: 100%;
         border-radius: 15px;
         box-shadow: 0 5px 15px rgba(0,0,0,0.25);
         transition: transform 0.3s ease;
     }
 
-    .mision-img:hover {
+    .inicio-img:hover {
         transform: scale(1.03);
     }
 
@@ -222,19 +221,21 @@
         font-size: 13px;
         color: #cfd8dc;
     }
-.mapa {
-    display: flex;
-    justify-content: center; 
-    align-items: center;   
+    .mapa {
+        display: grid;
+        justify-content: center;
+        align-items: center;
     
-    background: #ffffff;
-    padding: 10px 20px;
-    border-radius: 20px;
-    max-width: 800px;
-    width: 100%;
-    margin: 0 auto; /* centra la caja completa */
+        background: #ffffff;
+        padding: 1px 20px;
+        border-radius: 20px;
+        max-width: 700px;
+        width: 100%;
     
-    box-shadow: 0 6px 18px rgba(0,0,0,0.2);
-    border-top: 8px solid #0a0b61;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
+        margin-left: auto;
+        margin-right: 20px;
+        margin-top: -480px;
+    
+        box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+        border-top: 8px solid #0a0b61;
+    }
