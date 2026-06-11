@@ -51,7 +51,7 @@
                 <tr>
                     <th>Fecha Entrada:</th>
                     <th>Fecha Salida:</th>
-                    <th>Tipo:</th>
+                    <th>Servicio:</th>
                     <th>Cliente:</th>
                     <th>Estado:</th>
                     <th>Acción:</th>
@@ -63,9 +63,17 @@
                     <td><input type="datetime-local" name="fechaSalida"
                                value="{{ isset($citaEditar) ? \Carbon\Carbon::parse($citaEditar->Fecha_salida)->format('Y-m-d\TH:i') : '' }}"
                                required></td>
-                    <td><input type="text" name="tipo"
-                               value="{{ isset($citaEditar) ? $citaEditar->Tipo : '' }}"
-                               required></td>
+                    <td>
+                        <select name="idservicio" required>
+                            <option value="">Seleccione servicio</option>
+                            @foreach($servicios as $servicio)
+                                <option value="{{ $servicio->IDservicio }}"
+                                    {{ isset($citaEditar) && $citaEditar->IDservicio == $servicio->IDservicio ? 'selected' : '' }}>
+                                    {{ $servicio->Nombre }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </td>
                     <td>
                         <select name="idcliente" required>
                             <option value=""> Seleccione Cliente</option>
@@ -103,7 +111,7 @@
     <!-- BUSCADOR -->
     <div class="search-bar">
         <form method="GET" action="{{ route('admin.citas.index') }}">
-            <input type="text" name="search" placeholder="Buscar por correo, estado o tipo..."
+            <input type="text" name="search" placeholder="Buscar por correo, estado o servicio..."
                    value="{{ request('search') }}">
             <button type="submit">Buscar</button>
         </form>
@@ -128,7 +136,7 @@
                     <th>FECHA ENTRADA</th>
                     <th>FECHA SALIDA</th>
                     <th>ESTADO</th>
-                    <th>TIPO</th>
+                    <th>SERVICIO</th>
                     <th>ACCIONES</th>
                 </tr>
             </thead>
@@ -144,7 +152,7 @@
                                 {{ $cita->Estado }}
                             </span>
                         </td>
-                        <td>{{ $cita->Tipo }}</td>
+                        <td>{{ $cita->Servicio }}</td>
                         <td>
                             <a href="{{ route('admin.citas.edit', $cita->IDcita) }}" class="btn-warning">✏️ Editar</a>
                             <form action="{{ route('admin.citas.destroy', $cita->IDcita) }}" method="POST" style="display:inline;"
