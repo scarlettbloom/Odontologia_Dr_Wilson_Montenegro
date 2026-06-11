@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 /**
  * ClienteCitaController
@@ -15,6 +16,40 @@ use Carbon\Carbon;
  */
 class ClienteCitaController extends Controller
 {
+    // ── Reporte PDF de las citas ────────────────────────────────────────────
+    public function generarPdf($id)
+{
+    $cita = DB::selectOne("
+        SELECT
+            c.IDcita,
+            c.Fecha_entrada,
+            c.Fecha_salida,
+            c.Estado,
+            c.Tipo,
+
+            u.Name AS NombrePaciente,
+            u.Email,
+
+            s.Nombre AS Servicio,
+            s.Costo AS Precio
+
+        FROM Cita c
+        INNER JOIN Cliente cl ON c.IDcliente = cl.IDcliente
+        INNER JOIN Users u ON cl.ID = u.ID
+        LEFT JOIN Servicio s ON cl.IDservicio = s.IDservicio
+
+        WHERE c.IDcita = ?
+    ", [$id]);
+
+    if (!$cita) {
+        abort(404);
+    }
+
+    $pdf = Pdf::loadView('pdf.cita', compact('cita'));
+
+    return $pdf->stream('cita_'.$id.'.pdf');
+}
+
     // ── Listar todas las citas ────────────────────────────────────────────
     public function index()
     {
