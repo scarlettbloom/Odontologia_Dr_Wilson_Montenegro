@@ -80,19 +80,40 @@ body {
     top: 20px;
     right: 312px;
     background: #eec809;
+     color: white;
+    padding: 10px 20px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: all 0.3s;
+    
+}
+
+
+
+.btn-ventas1 {
+   position: absolute;
+    top: 20px;
+    right: 312px;
+    background: #eec809;
+    
+    
 }
 .btn-servicios {
    position: absolute;
     top: 20px;
-    right: 310px;
+    right: 410px;
     background: #278eae;
-
     color: white;
     padding: 10px 20px;
     border-radius: 6px;
     text-decoration: none;
     font-weight: bold;
     transition: all 0.3s;
+}
+
+.btn-servicios:hover {
+    background: #2778aeb0;
 }
 
 
@@ -102,9 +123,7 @@ body {
 
 
 
-.btn-servicios:hover {
-    background: #2778aeb0;
-}
+
 
 /* FORM */
 .form-section {

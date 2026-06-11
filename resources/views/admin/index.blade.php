@@ -30,7 +30,7 @@
     @endif
 
     {{-- Buscador --}}
-    <form method="GET" action="{{ route('inventario.index') }}" class="mb-4">
+    <form method="GET" action="{{ route('admin.inventario.index') }}" class="mb-4">
         <input type="text" name="buscar" value="{{ request('buscar') }}"
                placeholder="Filtrar por nombre o proveedor..."
                class="w-full border border-slate-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400">
@@ -38,15 +38,15 @@
 
     {{-- Botones --}}
     <div class="flex gap-3 mb-6 flex-wrap">
-        <a href="{{ route('inventario.create') }}"
+        <a href="{{ route('admin.inventario.create') }}"
            class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-semibold text-sm">
             <i class="fa-solid fa-plus mr-1"></i> Nuevo producto
         </a>
-        <a href="{{ route('inventario.movimientostock') }}"
+        <a href="{{ route('admin.inventario.movimiento_stock') }}"
            class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg font-semibold text-sm">
             <i class="fa-solid fa-arrows-rotate mr-1"></i> Movimiento de stock
         </a>
-    </div>
+    </div>                          
 
    <div class="overflow-x-auto rounded-lg border border-slate-200">
     <table class="w-full text-sm text-left">
@@ -74,13 +74,15 @@
                 </td> <!-- ✅ Aquí se muestra la descripción -->
                 <td class="px-4 py-3 text-center">
                     <div class="flex justify-center gap-2">
-                        <a href="{{ route('inventario.edit', $item->idinventario) }}"
+                        <a href="{{ route('admin.inventario.edit', $item->idinventario) }}"
                            class="bg-yellow-400 hover:bg-yellow-500 text-white px-3 py-1 rounded text-xs font-semibold">
                             <i class="fa-solid fa-pen"></i> Editar
                         </a>
-                        <a href="{{ route('inventario.delete', $item->idinventario) }}"
-                           class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-xs font-semibold">
-                            <i class="fa-solid fa-trash"></i> Eliminar
+                        <a href="{{ route('admin.inventario.delete', $item->idinventario) }}"
+                             class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-xs font-semibold">
+                              <i class="fa-solid fa-trash"></i> Eliminar
+                             </a>
+
                         </a>
                     </div>
                 </td>

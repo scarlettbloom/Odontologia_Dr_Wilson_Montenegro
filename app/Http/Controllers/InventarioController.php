@@ -56,7 +56,7 @@ class InventarioController extends Controller
             'descripcion'
         ]));
 
-        return redirect()->route('inventario.index')
+        return redirect()->route('admin.inventario.index')
                          ->with('success', 'Producto agregado con éxito.');
     }
 
@@ -86,7 +86,7 @@ class InventarioController extends Controller
             'descripcion'
         ]));
 
-        return redirect()->route('inventario.index')
+        return redirect()->route('admin.inventario.index')
                          ->with('success', 'Producto actualizado con éxito.');
     }
 
@@ -95,12 +95,12 @@ class InventarioController extends Controller
         $item = Inventario::findOrFail($id);
         $item->delete();
 
-        return redirect()->route('inventario.index')
+        return redirect()->route('admin.inventario.index')
                          ->with('success', 'Producto eliminado con éxito.');
     }
 
     public function confirmDelete($id)
-    {
+    {                                                                   
         $item = Inventario::findOrFail($id);
         return view('admin.delete', compact('item'));
     }
@@ -126,6 +126,12 @@ public function carrito()
     // Por ahora solo mostramos algunos productos como ejemplo
     $carrito = Inventario::all();
     return view('cliente.inventario.carrito', compact('carrito'));
+}
+
+public function movimiento()
+{
+    $inventario = \App\Models\Inventario::all();
+    return view('admin.movimiento_stock', compact('inventario'));
 }
 
 }

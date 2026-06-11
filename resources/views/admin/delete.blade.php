@@ -15,7 +15,7 @@
 
     {{-- Header --}}
     <header class="flex items-center justify-between px-8 py-4 bg-white border-b border-slate-100">
-        <a href="{{ route('inventario.index') }}" class="text-slate-600 hover:text-blue-600 font-medium flex items-center">
+        <a href="{{ route('admin.inventario.index') }}" class="text-slate-600 hover:text-blue-600 font-medium flex items-center">
             <i class="fa-solid fa-chevron-left mr-2"></i> Volver
         </a>
 
@@ -59,16 +59,19 @@
                 <input type="text" value="{{ $item->nombre_proveedor }}" disabled
                        class="input-line w-full bg-transparent text-lg text-slate-400 cursor-not-allowed">
             </div>
-        </div>
 
-
-        <div class="flex flex-col">
+            <div class="flex flex-col">
     <label class="text-sm font-semibold text-slate-500 mb-1">Descripción del producto:</label>
     <textarea name="descripcion" rows="4"
               class="input-line w-full bg-transparent text-lg">{{ $item->descripcion }}</textarea>
     @error('descripcion') 
         <span class="text-red-500 text-xs mt-1">{{ $message }}</span> 
     @enderror
+                                                                
+        </div>
+
+
+        
 </div>
 
 
@@ -83,7 +86,7 @@
 
         {{-- Botones --}}
         <div class="flex justify-center space-x-6">
-            <form action="{{ route('inventario.destroy', $item->idinventario) }}" method="POST">
+            <form action="{{ route('admin.inventario.destroy', $item->idinventario) }}" method="POST">
                 @csrf
                 @method('DELETE')
                 <button type="submit"
@@ -91,7 +94,7 @@
                     <i class="fa-solid fa-trash mr-1"></i> Eliminar
                 </button>
             </form>
-            <a href="{{ route('inventario.index') }}"
+            <a href="{{ route('admin.inventario.index') }}"
                class="w-40 bg-white border-2 border-slate-800 text-slate-800 font-bold py-3 rounded-lg text-center hover:bg-slate-50 transition-all active:scale-95">
                 Cancelar
             </a>

@@ -9,17 +9,20 @@
             <div class="ventas-header">
                 <h1>Módulo de Ventas</h1>
                 <span class="user-role">Administrador</span>
+                
             </div>
- 
-<a href="{{ route('admin.ventas.reporte') }}" class="btn-ventas">
+             <a href="{{ route('admin.ventas.reporte') }}" class="btn-ventas1">
      ventas realizadas
 </a>
+
 
             {{-- BOTÓN VOLVER --}}
             <a href="{{ route('admin.citas.index') }}" class="btn btn-secondary volver-btn">
                 Volver
             </a>
-
+                <a href="{{ route('admin.ventas.reporte') }}" class="btn-ventas1">
+     ventas realizadas
+</a>                
             {{-- MENSAJES --}}
             @if(session('error'))
                 <div class="alert alert-danger" style="margin-top: 10px;">
@@ -201,5 +204,6 @@ function renderCarrito() {
     document.getElementById("input-carrito").value = JSON.stringify(carrito);
     document.getElementById("input-descuento").value = descuento;
 }
+
 </script>
 @endsection

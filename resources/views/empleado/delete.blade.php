@@ -74,12 +74,12 @@
                        class="input-line w-full bg-transparent text-lg text-slate-400 cursor-not-allowed">
             </div>
 
-            {{-- Descripción del producto --}}
             <div class="flex flex-col">
-                <label class="text-sm font-semibold text-slate-500 mb-1">Descripción del producto:</label>
-                <textarea rows="3" disabled
-                          class="input-line w-full bg-transparent text-lg text-slate-400 cursor-not-allowed resize-none">{{ $item->descripcion }}</textarea>
+                <label class="text-sm font-semibold text-slate-500 mb-1">Descripcion del producto:</label>
+                <input type="text" value="{{ $item->descripcion }}" disabled
+                       class="input-line w-full bg-transparent text-lg text-slate-400 cursor-not-allowed">
             </div>
+                                                                          
         </div>
 
         {{-- Alerta de confirmación --}}

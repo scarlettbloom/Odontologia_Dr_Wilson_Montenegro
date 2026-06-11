@@ -16,6 +16,11 @@
             <a href="{{ route('admin.ventas.index') }}" class="btn btn-secondary volver-btn">
                 ⬅ Volver al módulo de ventas
             </a>
+              
+            <a href="{{ route('admin.inventario.movimiento_stock') }}" class="btn-movimiento">
+                Ver movimiento de stock
+            </a>
+
 
             <div class="reporte-box">
 

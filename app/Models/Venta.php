@@ -2,22 +2,20 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Venta extends Model
 {
-    use HasFactory;
-
-    protected $table = 'ventas'; // nombre de la tabla
-    protected $primaryKey = 'idventa'; // si tu PK no es 'id', cámbiala aquí
+    protected $table = 'ventas';
+    protected $primaryKey = 'idventa'; // ✅ coincide con la migración
+    public $timestamps = true; // ✅ la tabla tiene timestamps
 
     protected $fillable = [
         'producto_id',
         'cantidad',
         'subtotal',
         'descuento',
-        'total',
+        'total'
     ];
 
     public function producto()

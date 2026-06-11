@@ -10,21 +10,21 @@
     <div class="header">
         <h1>EMPLEADO</h1>
         <h2>Gestión de Citas</h2>
-            <form action="{{ route('inventario.index') }}" method="GET" style="display:inline;">
+            <form action="{{ route('empleado.inventario.index') }}" method="GET" style="display:inline;">
 
-<a href="{{ route('admin.ventas.index') }}" >
+<a href="{{ route('empleado.ventas.index') }}" >
      <button type="button" class="btn-ventas">
                 Ventas
             </button>
 </a>
 
-<a href="{{ route('inventario.index') }}">
+<a href="{{ route('empleado.inventario.index') }}">
     <button type="button" class="btn-inventario">
         Inventario
     </button>
 </a>
 
-<a href="{{ route('admin.servicios.create') }}">
+<a href="{{ route('empleado.servicios.create') }}">
     <button type="button" class="btn-servicios">
         Servicios
     </button>

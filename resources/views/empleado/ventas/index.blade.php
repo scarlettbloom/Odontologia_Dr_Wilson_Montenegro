@@ -11,16 +11,16 @@
                 <span class="user-role">Empleado</span>
             </div>
  
-<a href="{{ route('admin.ventas.reporte') }}" class="btn-ventas">
+<a href="{{ route('empleado.ventas.reporte') }}" class="btn-ventas">
      ventas realizadas
 </a>
 
             {{-- BOTÓN VOLVER --}}
-            <a href="{{ route('admin.citas.index') }}" class="btn btn-secondary volver-btn">
+            <a href="{{ route('empleado.citas.index') }}" class="btn btn-secondary volver-btn">
                 Volver
             </a>
 
-            {{-- MENSAJES --}}
+            {{-- MENSAJES --}}                          
             @if(session('error'))
                 <div class="alert alert-danger" style="margin-top: 10px;">
                     {{ session('error') }}
@@ -98,13 +98,13 @@
                         <p class="total">Total: <span id="total">$0</span></p>
                     </div>
 
-                    <form action="{{ route('admin.ventas.store') }}" method="POST" id="form-venta">
+                    <form action="{{ route('empleado.ventas.store') }}" method="POST" id="form-venta">
                         @csrf
                         <input type="hidden" name="carrito" id="input-carrito">
                         <input type="hidden" name="descuento" id="input-descuento">
 
                         <button type="submit" class="btn btn-primary">Guardar venta</button>
-                        <a href="{{ route('admin.ventas.index') }}" class="btn btn-danger">Cancelar</a>
+                        <a href="{{ route('empleado.ventas.index') }}" class="btn btn-danger">Cancelar</a>
                     </form>
                 </div>
 

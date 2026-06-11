@@ -50,6 +50,24 @@ body {
     background: #f0f8ff;
 }
 
+
+
+.btn-ventas1 {
+   position: absolute;
+    top: 145px;
+    right: 1232px;
+    background: #5194eb;
+    color:white;
+    padding: 7px 15px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: all 0.3s;
+  
+    
+}.btn-ventas1:hover{
+    background: #5194eb;
+}
 /* ====== BOTONES ====== */
 .btn {
     padding: 10px 16px;
@@ -334,3 +352,30 @@ body {
 .volver-btn:hover {
     background: #5a6268;
 }
+
+.btn-movimiento {
+    display: inline-block;
+    background-color: #3498db;
+    color: #fff;
+    padding: 10px 22px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+    transition: all 0.3s ease;
+
+     right:100px;          /* LO MANDA A LA DERECHA */
+    margin-top: -45px;     /* LO SUBE PARA QUEDAR A LA ALTURA DEL OTRO BOTÓN */
+    margin-bottom: 20px;   /* SEPARACIÓN INFERIOR */
+}
+.btn-movimiento:hover {
+    background-color: #2980b9;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+}
+.btn-movimiento:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->decimal('subtotal', 10, 2)->nullable();
             $table->foreign('idventa')
                   ->references('idventa')
-                  ->on('venta')
+                  ->on('ventas')
                   ->onDelete('cascade');
         });
     }
