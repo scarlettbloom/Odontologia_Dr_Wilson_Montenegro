@@ -164,3 +164,8 @@ Route::post('/checkout', [ClienteVentaController::class, 'checkout'])
 Route::get('/compras', [ClienteVentaController::class, 'compras'])
     ->name('cliente.compras');
 
+
+
+Route::get('/servicios-publicos', function () {
+    return view('servicios.publicos');
+})->name('servicios.publicos');
