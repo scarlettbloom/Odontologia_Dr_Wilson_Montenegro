@@ -44,14 +44,25 @@
                         <tr>
                             <th>Fecha Entrada:</th>
                             <th>Fecha Salida:</th>
-                            <th>Tipo:</th>
+                            <th>Servicio:</th>
                             <th>Correo Cliente:</th>
                             <th>Acción:</th>
                         </tr>
                         <tr>
                             <td><input type="datetime-local" name="fechaEntrada" required></td>
                             <td><input type="datetime-local" name="fechaSalida" required></td>
-                            <td><input type="text" name="tipo" required></td>
+                            <td>
+                                <select name="idservicio" required>
+                                    <option value="">Seleccione servicio</option>
+
+                                    @foreach($servicios as $servicio)
+                                        <option value="{{ $servicio->IDservicio }}">
+                                            {{ $servicio->Nombre }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </td>
+
                             <td><input type="email" name="correo" placeholder="cliente@ejemplo.com" required></td>
                             <td><button type="submit" class="btn-agendar">📅 Agendar</button></td>
                         </tr>
@@ -68,7 +79,7 @@
                         <tr>
                             <th>Fecha Entrada:</th>
                             <th>Fecha Salida:</th>
-                            <th>Tipo:</th>
+                            <th>Servicio:</th>
                             <th>Acción:</th>
                         </tr>
                         <tr>
@@ -78,7 +89,16 @@
                             <td><input type="datetime-local" name="fechaSalida"
                                     value="{{ \Carbon\Carbon::parse($citaEditar->Fecha_salida)->format('Y-m-d\TH:i') }}"
                                     required></td>
-                            <td><input type="text" name="tipo" value="{{ $citaEditar->Tipo }}" required></td>
+                            <td>
+                                <select name="idservicio" required>
+                                    @foreach($servicios as $servicio)
+                                        <option value="{{ $servicio->IDservicio }}"
+                                            {{ $citaEditar->IDservicio == $servicio->IDservicio ? 'selected' : '' }}>
+                                            {{ $servicio->Nombre }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </td>
                             <td>
                                 <button type="submit" class="btn-agendar">💾 Guardar cambios</button>
                                 <a href="{{ route('cliente.citas.index') }}" class="btn-danger">❌ Cancelar</a>
@@ -109,7 +129,7 @@
                         <th>FECHA ENTRADA</th>
                         <th>FECHA SALIDA</th>
                         <th>ESTADO</th>
-                        <th>TIPO</th>
+                        <th>SERVICIO</th>
                         <th>ACCIONES</th>
                     </tr>
                 </thead>
@@ -125,7 +145,7 @@
                                     {{ $cita->Estado }}
                                 </span>
                             </td>
-                            <td>{{ $cita->Tipo }}</td>
+                            <td>{{ $cita->Servicio }}</td>
                             <td>
                                 <a href="{{ route('cliente.citas.edit', $cita->IDcita) }}" class="btn-warning">✏️
                                     Editar</a>

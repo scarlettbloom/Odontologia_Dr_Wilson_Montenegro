@@ -25,7 +25,7 @@ class ClienteCitaController extends Controller
             c.Fecha_entrada,
             c.Fecha_salida,
             c.Estado,
-            c.Tipo,
+            c.IDservicio,
 
             u.Name AS NombrePaciente,
             u.Email,
@@ -36,7 +36,7 @@ class ClienteCitaController extends Controller
         FROM Cita c
         INNER JOIN Cliente cl ON c.IDcliente = cl.IDcliente
         INNER JOIN Users u ON cl.ID = u.ID
-        LEFT JOIN Servicio s ON cl.IDservicio = s.IDservicio
+        LEFT JOIN Servicio s ON c.IDservicio = s.IDservicio
 
         WHERE c.IDcita = ?
     ", [$id]);
@@ -52,19 +52,31 @@ class ClienteCitaController extends Controller
 
     // ── Listar todas las citas ────────────────────────────────────────────
     public function index()
-    {
-        $citas = DB::select("
-            SELECT c.IDcita AS IDcita, u.ID, u.Email,
-                   c.Fecha_entrada AS Fecha_entrada, c.Fecha_salida AS Fecha_salida,
-                   c.Estado AS Estado, c.Tipo AS Tipo
-            FROM Cita c
-            INNER JOIN Cliente cl ON c.IDcliente = cl.IDcliente
-            INNER JOIN Users u  ON cl.ID = u.ID
-            ORDER BY c.Fecha_entrada DESC
-        ");
+{
+    $citas = DB::select("
+        SELECT c.IDcita,
+               u.ID,
+               u.Email,
+               c.Fecha_entrada,
+               c.Fecha_salida,
+               c.Estado,
+               c.IDservicio,
+               s.Nombre AS Servicio
+        FROM Cita c
+        INNER JOIN Cliente cl ON c.IDcliente = cl.IDcliente
+        INNER JOIN Users u ON cl.ID = u.ID
+        LEFT JOIN Servicio s ON c.IDservicio = s.IDservicio
+        ORDER BY c.Fecha_entrada DESC
+    ");
 
-        return view('cliente.citas', compact('citas'));
-    }
+    $servicios = DB::select("
+        SELECT IDservicio, Nombre
+        FROM Servicio
+        ORDER BY Nombre ASC
+    ");
+
+    return view('cliente.citas', compact('citas', 'servicios'));
+}
 
     // ── Agendar nueva cita ────────────────────────────────────────────────
     public function store(Request $request)
@@ -72,7 +84,7 @@ class ClienteCitaController extends Controller
         $request->validate([
             'fechaEntrada' => 'required|date',
             'fechaSalida'  => 'required|date',
-            'tipo'         => 'required|string',
+            'idservicio'   => 'required|integer',
             'correo'       => 'required|email',
         ]);
 
@@ -108,9 +120,9 @@ class ClienteCitaController extends Controller
         }
 
         DB::insert("
-            INSERT INTO Cita (Fecha_entrada, Fecha_salida, Estado, Tipo, IDcliente)
+            INSERT INTO Cita (Fecha_entrada, Fecha_salida, Estado, IDservicio, IDcliente)
             VALUES (?, ?, 'Pendiente', ?, ?)
-        ", [$request->fechaEntrada, $request->fechaSalida, $request->tipo, $cliente->IDcliente]);
+        ", [$request->fechaEntrada, $request->fechaSalida, $request->idservicio, $cliente->IDcliente]);
 
         return redirect()->route('cliente.citas.index')
             ->with('success', 'Cita agendada correctamente (queda en Pendiente hasta confirmación del administrador).');
@@ -119,17 +131,24 @@ class ClienteCitaController extends Controller
     // ── Mostrar formulario de edición ─────────────────────────────────────
     public function edit($id)
     {
-        $citas      = $this->getCitas();
+        $citas = $this->getCitas();
+        
+        $servicios = DB::select("
+            SELECT IDservicio, Nombre
+            FROM Servicio
+            ORDER BY Nombre ASC
+        ");
+
         $citaEditar = DB::selectOne("
             SELECT IDcita AS IDcita, Fecha_entrada AS Fecha_entrada,
                    Fecha_salida AS Fecha_salida, Estado AS Estado,
-                   Tipo AS Tipo, IDcliente AS IDcliente
+                   IDservicio AS IDservicio, IDcliente AS IDcliente
             FROM Cita
             WHERE IDcita = ?
         ", [$id]);
         if (!$citaEditar) abort(404);
 
-        return view('cliente.citas', compact('citas', 'citaEditar'));
+        return view('cliente.citas', compact('citas', 'citaEditar', 'servicios'));
     }
 
     // ── Guardar cambios ───────────────────────────────────────────────────
@@ -138,7 +157,7 @@ class ClienteCitaController extends Controller
     $request->validate([
         'fechaEntrada' => 'required|date',
         'fechaSalida'  => 'required|date',  // quitado after:fechaEntrada
-        'tipo'         => 'required|string',
+        'idservicio'   => 'required|integer',
     ]);
 
     // 1. Fecha de entrada no puede ser pasada
@@ -162,26 +181,32 @@ class ClienteCitaController extends Controller
 
     DB::update("
         UPDATE Cita
-        SET Fecha_entrada=?, Fecha_salida=?, Estado='Pendiente', Tipo=?
+        SET Fecha_entrada=?, Fecha_salida=?, Estado='Pendiente', IDservicio=?
         WHERE IDcita=?
-    ", [$request->fechaEntrada, $request->fechaSalida, $request->tipo, $id]);
+    ", [$request->fechaEntrada, $request->fechaSalida, $request->idservicio, $id]);
 
     return redirect()->route('cliente.citas.index')
         ->with('success', 'Cita actualizada correctamente (queda en Pendiente hasta confirmación del administrador).');
     }
 
     private function getCitas(): array
-    {
+{
         return DB::select("
-            SELECT c.IDcita AS IDcita, u.ID, u.Email,
-                   c.Fecha_entrada AS Fecha_entrada, c.Fecha_salida AS Fecha_salida,
-                   c.Estado AS Estado, c.Tipo AS Tipo
+            SELECT c.IDcita,
+                u.ID,
+                u.Email,
+                c.Fecha_entrada,
+                c.Fecha_salida,
+                c.Estado,
+                c.IDservicio,
+                s.Nombre AS Servicio
             FROM Cita c
             INNER JOIN Cliente cl ON c.IDcliente = cl.IDcliente
-            INNER JOIN Users u  ON cl.ID = u.ID
+            INNER JOIN Users u ON cl.ID = u.ID
+            LEFT JOIN Servicio s ON c.IDservicio = s.IDservicio
             ORDER BY c.Fecha_entrada DESC
         ");
-    }
+}
 
     private function verificarSolapamiento(string $entrada, string $salida, ?int $excluirId = null): ?string
     {
