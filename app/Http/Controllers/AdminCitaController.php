@@ -72,6 +72,7 @@ class AdminCitaController extends Controller
     $citas = DB::select("
         SELECT c.IDcita,
             u.ID,
+            u.name AS Nombre,
             u.Email,
             c.Fecha_entrada,
             c.Fecha_salida,
@@ -83,17 +84,20 @@ class AdminCitaController extends Controller
         INNER JOIN Cliente cl ON c.IDcliente = cl.IDcliente
         INNER JOIN users u ON cl.ID = u.ID
         LEFT JOIN Servicio s ON c.IDservicio = s.IDservicio
-        WHERE u.Email LIKE ?
+        WHERE u.name LIKE ?
+             OR u.Email LIKE ?
             OR s.Nombre LIKE ?
             OR c.Estado LIKE ?
         ORDER BY c.Fecha_entrada DESC
-    ", [$like, $like, $like]);
+    ", [$like, $like, $like, $like]);
 
     $cliente = DB::select("
-        SELECT cl.IDcliente, u.Email
+        SELECT cl.IDcliente, 
+        u.name AS Nombre,
+        u.Email
         FROM Cliente cl
         INNER JOIN users u ON cl.ID = u.ID
-        ORDER BY u.Email ASC
+        ORDER BY u.name ASC
     ");
 
     $servicios = DB::select("
@@ -148,6 +152,7 @@ class AdminCitaController extends Controller
         $citas = DB::select("
             SELECT c.IDcita AS IDcita,
                 u.ID,
+                u.name AS Nombre,
                 u.Email,
                 c.Fecha_entrada AS Fecha_entrada,
                 c.Fecha_salida AS Fecha_salida,
@@ -163,10 +168,12 @@ class AdminCitaController extends Controller
         ");
 
         $cliente = DB::select("
-            SELECT cl.IDcliente, u.Email
+            SELECT cl.IDcliente, 
+            u.name AS Nombre,
+            u.Email
             FROM Cliente cl
             INNER JOIN users u ON cl.ID = u.ID
-            ORDER BY u.Email ASC
+            ORDER BY u.name ASC
         ");
 
         $servicios = DB::select("
@@ -178,7 +185,7 @@ class AdminCitaController extends Controller
         $citaEditar = DB::selectOne("
             SELECT c.IDcita AS IDcita, c.Fecha_entrada AS Fecha_entrada,
                    c.Fecha_salida AS Fecha_salida, c.Estado AS Estado,
-                   c.IDservicio AS IDservicio, c.IDcliente AS IDcliente, u.Email
+                   c.IDservicio AS IDservicio, c.IDcliente AS IDcliente, u.name AS Nombre, u.Email
             FROM Cita c
             INNER JOIN Cliente cl ON c.IDcliente = cl.IDcliente
             INNER JOIN users u  ON cl.ID = u.ID
@@ -241,6 +248,7 @@ class AdminCitaController extends Controller
         return DB::select("
             SELECT c.IDcita,
                 u.ID,
+                u.name AS Nombre,
                 u.Email,
                 c.Fecha_entrada,
                 c.Fecha_salida,

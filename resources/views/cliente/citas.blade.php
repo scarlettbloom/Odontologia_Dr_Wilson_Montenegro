@@ -9,7 +9,7 @@
 @section('content')
     <div class="container">
         <div class="header">
-            <h1>CLIENTE</h1>
+           <h1>CLIENTE</h1>
             <h2>Agenda de Citas</h2>
 
             <a href="{{ route('cliente.inventario') }}">
@@ -124,7 +124,7 @@
             <table class="data-table">
                 <thead>
                     <tr>
-                        <th>ID USUARIO</th>
+                        <th>NOMBRE</th>
                         <th>FECHA ENTRADA</th>
                         <th>FECHA SALIDA</th>
                         <th>ESTADO</th>
@@ -135,7 +135,7 @@
                 <tbody>
                     @forelse($citas as $cita)
                         <tr>
-                            <td>{{ $cita->ID }}</td>
+                            <td>{{ $cita->Nombre }}</td>
                             <td>{{ \Carbon\Carbon::parse($cita->Fecha_entrada)->format('d/m/Y H:i') }}</td>
                             <td>{{ \Carbon\Carbon::parse($cita->Fecha_salida)->format('d/m/Y H:i') }}</td>
                             <td>

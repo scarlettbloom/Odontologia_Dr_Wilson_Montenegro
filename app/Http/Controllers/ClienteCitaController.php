@@ -58,6 +58,7 @@ class ClienteCitaController extends Controller
     $citas = DB::select("
         SELECT c.IDcita,
             u.ID,
+            u.name AS Nombre,
             u.Email,
             c.Fecha_entrada,
             c.Fecha_salida,
@@ -72,13 +73,19 @@ class ClienteCitaController extends Controller
         ORDER BY c.Fecha_entrada DESC
     ", [$userId]);
 
+    $usuario = DB::selectOne("
+    SELECT name
+    FROM users
+    WHERE id = ?
+", [$userId]);
+
     $servicios = DB::select("
         SELECT IDservicio, Nombre
         FROM Servicio
         ORDER BY Nombre ASC
     ");
 
-    return view('cliente.citas', compact('citas', 'servicios'));
+    return view('cliente.citas', compact('citas', 'servicios', 'usuario'));
 }
 
     // ── Agendar nueva cita ────────────────────────────────────────────────
@@ -164,8 +171,12 @@ class ClienteCitaController extends Controller
         if (!$propietario || $propietario->ID != $userId) {
             abort(403);
 }
-
-        return view('cliente.citas', compact('citas', 'citaEditar', 'servicios'));
+$usuario = DB::selectOne("
+    SELECT name
+    FROM users
+    WHERE id = ?
+", [$userId]);
+        return view('cliente.citas', compact('citas', 'citaEditar', 'servicios', 'usuario'));
     }
 
     // ── Guardar cambios ───────────────────────────────────────────────────
@@ -227,6 +238,7 @@ class ClienteCitaController extends Controller
     return DB::select("
         SELECT c.IDcita,
                u.ID,
+               u.name AS Nombre,
                u.Email,
                c.Fecha_entrada,
                c.Fecha_salida,

@@ -65,6 +65,7 @@ Route::prefix('admin')->middleware('admin')->name('admin.')->group(function () {
     Route::get('/ventas/descuento', [VentaController::class, 'descuento'])->name('ventas.descuento');
     Route::get('/ventas/reporte', [VentaController::class, 'reporte'])->name('ventas.reporte');
     Route::get('/ventas/create', [VentaController::class, 'create'])->name('ventas.create');
+    Route::get('/ventas/pdf/{id}',[VentaController::class, 'generarPdf'])->name('ventas.pdf');
 
     // INVENTARIO
     Route::resource('inventario', InventarioController::class);

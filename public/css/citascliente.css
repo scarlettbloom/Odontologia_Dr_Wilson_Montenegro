@@ -190,6 +190,7 @@ input:focus, select:focus {
     border-bottom: 1px solid #f1f1f1;
     font-size: 13px;
     color: #333;
+    text-align: center;
 }
 .data-table tr:nth-child(even) { background: #f2f2f2; }
 .data-table tr:hover { background: #e1e1e1; }
