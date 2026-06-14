@@ -96,13 +96,19 @@
 </head>
 <body>
 
+@php
+    $prefix = auth()->user()->rol === 'administrador'
+        ? 'admin'
+        : 'empleado';
+@endphp
+
 <div class="container">
 
     <div class="logo">🦷</div>
 
     <h1>Editar Servicio</h1>
 
-    <form action="{{ route('admin.servicios.update', $servicio->idservicio) }}" method="POST">
+    <form action="{{ route($prefix.'.servicios.update', $servicio->idservicio) }}" method="POST">
 
         @csrf
         @method('PUT')
@@ -141,7 +147,7 @@
 
     </form>
 
-    <a href="{{ route('admin.servicios.index') }}" class="volver">
+    <a href="{{ route($prefix.'.servicios.index') }}" class="volver">
         ⬅ Volver al listado
     </a>
 

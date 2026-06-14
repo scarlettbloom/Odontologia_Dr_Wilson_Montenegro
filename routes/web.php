@@ -88,6 +88,14 @@ Route::prefix('empleado')->middleware('empleado')->name('empleado.')->group(func
     Route::put('/citas/{id}', [EmpleadoCitaController::class, 'update'])->name('citas.update');
     Route::delete('/citas/{id}', [EmpleadoCitaController::class, 'destroy'])->name('citas.destroy');
     Route::get('/citas/pdf/{id}', [EmpleadoCitaController::class, 'generarPdf'])->name('citas.pdf');
+    
+     // SERVICIOS
+     Route::get('/servicios', [ServicioController::class, 'index'])->name('servicios.index');
+     Route::get('/servicios/create', [ServicioController::class, 'create'])->name('servicios.create');
+     Route::post('/servicios', [ServicioController::class, 'store'])->name('servicios.store');
+     Route::get('/servicios/{id}/edit', [ServicioController::class, 'edit'])->name('servicios.edit');
+     Route::put('/servicios/{id}', [ServicioController::class, 'update'])->name('servicios.update');
+     Route::delete('/servicios/{id}', [ServicioController::class, 'destroy'])->name('servicios.destroy');
 
     // VENTAS
     Route::get('/ventas', [VentaController::class, 'index'])->name('ventas.index');

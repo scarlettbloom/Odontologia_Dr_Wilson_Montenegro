@@ -6,6 +6,7 @@ use App\Models\Cliente;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
@@ -29,6 +30,8 @@ class AuthController extends Controller
                 ->withErrors(['email' => 'Credenciales inválidas'])
                 ->withInput();
         }
+
+        Auth::login($users);
 
         session([
             'IDusuario' => $users->id,
@@ -86,9 +89,12 @@ class AuthController extends Controller
     }
 
     public function logout(Request $request)
-    {
-        session()->flush();
+{
+        Auth::logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
 
         return redirect()->route('login');
-    }
+}
 }

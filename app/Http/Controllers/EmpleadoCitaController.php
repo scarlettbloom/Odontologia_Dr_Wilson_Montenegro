@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * EmpleadoCitaController
@@ -53,6 +54,7 @@ class EmpleadoCitaController extends Controller
     // ── Listar citas con búsqueda ─────────────────────────────────────────
     public function index(Request $request)
 {
+    $user = Auth::user();
     $search = $request->get('search', '');
 
     // Validar que no sean solo números
