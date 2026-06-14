@@ -26,15 +26,9 @@
                     <li><a href="{{ route('servicios') }}" class="{{ request()->routeIs('servicios') ? 'active' : '' }}">Servicios</a></li>
                         <li><a href="{{ route('register') }}" class="{{ request()->routeIs('register') ? 'active' : '' }}">Registrarse</a></li>
                         <li><a href="{{ route('login') }}" class="{{ request()->routeIs('login') ? 'active' : '' }}">Iniciar Sesión</a></li>
-                    @auth
-                        <li><a href="{{ route('logout') }}"
-                               onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                            Cerrar Sesión
-                        </a></li>
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display:none;">
                             @csrf
                         </form>
-                    @endauth
                 </ul>
             </nav>
         </div>

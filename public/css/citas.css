@@ -255,6 +255,7 @@ select:focus {
     border-bottom: 1px solid #ecf0f1;
     font-size: 13px;
     color: #333;
+    text-align: center;
 }
 
 .data-table tr:nth-child(even) {

@@ -60,7 +60,7 @@ class EmpleadoCitaController extends Controller
     // Validar que no sean solo números
     if (!empty($search) && is_numeric($search)) {
         return redirect()->route('empleado.citas.index')
-            ->with('error', 'Solo se puede buscar por correo, estado o servicio.');
+            ->with('error', 'Solo se puede buscar por nombre, estado o servicio.');
     }
     
     $like   = "%{$search}%";
@@ -68,6 +68,7 @@ class EmpleadoCitaController extends Controller
     $citas = DB::select("
     SELECT c.IDcita AS IDcita,
        u.ID,
+       u.name AS Nombre,
        u.Email,
        c.Fecha_entrada AS Fecha_entrada,
        c.Fecha_salida AS Fecha_salida,
@@ -79,14 +80,14 @@ class EmpleadoCitaController extends Controller
     INNER JOIN users u ON cl.ID = u.ID
     LEFT JOIN Servicio s ON c.IDservicio = s.IDservicio
     WHERE CAST(u.ID AS CHAR) LIKE ?
-       OR u.Email LIKE ?
+       OR u.name LIKE ?
        OR s.Nombre LIKE ?
        OR c.Estado LIKE ?
     ORDER BY c.Fecha_entrada DESC
     ", [$like, $like, $like, $like]);
 
     $cliente = DB::select("
-        SELECT cl.IDcliente, u.Email
+        SELECT cl.IDcliente, u.name AS Nombre
         FROM Cliente cl
         INNER JOIN users u ON cl.ID = u.ID
         ORDER BY u.Email ASC
@@ -145,7 +146,7 @@ class EmpleadoCitaController extends Controller
     $citas = $this->getCitas();
 
     $cliente = DB::select("
-        SELECT cl.IDcliente, u.Email
+        SELECT cl.IDcliente, u.name AS Nombre
         FROM Cliente cl
         INNER JOIN users u ON cl.ID = u.ID
         ORDER BY u.Email ASC
@@ -243,7 +244,8 @@ class EmpleadoCitaController extends Controller
         return DB::select("
             SELECT c.IDcita AS IDcita,
                u.ID,
-               u.Email,
+               u.name AS Nombre,
+               u.Email
                c.Fecha_entrada AS Fecha_entrada,
                c.Fecha_salida AS Fecha_salida,
                c.Estado AS Estado,

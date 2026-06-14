@@ -5,9 +5,27 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Inventario;
 use App\Models\Venta;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\DB;
 
 class VentaController extends Controller
 {
+
+ // ── Reporte PDF de las Ventas ────────────────────────────────────────────
+    public function generarPdf($id)
+{
+    $venta = Venta::with('producto')
+        ->where('idventa', $id)
+        ->first();
+
+    if (!$venta) {
+        abort(404);
+    }
+
+    $pdf = Pdf::loadView('pdf.venta', compact('venta'));
+
+    return $pdf->stream('venta_'.$id.'.pdf');
+}
     /**
      * Mostrar formulario para crear una nueva venta
      */

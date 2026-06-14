@@ -48,7 +48,7 @@
                         <th>Fecha Entrada:</th>
                         <th>Fecha Salida:</th>
                         <th>Servicio:</th>
-                        <th>Correo Cliente:</th>
+                        <th>Cliente:</th>
                         <th>Estado:</th>
                         <th>Acción:</th>
                     </tr>
@@ -72,7 +72,7 @@
                             @foreach($cliente as $c)
                                 <option value="{{ $c->IDcliente }}"
                                     {{ isset($citaEditar) && $citaEditar->IDcliente == $c->IDcliente ? 'selected' : '' }}>
-                                    {{ $c->Email }}
+                                    {{ $c->Nombre }}
                                 </option>
                             @endforeach
                         </select>
@@ -139,7 +139,7 @@
                     @foreach($cliente as $c)
                         <option value="{{ $c->IDcliente }}"
                             {{ $citaEditar->IDcliente == $c->IDcliente ? 'selected' : '' }}>
-                            {{ $c->Email }}
+                            {{ $c->Nombre }}
                         </option>
                     @endforeach
                 </select>
@@ -175,7 +175,7 @@
     <!-- BUSCADOR -->
     <div class="search-bar">
         <form method="GET" action="{{ route('empleado.citas.index') }}">
-            <input type="text" name="search" placeholder="Buscar por correo, estado o servicio..."
+            <input type="text" name="search" placeholder="Buscar por nombre, estado o servicio..."
                    value="{{ request('search') }}">
             <button type="submit">Buscar</button>
         </form>
@@ -196,7 +196,7 @@
             <thead>
                 <tr>
                     <th>ID USUARIO</th>
-                    <th>CORREO</th>
+                    <th>NOMBRE</th>
                     <th>FECHA ENTRADA</th>
                     <th>FECHA SALIDA</th>
                     <th>ESTADO</th>
@@ -208,7 +208,7 @@
                 @forelse($citas as $cita)
                     <tr>
                         <td>{{ $cita->ID }}</td>
-                        <td>{{ $cita->Email }}</td>
+                        <td>{{ $cita->Nombre }}</td>
                         <td>{{ \Carbon\Carbon::parse($cita->Fecha_entrada)->format('d/m/Y H:i') }}</td>
                         <td>{{ \Carbon\Carbon::parse($cita->Fecha_salida)->format('d/m/Y H:i') }}</td>
                         <td>
