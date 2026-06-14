@@ -53,21 +53,24 @@ class ClienteCitaController extends Controller
     // ── Listar todas las citas ────────────────────────────────────────────
     public function index()
 {
+    $userId = session('IDusuario');
+
     $citas = DB::select("
         SELECT c.IDcita,
-               u.ID,
-               u.Email,
-               c.Fecha_entrada,
-               c.Fecha_salida,
-               c.Estado,
-               c.IDservicio,
-               s.Nombre AS Servicio
+            u.ID,
+            u.Email,
+            c.Fecha_entrada,
+            c.Fecha_salida,
+            c.Estado,
+            c.IDservicio,
+            s.Nombre AS Servicio
         FROM Cita c
         INNER JOIN Cliente cl ON c.IDcliente = cl.IDcliente
         INNER JOIN Users u ON cl.ID = u.ID
         LEFT JOIN Servicio s ON c.IDservicio = s.IDservicio
+        WHERE u.ID = ?
         ORDER BY c.Fecha_entrada DESC
-    ");
+    ", [$userId]);
 
     $servicios = DB::select("
         SELECT IDservicio, Nombre
@@ -85,13 +88,12 @@ class ClienteCitaController extends Controller
             'fechaEntrada' => 'required|date',
             'fechaSalida'  => 'required|date',
             'idservicio'   => 'required|integer',
-            'correo'       => 'required|email',
         ]);
 
         // 1. Fecha no puede ser pasada
         if (Carbon::parse($request->fechaEntrada)->lt(now())) {
             return redirect()->route('cliente.citas.index')
-             ->with('error', 'No es posible agendar una cita en una fecha pasada.');
+                ->with('error', 'No es posible agendar una cita en una fecha pasada.');
         }
         
         // 2. Salida no puede ser igual ni anterior a entrada
@@ -100,16 +102,17 @@ class ClienteCitaController extends Controller
                 ->with('error', 'La fecha y hora de salida debe ser posterior a la de entrada.');
         }
 
+        $userId = session('IDusuario');
+
         $cliente = DB::selectOne("
-            SELECT cl.IDcliente
-            FROM Cliente cl
-            INNER JOIN Users u ON cl.ID = u.ID
-            WHERE u.Email = ? LIMIT 1
-        ", [$request->correo]);
+            SELECT IDcliente
+            FROM Cliente
+            WHERE ID = ?
+        ", [$userId]);
 
         if (!$cliente) {
             return redirect()->route('cliente.citas.index')
-                ->with('error', 'No existe un cliente con el correo ingresado.');
+                ->with('error', 'Cliente no encontrado.');
         }
 
         $conflicto = $this->verificarSolapamiento($request->fechaEntrada, $request->fechaSalida);
@@ -148,6 +151,20 @@ class ClienteCitaController extends Controller
         ", [$id]);
         if (!$citaEditar) abort(404);
 
+        $userId = session('IDusuario');
+
+        $propietario = DB::selectOne("
+            SELECT u.ID
+            FROM Cita c
+            INNER JOIN Cliente cl ON c.IDcliente = cl.IDcliente
+            INNER JOIN Users u ON cl.ID = u.ID
+            WHERE c.IDcita = ?
+        ", [$id]);
+
+        if (!$propietario || $propietario->ID != $userId) {
+            abort(403);
+}
+
         return view('cliente.citas', compact('citas', 'citaEditar', 'servicios'));
     }
 
@@ -159,6 +176,20 @@ class ClienteCitaController extends Controller
         'fechaSalida'  => 'required|date',  // quitado after:fechaEntrada
         'idservicio'   => 'required|integer',
     ]);
+
+    $userId = session('IDusuario');
+
+    $propietario = DB::selectOne("
+        SELECT u.ID
+        FROM Cita c
+        INNER JOIN Cliente cl ON c.IDcliente = cl.IDcliente
+        INNER JOIN Users u ON cl.ID = u.ID
+        WHERE c.IDcita = ?
+    ", [$id]);
+
+    if (!$propietario || $propietario->ID != $userId) {
+        abort(403);
+}
 
     // 1. Fecha de entrada no puede ser pasada
     if (Carbon::parse($request->fechaEntrada)->lt(now())) {
@@ -191,21 +222,24 @@ class ClienteCitaController extends Controller
 
     private function getCitas(): array
 {
-        return DB::select("
-            SELECT c.IDcita,
-                u.ID,
-                u.Email,
-                c.Fecha_entrada,
-                c.Fecha_salida,
-                c.Estado,
-                c.IDservicio,
-                s.Nombre AS Servicio
-            FROM Cita c
-            INNER JOIN Cliente cl ON c.IDcliente = cl.IDcliente
-            INNER JOIN Users u ON cl.ID = u.ID
-            LEFT JOIN Servicio s ON c.IDservicio = s.IDservicio
-            ORDER BY c.Fecha_entrada DESC
-        ");
+    $userId = session('IDusuario');
+
+    return DB::select("
+        SELECT c.IDcita,
+               u.ID,
+               u.Email,
+               c.Fecha_entrada,
+               c.Fecha_salida,
+               c.Estado,
+               c.IDservicio,
+               s.Nombre AS Servicio
+        FROM Cita c
+        INNER JOIN Cliente cl ON c.IDcliente = cl.IDcliente
+        INNER JOIN Users u ON cl.ID = u.ID
+        LEFT JOIN Servicio s ON c.IDservicio = s.IDservicio
+        WHERE u.ID = ?
+        ORDER BY c.Fecha_entrada DESC
+    ", [$userId]);
 }
 
     private function verificarSolapamiento(string $entrada, string $salida, ?int $excluirId = null): ?string

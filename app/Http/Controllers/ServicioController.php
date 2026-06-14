@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Servicio;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ServicioController extends Controller
 {
@@ -26,7 +27,15 @@ class ServicioController extends Controller
             'costo' => $request->costo
         ]);
 
-        return redirect()->route('admin.servicios.index');
+        if (auth()->user()->rol === 'empleado') {
+        return redirect()->route('empleado.servicios.index');
+        }
+
+        $prefix = auth()->user()->rol === 'administrador'
+            ? 'admin'
+            : 'empleado';
+
+        return redirect()->route($prefix.'.servicios.index');
     }
 
     public function edit($id)
@@ -46,7 +55,15 @@ class ServicioController extends Controller
             'costo' => $request->costo
         ]);
 
-        return redirect()->route('admin.servicios.index');
+        if (auth()->user()->rol === 'empleado') {
+        return redirect()->route('empleado.servicios.index');
+        }
+
+        $prefix = auth()->user()->rol === 'administrador'
+            ? 'admin'
+            : 'empleado';
+
+        return redirect()->route($prefix.'.servicios.index');
     }
 
     public function destroy($id)
@@ -55,6 +72,10 @@ class ServicioController extends Controller
 
         $servicio->delete();
 
-        return redirect()->route('admin.servicios.index');
+        $prefix = auth()->user()->rol === 'administrador'
+            ? 'admin'
+            : 'empleado';
+
+        return redirect()->route($prefix.'.servicios.index');
     }
 }

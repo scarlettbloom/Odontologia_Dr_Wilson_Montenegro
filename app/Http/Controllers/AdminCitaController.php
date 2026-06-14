@@ -9,6 +9,7 @@ use App\Models\Cliente;
 use App\Models\Usuario;
 use Carbon\Carbon;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * AdminCitaController
@@ -57,6 +58,7 @@ class AdminCitaController extends Controller
 // ── Listar citas con búsqueda ─────────────────────────────────────
     public function index(Request $request)
 {
+    $user = Auth::user();
     $search = trim($request->get('search', ''));
 
     // No permitir búsquedas solo numéricas

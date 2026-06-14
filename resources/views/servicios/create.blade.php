@@ -158,7 +158,13 @@
         <p>📷 Radiografía Dental</p>
     </div>
 
-    <form action="{{ route('admin.servicios.store') }}" method="POST">
+    @php
+        $prefix = auth()->user()->rol === 'administrador'
+        ? 'admin'
+        : 'empleado';
+    @endphp
+
+    <form action="{{ route($prefix.'.servicios.store') }}" method="POST">
         @csrf
 
         <div class="form-group">
@@ -244,7 +250,7 @@
 
     </form>
 
-    <a href="{{ route('admin.servicios.index') }}" class="volver">
+    <a href="{{ route($prefix.'.servicios.index') }}" class="volver">
         📋 Ver Servicios Registrados
     </a>
 

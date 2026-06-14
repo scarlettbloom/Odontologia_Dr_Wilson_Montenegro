@@ -111,12 +111,16 @@ td{
 
 </head>
 <body>
-
+@php
+    $prefix = auth()->user()->rol === 'administrador'
+        ? 'admin'
+        : 'empleado';
+@endphp
 <div class="container">
 
     <h1>🦷 Gestión de Servicios Odontológicos</h1>
 
-    <a href="{{ route('admin.servicios.create') }}" class="btn-nuevo">
+    <a href="{{ route($prefix.'.servicios.create') }}" class="btn-nuevo">
         ➕ Registrar Servicio
     </a>
 
@@ -152,12 +156,12 @@ td{
 
                     <div class="acciones">
 
-                        <a href="{{ route('admin.servicios.edit',$servicio->idservicio) }}"
+                        <a href="{{ route($prefix.'.servicios.edit',$servicio->idservicio) }}"
                            class="btn-editar">
                             ✏️ Editar
                         </a>
 
-                        <form action="{{ route('admin.servicios.destroy',$servicio->idservicio) }}"
+                        <form action="{{ route($prefix.'.servicios.destroy',$servicio->idservicio) }}"
                               method="POST">
 
                             @csrf

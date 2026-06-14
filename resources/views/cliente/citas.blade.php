@@ -47,7 +47,6 @@
                             <th>Fecha Entrada:</th>
                             <th>Fecha Salida:</th>
                             <th>Servicio:</th>
-                            <th>Correo Cliente:</th>
                             <th>Acción:</th>
                         </tr>
                         <tr>
@@ -65,7 +64,6 @@
                                 </select>
                             </td>
 
-                            <td><input type="email" name="correo" placeholder="cliente@ejemplo.com" required></td>
                             <td><button type="submit" class="btn-agendar">📅 Agendar</button></td>
                         </tr>
                     </table>
@@ -127,7 +125,6 @@
                 <thead>
                     <tr>
                         <th>ID USUARIO</th>
-                        <th>CORREO</th>
                         <th>FECHA ENTRADA</th>
                         <th>FECHA SALIDA</th>
                         <th>ESTADO</th>
@@ -139,7 +136,6 @@
                     @forelse($citas as $cita)
                         <tr>
                             <td>{{ $cita->ID }}</td>
-                            <td>{{ $cita->Email }}</td>
                             <td>{{ \Carbon\Carbon::parse($cita->Fecha_entrada)->format('d/m/Y H:i') }}</td>
                             <td>{{ \Carbon\Carbon::parse($cita->Fecha_salida)->format('d/m/Y H:i') }}</td>
                             <td>

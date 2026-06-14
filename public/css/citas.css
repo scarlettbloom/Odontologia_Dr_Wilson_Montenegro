@@ -17,7 +17,7 @@ body {
     margin: 0 auto;
     background: white;
     border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
     overflow: hidden;
 }
 
@@ -30,16 +30,19 @@ body {
     position: relative;
     border-radius: 10px 10px 0 0;
 }
+
 .header h1 {
     font-size: 2.5em;
     margin-bottom: 10px;
     font-weight: 300;
 }
+
 .header h2 {
     font-size: 1.5em;
     font-weight: 300;
     color: #ecf0f1;
 }
+
 .btn-cerrarsesion {
     position: absolute;
     top: 20px;
@@ -52,12 +55,13 @@ body {
     font-weight: bold;
     transition: all 0.3s;
 }
+
 .btn-cerrarsesion:hover {
     background: #960a08;
 }
 
 .btn-inventario {
-   position: absolute;
+    position: absolute;
     top: 20px;
     right: 180px;
     background: #27ae60;
@@ -76,31 +80,32 @@ body {
 
 
 .btn-ventas {
-   position: absolute;
+    position: absolute;
     top: 20px;
     right: 312px;
     background: #eec809;
-     color: white;
+    color: white;
     padding: 10px 20px;
     border-radius: 6px;
     text-decoration: none;
     font-weight: bold;
     transition: all 0.3s;
-    
+
 }
 
 
 
 .btn-ventas1 {
-   position: absolute;
+    position: absolute;
     top: 20px;
     right: 312px;
     background: #eec809;
-    
-    
+
+
 }
+
 .btn-servicios {
-   position: absolute;
+    position: absolute;
     top: 20px;
     right: 410px;
     background: #278eae;
@@ -122,7 +127,35 @@ body {
 }
 
 
+/* Search bar */
+.search-bar {
+    text-align: center;
+    margin: 20px 0;
+}
 
+.search-bar input {
+    width: 50%;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin-right: 10px;
+}
+
+.search-bar button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background: #008CBA;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.search-bar button:hover {
+    transform: translateY(-2px);
+    background: #006f8e;
+}
 
 
 /* FORM */
@@ -131,14 +164,16 @@ body {
     padding: 30px;
     border-bottom: 3px solid #dfe4ea;
 }
+
 .form-table {
     width: 100%;
     border-collapse: collapse;
     background: white;
     border-radius: 10px;
     overflow: hidden;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
+
 .form-table th {
     background: #005bb5;
     color: white;
@@ -147,22 +182,28 @@ body {
     font-weight: bold;
     font-size: 1.2em;
 }
+
 .form-table td {
     padding: 20px;
     border: 1px solid #ddd;
 }
-input, select {
+
+input,
+select {
     width: 100%;
     padding: 12px;
     border: 2px solid #bdc3c7;
     border-radius: 8px;
     font-size: 14px;
 }
-input:focus, select:focus {
+
+input:focus,
+select:focus {
     outline: none;
     border-color: #007BFF;
     box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
 }
+
 .btn-agendar {
     background: #27ae60;
     color: white;
@@ -175,6 +216,7 @@ input:focus, select:focus {
     width: 100%;
     transition: all 0.3s;
 }
+
 .btn-agendar:hover {
     background: #229954;
     transform: translateY(-2px);
@@ -185,40 +227,69 @@ input:focus, select:focus {
     padding: 30px;
     overflow-x: auto;
 }
+
 .list-title {
     color: #005bb5;
     margin-bottom: 20px;
     text-align: center;
 }
+
 .data-table {
     width: 100%;
     border-collapse: collapse;
     background: white;
     border-radius: 10px;
     overflow: hidden;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
+
 .data-table th {
     background: #005bb5;
     color: white;
     padding: 18px;
     font-size: 14px;
 }
+
 .data-table td {
     padding: 15px;
     border-bottom: 1px solid #ecf0f1;
     font-size: 13px;
     color: #333;
 }
-.data-table tr:nth-child(even) { background: #f8f9fa; }
-.data-table tr:hover { background: #e1e1e1; }
+
+.data-table tr:nth-child(even) {
+    background: #f8f9fa;
+}
+
+.data-table tr:hover {
+    background: #e1e1e1;
+}
 
 /* ALERTAS */
-.alert { padding: 15px; margin: 20px 0; border-radius: 8px; font-weight: bold; }
-.alert-success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
-.alert-error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+.alert {
+    padding: 15px;
+    margin: 20px 0;
+    border-radius: 8px;
+    font-weight: bold;
+}
 
-.no-data { text-align: center; padding: 30px; color: #7f8c8d; }
+.alert-success {
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.alert-error {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.no-data {
+    text-align: center;
+    padding: 30px;
+    color: #7f8c8d;
+}
 
 /* ESTADOS */
 .estado-badge {
@@ -230,14 +301,38 @@ input:focus, select:focus {
     display: inline-block;
     min-width: 80px;
 }
-.estado-confirmada { background: #27ae60; color: white; }
-.estado-pendiente { background: #f39c12; color: white; }
-.estado-cancelada { background: #e74c3c; color: white; }
-.estado-atendida { background: #3498db; color: white; }
+
+.estado-confirmada {
+    background: #27ae60;
+    color: white;
+}
+
+.estado-pendiente {
+    background: #f39c12;
+    color: white;
+}
+
+.estado-cancelada {
+    background: #e74c3c;
+    color: white;
+}
+
+.estado-atendida {
+    background: #3498db;
+    color: white;
+}
 
 @media (max-width: 768px) {
-    .form-table, .form-table td { display: block; width: 100%; }
-    .data-table { font-size: 12px; }
+
+    .form-table,
+    .form-table td {
+        display: block;
+        width: 100%;
+    }
+
+    .data-table {
+        font-size: 12px;
+    }
 }
 
 /* BOTONES DE ACCIONES */
@@ -250,10 +345,11 @@ input:focus, select:focus {
     font-weight: bold;
     display: inline-block;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     font-size: 14px;
     margin-right: 5px;
 }
+
 .btn-warning:hover {
     background: #d68910;
     transform: translateY(-2px);
@@ -268,7 +364,7 @@ input:focus, select:focus {
     font-weight: bold;
     display: inline-block;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     font-size: 14px;
     margin-right: 5px;
 }
@@ -287,9 +383,10 @@ input:focus, select:focus {
     font-weight: bold;
     display: inline-block;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     font-size: 14px;
 }
+
 .btn-danger:hover {
     background: #c0392b;
     transform: translateY(-2px);
@@ -305,9 +402,10 @@ input:focus, select:focus {
     font-weight: bold;
     display: inline-block;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     font-size: 14px;
 }
+
 .btn-cancelar:hover {
     background: #636e72;
     transform: translateY(-2px);

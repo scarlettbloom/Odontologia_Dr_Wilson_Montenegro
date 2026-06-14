@@ -4,17 +4,20 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\Auth;
 
 class EmpleadoMiddleware
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param  Closure(Request): (Response)  $next
-     */
-    public function handle(Request $request, Closure $next): Response
+    public function handle(Request $request, Closure $next)
     {
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
+
+        if (Auth::user()->rol !== 'empleado') {
+            abort(403);
+        }
+
         return $next($request);
     }
 }
