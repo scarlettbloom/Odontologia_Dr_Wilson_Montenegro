@@ -29,6 +29,12 @@
         Servicios
     </button>
 </a>
+
+<a href="{{ route('empleado.dashboard') }}">
+    <button type="button" class="btn-reportes">
+        Reportes
+    </button>
+</a>
                 
 </form>
     <form action="{{ route('logout') }}" method="POST" style="display:inline;">
@@ -175,7 +181,7 @@
     <!-- BUSCADOR -->
     <div class="search-bar">
         <form method="GET" action="{{ route('empleado.citas.index') }}">
-            <input type="text" name="search" placeholder="Buscar por correo, estado o servicio..."
+            <input type="text" name="search" placeholder="Buscar por nombre, estado o servicio..."
                    value="{{ request('search') }}">
             <button type="submit">Buscar</button>
         </form>

@@ -19,6 +19,7 @@ body {
     border-radius: 15px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
     overflow: hidden;
+    padding: 20px;
 }
 
 /* HEADER */
@@ -93,7 +94,22 @@ body {
 
 }
 
+.btn-reportes {
+    position: absolute;
+    top: 70px;
+    right: 410px;
+    background: #7e00a5;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: all 0.3s;
+}
 
+.btn-reportes:hover {
+    background: #62006b;
+}
 
 .btn-ventas1 {
     position: absolute;
@@ -123,7 +139,7 @@ body {
 
 
 .btn-ventas:hover {
-    background: #e2d523;
+    background: #a79b00;
 }
 
 

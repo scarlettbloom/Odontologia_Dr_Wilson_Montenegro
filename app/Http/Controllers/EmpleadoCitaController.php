@@ -60,7 +60,7 @@ class EmpleadoCitaController extends Controller
     // Validar que no sean solo números
     if (!empty($search) && is_numeric($search)) {
         return redirect()->route('empleado.citas.index')
-            ->with('error', 'Solo se puede buscar por correo, estado o servicio.');
+            ->with('error', 'Solo se puede buscar por nombre, estado o servicio.');
     }
     
     $like   = "%{$search}%";

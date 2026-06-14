@@ -7,7 +7,7 @@
 
 /* Fondo general */
 body {
-    background-color:#29b6f6;
+    background: linear-gradient(135deg, #007BFF 40%);
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     color: #1a1a1a;
     line-height: 1.6;
@@ -24,7 +24,7 @@ body {
 .back {
     background-color: #0a0b61;
     padding: 15px 0;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
 }
 
 .menu {
@@ -60,7 +60,9 @@ body {
 }
 
 /* Responsive */
-#menu { display: none; }
+#menu {
+    display: none;
+}
 
 .menu-icono {
     width: 30px;
@@ -94,7 +96,7 @@ body {
         gap: 10px;
     }
 
-    #menu:checked ~ .navbar {
+    #menu:checked~.navbar {
         display: flex;
     }
 }
@@ -119,7 +121,7 @@ body {
     padding: 10px;
     background: #ffffffd9;
     border-radius: 12px;
-    box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
 }
 
 /* IMAGEN */
@@ -129,23 +131,27 @@ body {
     width: 100%;
     margin: 20px auto;
     border-radius: 15px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 /* RECUADROS */
-.recuadroA, .recuadroB, .recuadroC {
+.recuadroA,
+.recuadroB,
+.recuadroC {
     background: #ffffff;
     border: 2px solid #1565c0;
     padding: 20px;
     border-radius: 12px;
     margin: 20px auto;
     width: 90%;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
     text-align: center;
     transition: transform 0.2s ease;
 }
 
-.recuadroA:hover, .recuadroB:hover, .recuadroC:hover {
+.recuadroA:hover,
+.recuadroB:hover,
+.recuadroC:hover {
     transform: translateY(-5px);
 }
 
@@ -154,7 +160,7 @@ footer {
     background: linear-gradient(90deg, #0a0b61, #1565c0);
     color: #ffffff;
     margin-top: 40px;
-    box-shadow: 0 -2px 6px rgba(0,0,0,0.25);
+    box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.25);
 }
 
 .footer-container {
@@ -168,12 +174,14 @@ footer {
 .footer-col h4 {
     font-size: 18px;
     margin-bottom: 10px;
-    color: #bbdefb; /* azul claro suave */
+    color: #bbdefb;
+    /* azul claro suave */
 }
 
 .footer-col p {
     font-size: 14px;
-    color: #e3f2fd; /* casi blanco azulado */
+    color: #e3f2fd;
+    /* casi blanco azulado */
     margin: 5px 0;
 }
 

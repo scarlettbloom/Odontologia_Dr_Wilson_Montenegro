@@ -6,7 +6,7 @@
     <p>Número de factura: {{ $numeroFactura }}</p>
     <p>Total pagado: ${{ number_format($totalPagado, 0, ',', '.') }}</p>
 
-    <a href="{{ route('admin.ventas.index') }}" class="btn btn-primary">Nueva venta</a>
+    <a href="{{ route('empleado.ventas.index') }}" class="btn btn-primary">Nueva venta</a>
     <button class="btn btn-secondary">Ver comprobante</button>
 </div>
 @endsection

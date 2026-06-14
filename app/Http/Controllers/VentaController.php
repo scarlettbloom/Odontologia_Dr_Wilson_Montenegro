@@ -8,13 +8,18 @@ use App\Models\Venta;
 
 class VentaController extends Controller
 {
+    private function prefix(): string
+    {
+        return request()->routeIs('empleado.*') ? 'empleado' : 'admin';
+    }
+
     /**
      * Mostrar formulario para crear una nueva venta
      */
     public function create()
     {
         $productos = Inventario::all();
-        return view('admin.ventas.create', compact('productos'));
+        return view($this->prefix() . '.ventas.create', compact('productos'));
     }
 
     /**
@@ -23,7 +28,7 @@ class VentaController extends Controller
     public function index()
     {
         $productos = Inventario::all();
-        return view('admin.ventas.index', compact('productos'));
+        return view($this->prefix() . '.ventas.index', compact('productos'));
     }
 
     /**
@@ -58,7 +63,7 @@ class VentaController extends Controller
             $producto->save();
         }
 
-        return redirect()->route('admin.ventas.index')->with('success', 'Venta registrada correctamente.');
+        return redirect()->route($this->prefix() . '.ventas.index')->with('success', 'Venta registrada correctamente.');
     }
 
     /**
@@ -66,7 +71,7 @@ class VentaController extends Controller
      */
     public function descuento()
     {
-        return view('admin.ventas.descuento');
+        return view($this->prefix() . '.ventas.descuento');
     }
 
     /**
@@ -75,7 +80,7 @@ class VentaController extends Controller
     public function reporte()
 {
     $ventas = Venta::with('producto')->get();
-    return view('admin.ventas.reporte', compact('ventas'));
+    return view($this->prefix() . '.ventas.reporte', compact('ventas'));
 }
 
 }

@@ -13,7 +13,7 @@
                 <span class="user-role">Empleado</span>
             </div>
 
-            <a href="{{ route('admin.ventas.index') }}" class="btn btn-secondary volver-btn">
+            <a href="{{ route('empleado.ventas.index') }}" class="btn btn-secondary volver-btn">
                 ⬅ Volver al módulo de ventas
             </a>
 
@@ -60,4 +60,3 @@
 </div>
 
 @endsection
-

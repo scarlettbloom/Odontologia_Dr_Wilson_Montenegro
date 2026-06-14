@@ -291,10 +291,21 @@ body {
 }
 
 
+.acciones-ventas {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.acciones-ventas .volver-btn {
+    margin-bottom: 0;
+}
+
 .btn-ventas {
-   position: absolute;
-    top: 80px;
-    right: 370px;
+    display: inline-block;
     background: #3e84e7;
     color: white;
     padding: 10px 30px;
@@ -378,4 +389,3 @@ body {
     transform: translateY(0);
     box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
-

@@ -4,7 +4,7 @@
 <div class="ventas-container">
     <h1 class="ventas-title">Registrar Nueva Venta</h1>
 
-    <form action="{{ route('admin.ventas.store') }}" method="POST">
+    <form action="{{ route('empleado.ventas.store') }}" method="POST">
         @csrf
 
         <div class="form-group">
@@ -29,7 +29,7 @@
         </div>
 
         <button type="submit" class="btn btn-primary">Guardar Venta</button>
-        <a href="{{ route('admin.ventas.index') }}" class="btn btn-danger">Cancelar</a>
+        <a href="{{ route('empleado.ventas.index') }}" class="btn btn-danger">Cancelar</a>
     </form>
 </div>
 @endsection

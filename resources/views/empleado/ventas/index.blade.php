@@ -11,6 +11,7 @@
                 <span class="user-role">Empleado</span>
             </div>
  
+<div class="acciones-ventas">
 <a href="{{ route('empleado.ventas.reporte') }}" class="btn-ventas">
      ventas realizadas
 </a>
@@ -19,6 +20,7 @@
             <a href="{{ route('empleado.citas.index') }}" class="btn btn-secondary volver-btn">
                 Volver
             </a>
+</div>
 
             {{-- MENSAJES --}}                          
             @if(session('error'))

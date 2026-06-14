@@ -64,7 +64,7 @@ class AdminCitaController extends Controller
     // No permitir búsquedas solo numéricas
     if (!empty($search) && is_numeric($search)) {
         return redirect()->route('admin.citas.index')
-            ->with('error', 'Solo se puede buscar por correo, estado o servicio.');
+            ->with('error', 'Solo se puede buscar por nombre, estado o servicio.');
     }
 
     $like = "%{$search}%";

@@ -31,6 +31,12 @@
     </button>
 </a>
 
+<a href="{{ route('admin.dashboard') }}">
+    <button type="button" class="btn-reportes">
+        Reportes
+    </button>
+</a>
+
 <form action="{{ route('logout') }}" method="POST" style="display:inline;">
             @csrf
             <button type="submit" class="btn-cerrarsesion">Cerrar sesión</button>
@@ -111,7 +117,7 @@
     <!-- BUSCADOR -->
     <div class="search-bar">
         <form method="GET" action="{{ route('admin.citas.index') }}">
-            <input type="text" name="search" placeholder="Buscar por correo, estado o servicio..."
+            <input type="text" name="search" placeholder="Buscar por nombre, estado o servicio..."
                    value="{{ request('search') }}">
             <button type="submit">Buscar</button>
         </form>

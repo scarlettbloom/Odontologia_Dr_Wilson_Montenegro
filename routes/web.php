@@ -12,6 +12,7 @@ use App\Http\Controllers\ServicioController;
 use App\Http\Controllers\SolicitudServicioController;
 use App\Http\Controllers\VentaController;
 use App\Http\Controllers\ClienteVentaController;
+use App\Http\Controllers\DashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -72,6 +73,9 @@ Route::prefix('admin')->middleware('admin')->name('admin.')->group(function () {
     // MOVIMIENTO DE STOCK (ADMIN) — RUTA CORRECTA Y FUERA DEL RESOURCE
     Route::get('/movimiento_stock', [InventarioController::class, 'movimiento'])
         ->name('inventario.movimiento_stock');
+
+    // DASHBOARD
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 });
 
 /*
@@ -111,6 +115,9 @@ Route::prefix('empleado')->middleware('empleado')->name('empleado.')->group(func
     // MOVIMIENTO DE STOCK (EMPLEADO) — MISMA VISTA DEL ADMIN
     Route::get('/movimiento_stock', [InventarioController::class, 'movimiento'])
         ->name('inventario.movimiento_stock');
+    
+    // DASHBOARD
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 });
 
 /*
