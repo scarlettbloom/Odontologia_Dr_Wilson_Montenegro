@@ -5,7 +5,6 @@
     <meta charset="utf-8">
     <title>Factura de Cita Odontológica</title>
 
-```
 <style>
     body {
         font-family: Arial, sans-serif;
@@ -34,7 +33,7 @@
     }
 
     .empresa h1 {
-        color: #005bb5;
+        color:rgb(0, 0, 0);
         margin-bottom: 5px;
         font-size: 28px;
     }
@@ -66,15 +65,15 @@
     }
 
     th {
-        background: #005bb5;
-        color: white;
+        background:rgb(255, 255, 255);
+        color: black;
         text-align: left;
         width: 35%;
     }
 
     .precio {
         font-weight: bold;
-        color: #005bb5;
+        color:rgb(0, 0, 0);
     }
 
     .footer {
@@ -83,7 +82,7 @@
         left: 0;
         right: 0;
         text-align: center;
-        font-size: 12px;
+        font-size: 16px;
         color: #666;
     }
 
@@ -95,13 +94,11 @@
         background: #f8f9fa;
     }
 </style>
-```
 
 </head>
 
 <body>
 
-```
 <!-- ESPACIO PARA LOGO -->
 <div class="logo">
     <img src="{{ public_path('img/WILSON.png') }}" width="120" height="120">
@@ -171,7 +168,6 @@
     Odontología Dr. Wilson Montenegro |
     Página 1
 </div>
-```
 
 </body>
 </html>

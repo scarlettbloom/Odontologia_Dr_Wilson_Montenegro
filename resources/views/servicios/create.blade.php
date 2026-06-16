@@ -14,7 +14,7 @@
         }
 
         body{
-            background-color: #29b6f6;
+            background: linear-gradient(135deg, #007BFF 40%);
             min-height:100vh;
             display:flex;
             justify-content:center;
@@ -83,6 +83,19 @@
             font-size:13px;
         }
 
+        .volver{
+            display:block;
+            text-align:center;
+            margin-top:15px;
+            text-decoration:none;
+            color:#1565c0;
+            font-weight:bold;
+        }
+
+        .volver:hover{
+            text-decoration:underline;
+        }
+
         .btn{
             width:100%;
             background:#1976d2;
@@ -99,17 +112,22 @@
             background:#0d47a1;
         }
 
-        .volver{
-            display:block;
-            text-align:center;
-            margin-top:15px;
-            text-decoration:none;
-            color:#1565c0;
-            font-weight:bold;
-        }
+        .btn-volver{
+            position: absolute;
+            top: 20px;
+            left: 20px;
 
-        .volver:hover{
-            text-decoration:underline;
+            background:#6c757d;
+            color:white;
+            padding:10px 18px;
+            border-radius:8px;
+            text-decoration:none;
+            font-weight:bold;
+            z-index:1000;
+            }
+
+        .btn-volver:hover{
+            background:#5a6268;
         }
 
         .info-box{
@@ -138,6 +156,8 @@
 </head>
 <body>
 
+
+<a href="{{ route(request()->routeIs('empleado.*') ? 'empleado.citas.index' : 'admin.citas.index') }}" class="btn-volver">Volver</a>
 <div class="container">
 
     <div class="logo">🦷</div>

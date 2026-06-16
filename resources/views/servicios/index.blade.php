@@ -28,7 +28,7 @@ body{
 
 h1{
     text-align:center;
-    color:#1565c0;
+    color:white;
     margin-bottom:30px;
 }
 

@@ -5,12 +5,18 @@
 
 <style>
 
-body{
-    font-family: Arial, sans-serif;
-    margin:30px;
-}
+body {
+        font-family: Arial, sans-serif;
+        margin: 30px;
+        color: #333;
+    }
 
-.logo {
+    .encabezado {
+        width: 100%;
+        margin-bottom: 25px;
+    }
+
+    .logo {
         width: 120px;
         height: 120px;
         border: 2px dashed #999;
@@ -20,32 +26,67 @@ body{
         font-size: 12px;
         margin-bottom: 15px;
     }
-.empresa{
-    text-align:center;
-    margin-bottom:25px;
-}
 
-.empresa h1{
-    color:#005bb5;
-}
+    .empresa {
+        text-align: center;
+    }
 
-table{
-    width:100%;
-    border-collapse:collapse;
-}
+    .empresa h1 {
+        color:rgb(0, 0, 0);
+        margin-bottom: 5px;
+        font-size: 28px;
+    }
 
-th,td{
-    border:1px solid #000;
-    padding:10px;
-}
+    .empresa p {
+        margin: 3px 0;
+        font-size: 14px;
+    }
 
-th{
-    width:35%;
-    background:#005bb5;
-    color:white;
-    text-align:left;
-}
+    .info-factura {
+        margin-top: 25px;
+        margin-bottom: 20px;
+    }
 
+    .info-factura p {
+        margin: 5px 0;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 15px;
+    }
+
+    th,
+    td {
+        border: 1px solid #000;
+        padding: 10px;
+    }
+
+    th {
+        background:rgb(255, 255, 255);
+        color: black;
+        text-align: left;
+        width: 35%;
+    }
+
+    .footer {
+        position: fixed;
+        bottom: 10px;
+        left: 0;
+        right: 0;
+        text-align: center;
+        font-size: 16px;
+        color: #666;
+    }
+
+    .observacion {
+        margin-top: 30px;
+        padding: 15px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        background: #f8f9fa;
+    }
 </style>
 
 </head>
@@ -61,7 +102,7 @@ th{
     <p>Factura de Venta</p>
 
     <p>
-        Generada:
+        Fecha de generación:
         {{ now()->format('d/m/Y H:i') }}
     </p>
 </div>
@@ -85,12 +126,20 @@ th{
 
 <tr>
     <th>Subtotal</th>
-    <td>${{ number_format($venta->subtotal,0,',','.') }}</td>
+    <td>
+        <strong>
+            ${{ number_format($venta->subtotal,0,',','.') }}
+        </strong>
+    </td>
 </tr>
 
 <tr>
     <th>Descuento</th>
-    <td>${{ number_format($venta->descuento,0,',','.') }}</td>
+    <td>
+    <strong>
+        ${{ number_format($venta->descuento,0,',','.') }}
+    </strong>
+    </td>
 </tr>
 
 <tr>
@@ -108,6 +157,16 @@ th{
 </tr>
 
 </table>
+
+<div class="observacion">
+    <strong>Observaciones:</strong><br>
+    Este documento certifica la venta del producto odontológico registrado en el sistema.
+</div>
+
+<div class="footer">
+    Odontología Dr. Wilson Montenegro |
+    Página 1
+</div>
 
 </body>
 </html>
