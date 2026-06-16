@@ -127,7 +127,7 @@ Route::prefix('empleado')->middleware('empleado')->name('empleado.')->group(func
 |--------------------------------------------------------------------------
 */
 Route::prefix('cliente')->middleware('cliente')->name('cliente.')->group(function () {
-
+    Route::put('/carrito/actualizar/{id}', [ClienteVentaController::class, 'actualizarCantidad'])->name('carrito.actualizar');
     // CITAS
     Route::get('/citas', [ClienteCitaController::class, 'index'])->name('citas.index');
     Route::post('/citas', [ClienteCitaController::class, 'store'])->name('citas.store');
@@ -135,16 +135,25 @@ Route::prefix('cliente')->middleware('cliente')->name('cliente.')->group(functio
     Route::put('/citas/{id}', [ClienteCitaController::class, 'update'])->name('citas.update');
     Route::get('/citas/pdf/{id}', [ClienteCitaController::class, 'generarPdf'])->name('citas.pdf');
 
-    // INVENTARIO CLIENTE
+    // INVENTARIO CLIENTE (solo catálogo)
     Route::get('/inventario', [InventarioController::class, 'clienteIndex'])->name('inventario');
     Route::get('/inventario/{id}', [InventarioController::class, 'clienteShow'])->name('inventario.detalle');
 
-    // VENTAS CLIENTE
+    // CARRITO Y VENTAS CLIENTE
     Route::get('/carrito', [ClienteVentaController::class, 'verCarrito'])->name('carrito.ver');
+    Route::get('/carrito/eliminar/{id}', [ClienteVentaController::class, 'eliminarDelCarrito'])->name('carrito.eliminar');
+    Route::get('/inventario/{id}/carrito', [ClienteVentaController::class, 'addToCart'])->name('inventario.carrito');
     Route::post('/checkout', [ClienteVentaController::class, 'checkout'])->name('checkout');
     Route::get('/compras', [ClienteVentaController::class, 'compras'])->name('compras');
-    Route::post('/venta', [ClienteVentaController::class, 'store'])->name('venta.store');
-});
+    Route::post('/checkout/form', [ClienteVentaController::class, 'checkoutForm'])->name('checkout_form');
+     Route::get('/checkout/form', [ClienteVentaController::class, 'checkoutForm'])->name('checkout_form');
+
+    });
+
+
+    
+
+
 
 /*
 |--------------------------------------------------------------------------

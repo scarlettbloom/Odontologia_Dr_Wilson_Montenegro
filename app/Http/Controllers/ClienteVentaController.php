@@ -9,7 +9,7 @@ use App\Models\MovimientoStock;
 
 class ClienteVentaController extends Controller
 {
-    // Inventario para el cliente
+    // Mostrar inventario al cliente
     public function index()
     {
         $productos = Inventario::all();
@@ -40,100 +40,110 @@ class ClienteVentaController extends Controller
 
         session()->put('carrito', $carrito);
 
-        return redirect()->route('cliente.carrito.ver');
+        return redirect()->route('cliente.carrito.ver')->with('success', 'Producto agregado al carrito.');
     }
 
     // Ver carrito
     public function verCarrito()
     {
         $carrito = session()->get('carrito', []);
-        return view('cliente.carrito', compact('carrito'));
+        $total = collect($carrito)->sum(fn($item) => $item['precio'] * $item['cantidad']);
+
+        return view('cliente.carrito', compact('carrito', 'total'));
     }
 
-    // Vista de checkout (datos del cliente)
-    public function checkout(Request $request)
+    // Eliminar producto del carrito
+    public function eliminarDelCarrito($id)
     {
         $carrito = session()->get('carrito', []);
+        unset($carrito[$id]);
+        session()->put('carrito', $carrito);
 
-        if (empty($carrito)) {
-            return redirect()->route('cliente.carrito.ver')->with('error', 'Tu carrito está vacío.');
-        }
-
-        return view('cliente.checkout', compact('carrito'));
+        return redirect()->route('cliente.carrito.ver')->with('success', 'Producto eliminado del carrito.');
     }
 
-    // Guardar la compra
-    public function store(Request $request)
-{
-    $request->validate([
-        'nombre'      => 'required',
-        'telefono'    => 'required',
-        'direccion'   => 'required',
-        'metodo_pago' => 'required',
-        'descuento'   => 'nullable|numeric|min:0'
-    ]);
+    // Checkout (finalizar compra)
+    public function checkout(Request $request)
+    {
+        // Convertir los IDs seleccionados en array
+        $seleccionados = explode(',', $request->productos_seleccionados);
 
-    $carrito = session()->get('carrito', []);
+        // Obtener carrito completo
+        $carrito = session()->get('carrito', []);
 
-    if (empty($carrito)) {
-        return redirect()->route('cliente.carrito.ver')->with('error', 'Tu carrito está vacío.');
-    }
+        // Filtrar solo los productos seleccionados
+        $productosAComprar = array_filter($carrito, function ($item) use ($seleccionados) {
+            return in_array($item['id'], $seleccionados);
+        });
 
-    $subtotalGeneral = 0;
-
-    // Calcular subtotal y validar stock
-    foreach ($carrito as $item) {
-        $producto = Inventario::find($item['id']);
-
-        if (!$producto) {
-            return redirect()->back()->with('error', 'Producto no encontrado.');
+        if (empty($productosAComprar)) {
+            return redirect()->route('cliente.carrito.ver')->with('error', 'No seleccionaste productos para comprar.');
         }
 
-        if ($item['cantidad'] > $producto->stock) {
-            return redirect()->back()->with('error', 'No hay suficiente stock de ' . $producto->nombre . '.');
-        }
-
-        $subtotalGeneral += $producto->precio_unitario * $item['cantidad'];
-    }
-
-    // Aplicar descuento
-    $descuento = floatval($request->descuento ?? 0);
-    $totalGeneral = max($subtotalGeneral - $descuento, 0);
-
-    // Registrar venta y movimiento de stock
-    foreach ($carrito as $item) {
-        $producto = Inventario::find($item['id']);
-
-        Venta::create([
-            'producto_id'       => $producto->idinventario,
-            'cantidad'          => $item['cantidad'],
-            'subtotal'          => $producto->precio_unitario * $item['cantidad'],
-            'descuento'         => $descuento,
-            'total'             => $totalGeneral,
-            'cliente_nombre'    => $request->nombre,
-            'cliente_telefono'  => $request->telefono,
-            'cliente_direccion' => $request->direccion,
-            'metodo_pago'       => $request->metodo_pago,
+        // Validar datos del comprador
+        $request->validate([
+            'nombre'      => 'required',
+            'telefono'    => 'required',
+            'direccion'   => 'required',
+            'metodo_pago' => 'required',
         ]);
 
-        // Actualizar stock
-        $producto->stock -= $item['cantidad'];
-        $producto->save();
+        // Calcular total
+        $totalGeneral = 0;
 
-        MovimientoStock::create([
-            'producto_id' => $producto->idinventario,
-            'tipo'        => 'salida',
-            'cantidad'    => $item['cantidad'],
-            'descripcion' => 'Venta cliente',
-            'responsable' => $request->nombre,
-        ]);
+        foreach ($productosAComprar as $item) {
+            $producto = Inventario::find($item['id']);
+
+            if (!$producto) {
+                return redirect()->back()->with('error', 'Producto no encontrado.');
+            }
+
+            if ($item['cantidad'] > $producto->stock) {
+                return redirect()->back()->with('error', 'No hay suficiente stock de ' . $producto->nombre . '.');
+            }
+
+            $totalGeneral += $producto->precio_unitario * $item['cantidad'];
+        }
+
+        // Registrar venta y movimiento de stock
+        foreach ($productosAComprar as $item) {
+            $producto = Inventario::find($item['id']);
+
+            Venta::create([
+                'producto_id'       => $producto->idinventario,
+                'cantidad'          => $item['cantidad'],
+                'subtotal'          => $producto->precio_unitario * $item['cantidad'],
+                'descuento'         => 0,
+                'total'             => $totalGeneral,
+                'cliente_nombre'    => $request->nombre,
+                'cliente_telefono'  => $request->telefono,
+                'cliente_direccion' => $request->direccion,
+                'metodo_pago'       => $request->metodo_pago,
+            ]);
+
+            // Descontar stock
+            $producto->stock -= $item['cantidad'];
+            $producto->save();
+
+            // Registrar movimiento de stock
+            MovimientoStock::create([
+                'producto_id' => $producto->idinventario,
+                'tipo'        => 'salida',
+                'cantidad'    => $item['cantidad'],
+                'descripcion' => 'Venta cliente',
+                'responsable' => $request->nombre,
+            ]);
+        }
+
+        // Mantener en el carrito los productos NO comprados
+        $carritoRestante = array_filter($carrito, function ($item) use ($seleccionados) {
+            return !in_array($item['id'], $seleccionados);
+        });
+
+        session()->put('carrito', $carritoRestante);
+
+        return redirect()->route('cliente.compras')->with('success', 'Compra realizada correctamente.');
     }
-
-    // Vaciar carrito
-    session()->forget('carrito');
-
-    return redirect()->route('cliente.compras')->with('success', 'Compra realizada correctamente.');
-}
 
     // Historial de compras del cliente
     public function compras()
@@ -142,18 +152,49 @@ class ClienteVentaController extends Controller
         return view('cliente.compras', compact('ventas'));
     }
 
-    
-public function carritoInventario($id)
-{
-    $producto = Inventario::find($id);
+    public function actualizarCantidad(Request $request, $id)
+    {
+        $carrito = session()->get('carrito', []);
+        $cantidad = $request->cantidad;
 
-    if (!$producto) {
-        return redirect()->back()->with('error', 'Producto no encontrado.');
+        $producto = Inventario::find($id);
+
+        if (!$producto) {
+            return back()->with('error', 'Producto no encontrado.');
+        }
+
+        if ($cantidad > $producto->stock) {
+            return back()->with('error', 'No hay suficiente stock. Solo quedan ' . $producto->stock . ' unidades.');
+        }
+
+        // Actualizar cantidad en el carrito
+        foreach ($carrito as &$item) {
+            if ($item['id'] == $id) {
+                $item['cantidad'] = $cantidad;
+            }
+        }
+
+        session()->put('carrito', $carrito);
+
+        return back()->with('success', 'Cantidad actualizada.');
     }
 
-    // Carrito viejo (vista cliente/inventario/carrito.blade.php)
-    return view('cliente.inventario.carrito', compact('producto'));
-}
+    public function checkoutForm(Request $request)
+    {
+        $carrito = session()->get('carrito', []);
+        $seleccionados = $request->input('productos_seleccionados', []);
 
+        if (empty($seleccionados)) {
+            return redirect()->route('cliente.carrito.ver')->with('error', 'No seleccionaste ningún producto.');
+        }
 
+        $productosAComprar = array_filter($carrito, fn($item) => in_array($item['id'], $seleccionados));
+
+        $total = 0;
+        foreach ($productosAComprar as $item) {
+            $total += $item['precio'] * $item['cantidad'];
+        }
+
+        return view('cliente.checkout_form', compact('productosAComprar', 'total'));
+    }
 }

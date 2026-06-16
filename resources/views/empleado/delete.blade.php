@@ -6,17 +6,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        .input-line {
-            border: none;
-            border-bottom: 2px solid #cbd5e1;
-            border-radius: 0;
-            padding-left: 0;
-        }
-        .input-line:focus {
-            outline: none;
-            border-bottom-color: #3b82f6;
-            box-shadow: none;
-        }
+        .input-line { border:none; border-bottom:2px solid #cbd5e1; border-radius:0; padding-left:0; }
     </style>
 </head>
 <body class="bg-slate-50 font-sans">
@@ -25,7 +15,7 @@
 
     {{-- Header --}}
     <header class="flex items-center justify-between px-8 py-4 bg-white border-b border-slate-100">
-        <a href="{{ route('inventario.index') }}" class="text-slate-600 hover:text-blue-600 font-medium flex items-center">
+        <a href="{{ route('empleado.inventario.index') }}" class="text-slate-600 hover:text-blue-600 font-medium flex items-center">
             <i class="fa-solid fa-chevron-left mr-2"></i> Volver
         </a>
 
@@ -49,25 +39,21 @@
                 <input type="text" value="{{ $item->idinventario }}" disabled
                        class="input-line w-full bg-transparent text-lg text-slate-400 cursor-not-allowed">
             </div>
-
             <div class="flex flex-col">
                 <label class="text-sm font-semibold text-slate-500 mb-1">Nombre del producto:</label>
                 <input type="text" value="{{ $item->nombre }}" disabled
                        class="input-line w-full bg-transparent text-lg text-slate-400 cursor-not-allowed">
             </div>
-
             <div class="flex flex-col">
                 <label class="text-sm font-semibold text-slate-500 mb-1">Stock:</label>
                 <input type="text" value="{{ $item->stock }}" disabled
                        class="input-line w-32 bg-transparent text-lg text-slate-400 cursor-not-allowed">
             </div>
-
             <div class="flex flex-col">
                 <label class="text-sm font-semibold text-slate-500 mb-1">Precio unitario:</label>
                 <input type="text" value="${{ number_format($item->precio_unitario, 2) }}" disabled
                        class="input-line w-full bg-transparent text-lg text-slate-400 cursor-not-allowed">
             </div>
-
             <div class="flex flex-col">
                 <label class="text-sm font-semibold text-slate-500 mb-1">Nombre proveedor:</label>
                 <input type="text" value="{{ $item->nombre_proveedor }}" disabled
@@ -75,12 +61,19 @@
             </div>
 
             <div class="flex flex-col">
-                <label class="text-sm font-semibold text-slate-500 mb-1">Descripcion del producto:</label>
-                <input type="text" value="{{ $item->descripcion }}" disabled
-                       class="input-line w-full bg-transparent text-lg text-slate-400 cursor-not-allowed">
-            </div>
-                                                                          
+    <label class="text-sm font-semibold text-slate-500 mb-1">Descripción del producto:</label>
+    <textarea name="descripcion" rows="4"
+              class="input-line w-full bg-transparent text-lg">{{ $item->descripcion }}</textarea>
+    @error('descripcion') 
+        <span class="text-red-500 text-xs mt-1">{{ $message }}</span> 
+    @enderror
+                                                                
         </div>
+
+
+        
+</div>
+
 
         {{-- Alerta de confirmación --}}
         <div class="max-w-2xl mx-auto bg-red-50 border border-red-200 rounded-xl p-6 mb-8 flex items-start gap-4">
@@ -93,7 +86,7 @@
 
         {{-- Botones --}}
         <div class="flex justify-center space-x-6">
-            <form action="{{ route('inventario.destroy', $item->idinventario) }}" method="POST">
+            <form action="{{ route('empleado.inventario.destroy', $item->idinventario) }}" method="POST">
                 @csrf
                 @method('DELETE')
                 <button type="submit"
@@ -101,7 +94,7 @@
                     <i class="fa-solid fa-trash mr-1"></i> Eliminar
                 </button>
             </form>
-            <a href="{{ route('inventario.index') }}"
+            <a href="{{ route('empleado.inventario.index') }}"
                class="w-40 bg-white border-2 border-slate-800 text-slate-800 font-bold py-3 rounded-lg text-center hover:bg-slate-50 transition-all active:scale-95">
                 Cancelar
             </a>

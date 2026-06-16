@@ -9,20 +9,19 @@
             <div class="ventas-header">
                 <h1>Módulo de Ventas</h1>
                 <span class="user-role">Empleado</span>
+                
             </div>
- 
-<div class="acciones-ventas">
-<a href="{{ route('empleado.ventas.reporte') }}" class="btn-ventas">
+                     <a href="{{ route('empleado.ventas.reporte') }}" class="btn btn-secondary volver-btn">
      ventas realizadas
-</a>
+</a>                
+       
+
 
             {{-- BOTÓN VOLVER --}}
             <a href="{{ route('empleado.citas.index') }}" class="btn btn-secondary volver-btn">
                 Volver
             </a>
-</div>
-
-            {{-- MENSAJES --}}                          
+           {{-- MENSAJES --}}
             @if(session('error'))
                 <div class="alert alert-danger" style="margin-top: 10px;">
                     {{ session('error') }}
@@ -202,6 +201,13 @@ function renderCarrito() {
 
     document.getElementById("input-carrito").value = JSON.stringify(carrito);
     document.getElementById("input-descuento").value = descuento;
+
+    document.getElementById("descuento").addEventListener("input", function() {
+    document.getElementById("input-descuento").value = this.value;
+    renderCarrito(); // actualiza el total en pantalla
+});
+
 }
+
 </script>
 @endsection

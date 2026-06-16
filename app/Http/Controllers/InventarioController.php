@@ -4,9 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Inventario;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class InventarioController extends Controller
-{
+{ 
+    // ============================
+    // INDEX
+    // ============================
     public function index(Request $request)
     {
         $buscar = $request->get('buscar');
@@ -16,28 +20,44 @@ class InventarioController extends Controller
                          ->orWhere('nombre_proveedor', 'LIKE', "%{$buscar}%");
         })->get();
 
-        $rol = session('Rol');
+        $rol = strtolower(trim(Auth::user()->rol));
 
-        if ($rol == 'Administrador') {
+        if ($rol === 'administrador' || $rol === 'admin') {
             return view('admin.index', compact('items'));
         }
 
-        if ($rol == 'Empleado') {
+        if ($rol === 'empleado') {
             return view('empleado.index', compact('items'));
         }
 
-        if ($rol == 'Cliente') {
+        if ($rol === 'cliente') {
             return redirect()->route('cliente.inventario');
         }
 
         abort(403, 'Rol no autorizado');
     }
 
+    // ============================
+    // CREATE
+    // ============================
     public function create()
     {
-        return view('admin.create');
+        $rol = strtolower(trim(Auth::user()->rol));
+
+        if ($rol === 'administrador' || $rol === 'admin') {
+            return view('admin.create');
+        }
+
+        if ($rol === 'empleado') {
+            return view('empleado.create');
+        }
+
+        abort(403);
     }
 
+    // ============================
+    // STORE
+    // ============================
     public function store(Request $request)
     {
         $request->validate([
@@ -56,16 +76,43 @@ class InventarioController extends Controller
             'descripcion'
         ]));
 
-        return redirect()->route('admin.inventario.index')
-                         ->with('success', 'Producto agregado con éxito.');
+        $rol = strtolower(trim(Auth::user()->rol));
+
+        if ($rol === 'administrador' || $rol === 'admin') {
+            return redirect()->route('admin.inventario.index')
+                             ->with('success', 'Producto agregado con éxito.');
+        }
+
+        if ($rol === 'empleado') {
+            return redirect()->route('empleado.inventario.index')
+                             ->with('success', 'Producto agregado con éxito.');
+        }
+
+        abort(403);
     }
 
+    // ============================
+    // EDIT
+    // ============================
     public function edit($id)
     {
         $item = Inventario::findOrFail($id);
-        return view('admin.edit', compact('item'));
+        $rol = strtolower(trim(Auth::user()->rol));
+
+        if ($rol === 'administrador' || $rol === 'admin') {
+            return view('admin.edit', compact('item'));
+        }
+
+        if ($rol === 'empleado') {
+            return view('empleado.edit', compact('item'));
+        }
+
+        abort(403);
     }
 
+    // ============================
+    // UPDATE
+    // ============================
     public function update(Request $request, $id)
     {
         $item = Inventario::findOrFail($id);
@@ -86,29 +133,66 @@ class InventarioController extends Controller
             'descripcion'
         ]));
 
-        return redirect()->route('admin.inventario.index')
-                         ->with('success', 'Producto actualizado con éxito.');
+        $rol = strtolower(trim(Auth::user()->rol));
+
+        if ($rol === 'administrador' || $rol === 'admin') {
+            return redirect()->route('admin.inventario.index')
+                             ->with('success', 'Producto actualizado con éxito.');
+        }
+
+        if ($rol === 'empleado') {
+            return redirect()->route('empleado.inventario.index')
+                             ->with('success', 'Producto actualizado con éxito.');
+        }
+
+        abort(403);
     }
 
+    // ============================
+    // DELETE
+    // ============================
     public function destroy($id)
     {
         $item = Inventario::findOrFail($id);
         $item->delete();
 
-        return redirect()->route('admin.inventario.index')
-                         ->with('success', 'Producto eliminado con éxito.');
+        $rol = strtolower(trim(Auth::user()->rol));
+
+        if ($rol === 'administrador' || $rol === 'admin') {
+            return redirect()->route('admin.inventario.index')
+                             ->with('success', 'Producto eliminado con éxito.');
+        }
+
+        if ($rol === 'empleado') {
+            return redirect()->route('empleado.inventario.index')
+                             ->with('success', 'Producto eliminado con éxito.');
+        }
+
+        abort(403);
     }
 
+    // ============================
+    // CONFIRM DELETE
+    // ============================
     public function confirmDelete($id)
-    {                                                                   
+    {
         $item = Inventario::findOrFail($id);
-        return view('admin.delete', compact('item'));
+        $rol = strtolower(trim(Auth::user()->rol));
+
+        if ($rol === 'administrador' || $rol === 'admin') {
+            return view('admin.delete', compact('item'));
+        }
+
+        if ($rol === 'empleado') {
+            return view('empleado.delete', compact('item'));
+        }
+
+        abort(403);
     }
 
     // ============================
-    //  VISTAS PARA EL CLIENTE
+    // CLIENTE
     // ============================
-
     public function clienteIndex()
     {
         $productos = Inventario::all();
@@ -121,17 +205,64 @@ class InventarioController extends Controller
         return view('cliente.inventario.show', compact('producto'));
     }
 
-public function carrito()
-{
-    // Por ahora solo mostramos algunos productos como ejemplo
-    $carrito = Inventario::all();
-    return view('cliente.inventario.carrito', compact('carrito'));
-}
+    public function carrito()
+    {
+        $carrito = Inventario::all();
+        return view('cliente.inventario.carrito', compact('carrito'));
+    }
 
-public function movimiento()
-{
-    $inventario = \App\Models\Inventario::all();
-    return view('admin.movimiento_stock', compact('inventario'));
-}
+    // ============================
+    // MOVIMIENTO DE STOCK
+    // ============================
+    public function movimiento()
+    {
+        $inventario = Inventario::all();
+        $rol = strtolower(trim(Auth::user()->rol));
 
+        if ($rol === 'administrador' || $rol === 'admin') {
+            return view('admin.movimiento_stock', compact('inventario'));
+        }
+
+        if ($rol === 'empleado') {
+            return view('empleado.movimiento_stock', compact('inventario'));
+        }
+
+        abort(403, 'No tienes permiso para ver esta sección');
+    }
+
+    // ============================
+    // CARRITO CLIENTE
+    // ============================
+    public function clienteCarrito($id)
+    {
+        $producto = Inventario::find($id);
+
+        if (!$producto) {
+            return redirect()->route('cliente.inventario')->with('error', 'Producto no encontrado.');
+        }
+
+        $carrito = session()->get('carrito', []);
+
+        $existe = false;
+        foreach ($carrito as &$item) {
+            if ($item['id'] == $producto->idinventario) {
+                $item['cantidad']++;
+                $existe = true;
+                break;
+            }
+        }
+
+        if (!$existe) {
+            $carrito[] = [
+                'id' => $producto->idinventario,
+                'nombre' => $producto->nombre,
+                'precio' => $producto->precio_unitario,
+                'cantidad' => 1,
+            ];
+        }
+
+        session()->put('carrito', $carrito);
+
+        return redirect()->route('cliente.carrito.ver')->with('success', 'Producto agregado al carrito.');
+    }
 }

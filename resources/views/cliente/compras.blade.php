@@ -1,56 +1,37 @@
-@extends('layouts.ventas')
+@extends('layouts.inventario_cliente')
 
 @section('content')
-<link rel="stylesheet" href="{{ asset('css/ventas.css') }}">
+<div class="compras-container">
+    <h1 class="text-center">Historial de Compras</h1>
 
-<div class="ventas-container">
-    <div class="container">
-        <div class="ventas-wrapper">
-
-            <div class="ventas-header">
-                <h1>Mis Compras Realizadas</h1>
-                <span class="user-role">Cliente</span>
-            </div>
-
-            <a href="{{ route('cliente.inventario') }}" class="btn btn-secondary volver-btn">
-                ⬅ Volver al Inventario
-            </a>
-
-            <div class="reporte-box">
-                <table class="ventas-table">
-                    <thead>
-                        <tr>
-                            <th>ID Venta</th>
-                            <th>Producto</th>
-                            <th>Cantidad</th>
-                            <th>Subtotal</th>
-                            <th>Descuento</th>
-                            <th>Total</th>
-                            <th>Fecha</th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        @forelse($ventas as $v)
-                        <tr>
-                            <td>{{ $v->idventa }}</td>
-                            <td>{{ $v->producto->nombre ?? 'Producto eliminado' }}</td>
-                            <td>{{ $v->cantidad }}</td>
-                            <td>${{ number_format($v->subtotal, 2) }}</td>
-                            <td>${{ number_format($v->descuento, 2) }}</td>
-                            <td>${{ number_format($v->total, 2) }}</td>
-                            <td>{{ $v->created_at->format('d/m/Y H:i') }}</td>
-                        </tr>
-                        @empty
-                        <tr>
-                            <td colspan="7" class="text-center">No has realizado compras aún</td>
-                        </tr>
-                        @endforelse
-                    </tbody>
-                </table>
-            </div>
-
-        </div>
-    </div>
+    @if(count($ventas) > 0)
+        <table class="table table-bordered text-center">
+            <thead>
+                <tr>
+                    <th>Producto</th>
+                    <th>Cantidad</th>
+                    <th>Subtotal</th>
+                    <th>Descuento</th>
+                    <th>Total</th>
+                    <th>Fecha</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($ventas as $venta)
+                <tr>
+                    <td>{{ $venta->producto->nombre }}</td>
+                    <td>{{ $venta->cantidad }}</td>
+                    <td>${{ number_format($venta->subtotal, 0, ',', '.') }}</td>
+                    <td>${{ number_format($venta->descuento, 0, ',', '.') }}</td>
+                    <td>${{ number_format($venta->total, 0, ',', '.') }}</td>
+                    <td>{{ $venta->created_at->format('d/m/Y H:i') }}</td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+    @else
+        <p class="text-center">No tienes compras registradas.</p>
+    @endif
 </div>
 @endsection
+

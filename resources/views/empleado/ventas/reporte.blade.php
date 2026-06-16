@@ -16,7 +16,10 @@
             <a href="{{ route('empleado.ventas.index') }}" class="btn btn-secondary volver-btn">
                 ⬅ Volver al módulo de ventas
             </a>
-
+              
+            <a href="{{ route('empleado.inventario.movimiento_stock') }}" class="btn-movimiento">
+                Ver movimiento de stock
+            </a>
 
 
             <div class="reporte-box">
@@ -31,6 +34,7 @@
                             <th>Descuento</th>
                             <th>Total</th>
                             <th>Fecha</th>
+                            <th>acciones</th>
                         </tr>
                     </thead>
 
@@ -44,6 +48,7 @@
                             <td>${{ number_format($v->descuento, 2) }}</td>
                             <td>${{ number_format($v->total, 2) }}</td>
                             <td>{{ $v->created_at->format('d/m/Y H:i') }}</td>
+                            <td><a href="{{ route('admin.ventas.pdf', $v->idventa) }}"class="btn-warning"target="_blank">🖨️ Imprimir</a></td>
                         </tr>
                         @empty
                         <tr>
@@ -60,3 +65,4 @@
 </div>
 
 @endsection
+

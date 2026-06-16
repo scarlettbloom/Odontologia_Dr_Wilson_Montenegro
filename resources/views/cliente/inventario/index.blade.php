@@ -1,43 +1,38 @@
 @extends('layouts.inventario_cliente')
 
-@section('title', 'Inventario - Cliente')
-
 @section('content')
-<div class="card shadow p-4">
-    <h1 class="text-center mb-4">Inventario Disponible</h1>
+<div class="inventario-container">
+    <h1 class="text-center">Inventario Disponible</h1>
 
-    <div class="table-responsive">
-        <table class="table table-bordered text-center align-middle">
-            <thead class="table-primary">
-                <tr>
-                    <th>Producto</th>
-                    <th>Proveedor</th>
-                    <th>Precio</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse($productos as $producto)
-                    <tr>
-                        <td>{{ $producto->nombre }}</td>
-                        <td>{{ $producto->nombre_proveedor }}</td>
-                        <td>${{ number_format($producto->precio_unitario, 0, ',', '.') }}</td>
-                        <td>
-                            <a href="{{ route('cliente.inventario.detalle', $producto->idinventario) }}" class="btn btn-outline-secondary btn-sm">Detalles</a>
-                           <a href="{{ route('cliente.inventario.carrito', $producto->idinventario) }}" class="btn btn-outline-primary btn-sm">
-    🛒 Añadir al carrito
-</a>
+    <table class="table table-bordered text-center">
+        <thead>
+            <tr>
+                <th>Producto</th>
+                <th>Proveedor</th>
+                <th>Precio</th>
+                <th>Stock disponible</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($productos as $producto)
+            <tr>
+                <td>{{ $producto->nombre }}</td>
+                <td>{{ $producto->nombre_proveedor }}</td>
+                <td>${{ number_format($producto->precio_unitario, 0, ',', '.') }}</td>
+                <td>{{ $producto->stock }}</td>
+                <td>
+                    <a href="{{ route('cliente.inventario.detalle', $producto->idinventario) }}" class="btn btn-secondary btn-sm">Detalles</a>
 
-
-                        </td>
-                    </tr>
-                @empty
-                    <tr>
-                        <td colspan="4" class="text-muted">No hay productos disponibles</td>
-                    </tr>
-                @endforelse
-            </tbody>
-        </table>
-    </div>
+                    @if($producto->stock > 0)
+                        <a href="{{ route('cliente.inventario.carrito', $producto->idinventario) }}" class="btn btn-primary btn-sm">🛒 Añadir al carrito</a>
+                    @else
+                        <button class="btn btn-secondary btn-sm" disabled>Sin stock</button>
+                    @endif
+                </td>
+            </tr>
+            @endforeach
+        </tbody>
+    </table>
 </div>
 @endsection

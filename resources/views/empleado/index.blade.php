@@ -42,12 +42,12 @@
            class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-semibold text-sm">
             <i class="fa-solid fa-plus mr-1"></i> Nuevo producto
         </a>
-        <a href="{{ route('empleado.inventario.movimientostock') }}"
+        <a href="{{ route('empleado.inventario.movimiento_stock') }}"
            class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg font-semibold text-sm">
             <i class="fa-solid fa-arrows-rotate mr-1"></i> Movimiento de stock
         </a>
-    </div>
-        
+    </div>                          
+
    <div class="overflow-x-auto rounded-lg border border-slate-200">
     <table class="w-full text-sm text-left">
         <thead class="bg-slate-800 text-white uppercase text-xs">
@@ -79,8 +79,10 @@
                             <i class="fa-solid fa-pen"></i> Editar
                         </a>
                         <a href="{{ route('empleado.inventario.delete', $item->idinventario) }}"
-                           class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-xs font-semibold">
-                            <i class="fa-solid fa-trash"></i> Eliminar
+                             class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-xs font-semibold">
+                              <i class="fa-solid fa-trash"></i> Eliminar
+                             </a>
+
                         </a>
                     </div>
                 </td>

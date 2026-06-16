@@ -52,24 +52,7 @@ body {
 
 
 
-.btn-ventas1 {
-    position: absolute;
-    top: 145px;
-    right: 1232px;
-    background: #5194eb;
-    color: white;
-    padding: 7px 15px;
-    border-radius: 6px;
-    text-decoration: none;
-    font-weight: bold;
-    transition: all 0.3s;
 
-
-}
-
-.btn-ventas1:hover {
-    background: #5194eb;
-}
 
 /* ====== BOTONES ====== */
 .btn {

@@ -24,7 +24,7 @@
     </table>
 
     <div class="text-center mt-3">
-        <a href="{{ route('cliente.inventario.carrito') }}" class="btn btn-outline-primary btn-sm">🛒 Añadir al carrito</a>
+        <a href="{{ route('cliente.inventario.carrito',$producto->idinventario) }}" class="btn btn-outline-primary btn-sm">🛒 Añadir al carrito</a>
         <button class="btn btn-outline-success btn-sm">Comprar</button>
     </div>
 

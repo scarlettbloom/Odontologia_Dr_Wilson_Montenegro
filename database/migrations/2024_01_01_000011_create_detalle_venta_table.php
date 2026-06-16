@@ -14,6 +14,7 @@ return new class extends Migration
             $table->decimal('precio_unitario', 10, 2)->nullable();
             $table->integer('cantidad')->nullable();
             $table->decimal('subtotal', 10, 2)->nullable();
+            $table->decimal('descuento', 10, 2)->default(0); 
             $table->foreign('idventa')
                   ->references('idventa')
                   ->on('ventas')

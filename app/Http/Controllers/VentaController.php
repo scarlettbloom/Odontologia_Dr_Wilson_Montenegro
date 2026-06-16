@@ -52,36 +52,44 @@ class VentaController extends Controller
      * Guardar una nueva venta y actualizar el inventario
      */
     public function store(Request $request)
-    {
-        $carrito = json_decode($request->carrito, true);
+{
+    $carrito = json_decode($request->carrito, true);
+    $descuentoGeneral = floatval($request->descuento); // ← VIENE DEL FORMULARIO
 
-        foreach ($carrito as $item) {
+    foreach ($carrito as $item) {
 
-            $producto = Inventario::find($item['id']);
-            if (!$producto) {
-                return redirect()->back()->with('error', 'Producto no encontrado.');
-            }
-
-            if ($item['cantidad'] > $producto->stock) {
-                return redirect()->back()->with('error', 'No hay suficiente stock de ' . $producto->nombre . '.');
-            }
-
-            // Guardar venta
-            Venta::create([
-                'producto_id' => $item['id'],
-                'cantidad'    => $item['cantidad'],
-                'subtotal'    => $item['precio'] * $item['cantidad'],
-                'descuento'   => 0,
-                'total'       => $item['precio'] * $item['cantidad'],
-            ]);
-
-            // Actualizar stock
-            $producto->stock -= $item['cantidad'];
-            $producto->save();
+        $producto = Inventario::find($item['id']);
+        if (!$producto) {
+            return redirect()->back()->with('error', 'Producto no encontrado.');
         }
 
-        return redirect()->route($this->prefix() . '.ventas.index')->with('success', 'Venta registrada correctamente.');
+        if ($item['cantidad'] > $producto->stock) {
+            return redirect()->back()->with('error', 'No hay suficiente stock de ' . $producto->nombre . '.');
+        }
+
+        // Calcular subtotal
+        $subtotal = $item['precio'] * $item['cantidad'];
+
+        // Aplicar descuento general a toda la venta
+        $total = max($subtotal - $descuentoGeneral, 0);
+
+        Venta::create([
+            'producto_id' => $item['id'],
+            'cantidad'    => $item['cantidad'],
+            'subtotal'    => $subtotal,
+            'descuento'   => $descuentoGeneral,
+            'total'       => $total,
+        ]);
+
+        // Actualizar stock
+        $producto->stock -= $item['cantidad'];
+        $producto->save();
     }
+
+    return redirect()->route($this->prefix() . '.ventas.index')
+                     ->with('success', 'Venta registrada correctamente.');
+}
+
 
     /**
      * Mostrar vista de descuentos
@@ -99,5 +107,15 @@ class VentaController extends Controller
     $ventas = Venta::with('producto')->get();
     return view($this->prefix() . '.ventas.reporte', compact('ventas'));
 }
+
+public function eliminarDelCarrito($id)
+{
+    $carrito = session()->get('carrito', []);
+    $carrito = array_filter($carrito, fn($item) => $item['id'] != $id);
+    session()->put('carrito', $carrito);
+
+    return redirect()->route('cliente.carrito.ver')->with('success', 'Producto eliminado del carrito.');
+}
+
 
 }

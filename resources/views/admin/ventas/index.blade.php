@@ -11,19 +11,17 @@
                 <span class="user-role">Administrador</span>
                 
             </div>
-             <a href="{{ route('admin.ventas.reporte') }}" class="btn-ventas1">
+                     <a href="{{ route('admin.ventas.reporte') }}" class="btn btn-secondary volver-btn">
      ventas realizadas
-</a>
+</a>                
+       
 
 
             {{-- BOTÓN VOLVER --}}
             <a href="{{ route('admin.citas.index') }}" class="btn btn-secondary volver-btn">
                 Volver
             </a>
-                <a href="{{ route('admin.ventas.reporte') }}" class="btn-ventas1">
-     ventas realizadas
-</a>                
-            {{-- MENSAJES --}}
+           {{-- MENSAJES --}}
             @if(session('error'))
                 <div class="alert alert-danger" style="margin-top: 10px;">
                     {{ session('error') }}
@@ -203,6 +201,12 @@ function renderCarrito() {
 
     document.getElementById("input-carrito").value = JSON.stringify(carrito);
     document.getElementById("input-descuento").value = descuento;
+
+    document.getElementById("descuento").addEventListener("input", function() {
+    document.getElementById("input-descuento").value = this.value;
+    renderCarrito(); // actualiza el total en pantalla
+});
+
 }
 
 </script>

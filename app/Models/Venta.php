@@ -15,7 +15,7 @@ class Venta extends Model
         'cantidad',
         'subtotal',
         'descuento',
-        'total'
+        'total',
     ];
 
     public function producto()
