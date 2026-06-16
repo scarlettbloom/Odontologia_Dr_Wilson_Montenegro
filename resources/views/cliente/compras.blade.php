@@ -14,6 +14,7 @@
                     <th>Descuento</th>
                     <th>Total</th>
                     <th>Fecha</th>
+                                                            
                 </tr>
             </thead>
             <tbody>
@@ -25,6 +26,7 @@
                     <td>${{ number_format($venta->descuento, 0, ',', '.') }}</td>
                     <td>${{ number_format($venta->total, 0, ',', '.') }}</td>
                     <td>{{ $venta->created_at->format('d/m/Y H:i') }}</td>
+                     
                 </tr>
                 @endforeach
             </tbody>

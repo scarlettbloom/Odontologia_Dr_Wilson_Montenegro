@@ -65,13 +65,9 @@ class ClienteVentaController extends Controller
     // Checkout (finalizar compra)
     public function checkout(Request $request)
     {
-        // Convertir los IDs seleccionados en array
         $seleccionados = explode(',', $request->productos_seleccionados);
-
-        // Obtener carrito completo
         $carrito = session()->get('carrito', []);
 
-        // Filtrar solo los productos seleccionados
         $productosAComprar = array_filter($carrito, function ($item) use ($seleccionados) {
             return in_array($item['id'], $seleccionados);
         });
@@ -88,10 +84,9 @@ class ClienteVentaController extends Controller
             'metodo_pago' => 'required',
         ]);
 
-        // Calcular total
-        $totalGeneral = 0;
-
+        // Registrar venta por cada producto
         foreach ($productosAComprar as $item) {
+
             $producto = Inventario::find($item['id']);
 
             if (!$producto) {
@@ -102,23 +97,13 @@ class ClienteVentaController extends Controller
                 return redirect()->back()->with('error', 'No hay suficiente stock de ' . $producto->nombre . '.');
             }
 
-            $totalGeneral += $producto->precio_unitario * $item['cantidad'];
-        }
-
-        // Registrar venta y movimiento de stock
-        foreach ($productosAComprar as $item) {
-            $producto = Inventario::find($item['id']);
-
+            // Registrar venta en la tabla VENTAS
             Venta::create([
-                'producto_id'       => $producto->idinventario,
-                'cantidad'          => $item['cantidad'],
-                'subtotal'          => $producto->precio_unitario * $item['cantidad'],
-                'descuento'         => 0,
-                'total'             => $totalGeneral,
-                'cliente_nombre'    => $request->nombre,
-                'cliente_telefono'  => $request->telefono,
-                'cliente_direccion' => $request->direccion,
-                'metodo_pago'       => $request->metodo_pago,
+                'producto_id' => $producto->idinventario,
+                'cantidad'    => $item['cantidad'],
+                'subtotal'    => $producto->precio_unitario * $item['cantidad'],
+                'descuento'   => 0,
+                'total'       => $producto->precio_unitario * $item['cantidad'],
             ]);
 
             // Descontar stock
@@ -127,11 +112,12 @@ class ClienteVentaController extends Controller
 
             // Registrar movimiento de stock
             MovimientoStock::create([
-                'producto_id' => $producto->idinventario,
+                'producto'    => $producto->idinventario,
                 'tipo'        => 'salida',
                 'cantidad'    => $item['cantidad'],
                 'descripcion' => 'Venta cliente',
                 'responsable' => $request->nombre,
+                'fecha'       => now(),
             ]);
         }
 
@@ -148,10 +134,11 @@ class ClienteVentaController extends Controller
     // Historial de compras del cliente
     public function compras()
     {
-        $ventas = Venta::with('producto')->orderBy('created_at', 'desc')->get();
+        $ventas = Venta::orderBy('created_at', 'desc')->get();
         return view('cliente.compras', compact('ventas'));
     }
 
+    // Actualizar cantidad en el carrito
     public function actualizarCantidad(Request $request, $id)
     {
         $carrito = session()->get('carrito', []);
@@ -167,7 +154,6 @@ class ClienteVentaController extends Controller
             return back()->with('error', 'No hay suficiente stock. Solo quedan ' . $producto->stock . ' unidades.');
         }
 
-        // Actualizar cantidad en el carrito
         foreach ($carrito as &$item) {
             if ($item['id'] == $id) {
                 $item['cantidad'] = $cantidad;
@@ -179,6 +165,7 @@ class ClienteVentaController extends Controller
         return back()->with('success', 'Cantidad actualizada.');
     }
 
+    // Mostrar formulario de checkout
     public function checkoutForm(Request $request)
     {
         $carrito = session()->get('carrito', []);
@@ -197,4 +184,9 @@ class ClienteVentaController extends Controller
 
         return view('cliente.checkout_form', compact('productosAComprar', 'total'));
     }
+
+    
+
 }
+
+
