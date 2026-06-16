@@ -90,12 +90,30 @@
             color:#1565c0;
             font-weight:bold;
         }
+        .btn-volver{
+            position: absolute;
+            top: 20px;
+            left: 20px;
+
+            background:#6c757d;
+            color:white;
+            padding:10px 18px;
+            border-radius:8px;
+            text-decoration:none;
+            font-weight:bold;
+            z-index:1000;
+        }
+
+        .btn-volver:hover{
+            background:#5a6268;
+        }
+
 
     </style>
 
 </head>
 <body>
-
+<a href="{{ route(request()->routeIs('empleado.*') ? 'empleado.servicios.index' : 'admin.servicios.index') }}" class="btn-volver">Volver</a>
 @php
     $prefix = auth()->user()->rol === 'administrador'
         ? 'admin'

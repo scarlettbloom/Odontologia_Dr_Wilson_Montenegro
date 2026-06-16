@@ -107,10 +107,29 @@ td{
     gap:10px;
 }
 
+.btn-volver{
+    position: absolute;
+    top: 20px;
+    left: 20px;
+
+    background:#6c757d;
+    color:white;
+    padding:10px 18px;
+    border-radius:8px;
+    text-decoration:none;
+    font-weight:bold;
+    z-index:1000;
+}
+
+.btn-volver:hover{
+    background:#5a6268;
+}
+
 </style>
 
 </head>
 <body>
+<a href="{{ route(request()->routeIs('empleado.*') ? 'empleado.servicios.create' : 'admin.servicios.create') }}" class="btn-volver">Volver</a>
 @php
     $prefix = auth()->user()->rol === 'administrador'
         ? 'admin'
