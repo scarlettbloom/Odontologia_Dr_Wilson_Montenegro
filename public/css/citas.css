@@ -64,7 +64,7 @@ body {
 .btn-inventario {
     position: absolute;
     top: 20px;
-    right: 180px;
+    right: 175px;
     background: #27ae60;
     color: white;
     padding: 10px 20px;
@@ -83,7 +83,7 @@ body {
 .btn-ventas {
     position: absolute;
     top: 20px;
-    right: 312px;
+    right: 297px;
     background: #eec809;
     color: white;
     padding: 10px 20px;
@@ -97,7 +97,7 @@ body {
 .btn-reportes {
     position: absolute;
     top: 70px;
-    right: 410px;
+    right: 400px;
     background: #7e00a5;
     color: white;
     padding: 10px 20px;
@@ -111,19 +111,11 @@ body {
     background: #62006b;
 }
 
-.btn-ventas1 {
-    position: absolute;
-    top: 20px;
-    right: 312px;
-    background: #eec809;
-
-
-}
 
 .btn-servicios {
     position: absolute;
     top: 20px;
-    right: 410px;
+    right: 400px;
     background: #278eae;
     color: white;
     padding: 10px 20px;
