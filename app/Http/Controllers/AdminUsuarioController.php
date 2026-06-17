@@ -43,7 +43,7 @@ class AdminUsuarioController extends Controller
         $request->validate([
             'name'      => 'required|string|max:255',
             'email'     => 'required|email|unique:users,email',
-            'telefono'  => 'nullable|string|max:20',
+            'telefono'  => 'required|digits:10',
             'rol'       => 'required|in:administrador,empleado,cliente',
             'password'  => 'required|min:6',
         ]);
@@ -118,7 +118,7 @@ class AdminUsuarioController extends Controller
         $request->validate([
             'name'      => 'required|string|max:255',
             'email'     => 'required|email|unique:users,email,' . $id,
-            'telefono'  => 'nullable|string|max:20',
+            'telefono'  => 'required|digits:10',
             'rol'       => 'required|in:administrador,empleado,cliente',
         ]);
 

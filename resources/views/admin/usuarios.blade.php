@@ -69,6 +69,11 @@
                         <input
                             type="text"
                             name="telefono"
+                            pattern="[0-9]{10}"
+                            maxlength="10"
+                            minlength="10"
+                            required
+                            title="Debe contener exactamente 10 dígitos"
                             value="{{ old('telefono', $usuarioEditar->telefono ?? '') }}">
                     </td>
 
