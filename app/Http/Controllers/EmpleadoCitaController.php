@@ -90,6 +90,7 @@ class EmpleadoCitaController extends Controller
         SELECT cl.IDcliente, u.name AS Nombre
         FROM Cliente cl
         INNER JOIN users u ON cl.ID = u.ID
+        WHERE u.rol = 'cliente'
         ORDER BY u.Email ASC
     ");
 
@@ -149,6 +150,7 @@ class EmpleadoCitaController extends Controller
         SELECT cl.IDcliente, u.name AS Nombre
         FROM Cliente cl
         INNER JOIN users u ON cl.ID = u.ID
+        WHERE u.rol = 'cliente'
         ORDER BY u.Email ASC
     ");
 

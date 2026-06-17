@@ -83,10 +83,13 @@ class AdminCitaController extends Controller
         INNER JOIN Cliente cl ON c.IDcliente = cl.IDcliente
         INNER JOIN users u ON cl.ID = u.ID
         LEFT JOIN Servicio s ON c.IDservicio = s.IDservicio
-        WHERE u.name LIKE ?
+        WHERE u.rol = 'cliente'
+        AND (
+        u.name LIKE ?
              OR u.Email LIKE ?
             OR s.Nombre LIKE ?
             OR c.Estado LIKE ?
+            )
         ORDER BY c.Fecha_entrada DESC
     ", [$like, $like, $like, $like]);
 
@@ -96,6 +99,7 @@ class AdminCitaController extends Controller
         u.Email
         FROM Cliente cl
         INNER JOIN users u ON cl.ID = u.ID
+        WHERE u.rol = 'cliente'
         ORDER BY u.name ASC
     ");
 
@@ -172,6 +176,7 @@ class AdminCitaController extends Controller
             u.Email
             FROM Cliente cl
             INNER JOIN users u ON cl.ID = u.ID
+            WHERE u.rol = 'cliente'
             ORDER BY u.name ASC
         ");
 
