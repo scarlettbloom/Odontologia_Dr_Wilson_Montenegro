@@ -35,7 +35,7 @@ h1{
 .btn-nuevo{
     display:inline-block;
     margin-bottom:20px;
-    background:#1976d2;
+    background:blue;
     color:white;
     text-decoration:none;
     padding:12px 20px;
@@ -57,7 +57,7 @@ table{
 }
 
 thead{
-    background:#1976d2;
+    background:blue;
     color:white;
 }
 
