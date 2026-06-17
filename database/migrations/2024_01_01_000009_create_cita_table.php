@@ -14,13 +14,8 @@ return new class extends Migration
             $table->dateTime('fecha_salida')->nullable();
             $table->enum('estado', ['pendiente', 'confirmada', 'cancelada', 'atendida'])->default('pendiente');
             $table->string('tipo', 50)->nullable();
-            $table->unsignedInteger('iddetalle_cita')->nullable();
             $table->unsignedInteger('idcliente')->nullable();
             $table->unsignedInteger('idservicio')->nullable();
-            $table->foreign('iddetalle_cita')
-                  ->references('iddetalle_cita')
-                  ->on('detalle_cita')
-                  ->onDelete('set null');
             $table->foreign('idservicio')
                   ->references('idservicio')
                   ->on('servicio')

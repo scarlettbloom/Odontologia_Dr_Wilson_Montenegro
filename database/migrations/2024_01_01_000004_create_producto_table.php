@@ -13,16 +13,6 @@ return new class extends Migration
             $table->string('nombre', 50)->nullable();
             $table->string('marca', 50)->nullable();
             $table->decimal('precio', 10, 2)->nullable();
-            $table->unsignedInteger('idproveedor')->nullable();
-            $table->unsignedInteger('idadmin')->nullable();
-            $table->foreign('idproveedor')
-                  ->references('idproveedor')
-                  ->on('proveedor')
-                  ->onDelete('set null');
-            $table->foreign('idadmin')
-                  ->references('idadmin')
-                  ->on('administrador')
-                  ->onDelete('set null');
         });
     }
 
