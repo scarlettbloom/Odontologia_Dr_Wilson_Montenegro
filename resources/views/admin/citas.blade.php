@@ -37,6 +37,13 @@
     </button>
 </a>
 
+<a href="{{ route('admin.usuarios.index') }}">
+    <button type="button" class="btn-usuarios">
+        Usuarios
+    </button>
+</a>
+
+
 <form action="{{ route('logout') }}" method="POST" style="display:inline;">
             @csrf
             <button type="submit" class="btn-cerrarsesion">Cerrar sesión</button>

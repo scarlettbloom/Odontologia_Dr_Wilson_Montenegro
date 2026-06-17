@@ -84,7 +84,7 @@ body {
     position: absolute;
     top: 20px;
     right: 297px;
-    background: #eec809;
+    background: #d39d0a;
     color: white;
     padding: 10px 20px;
     border-radius: 6px;
@@ -92,6 +92,10 @@ body {
     font-weight: bold;
     transition: all 0.3s;
 
+}
+
+.btn-ventas:hover {
+    background: #a78000;
 }
 
 .btn-reportes {
@@ -129,9 +133,24 @@ body {
     background: #2778aeb0;
 }
 
+.btn-usuarios {
+    position: absolute;
+    top: 70px;
+    right: 281px;
 
-.btn-ventas:hover {
-    background: #a79b00;
+    background: #34495e;
+    color: white;
+
+    padding: 10px 20px;
+    border-radius: 6px;
+
+    text-decoration: none;
+    font-weight: bold;
+    transition: all 0.3s;
+}
+
+.btn-usuarios:hover {
+    background: #2c3e50;
 }
 
 
@@ -418,4 +437,20 @@ select:focus {
 .btn-cancelar:hover {
     background: #636e72;
     transform: translateY(-2px);
+}
+
+.btn-citas {
+    position: absolute;
+    top: 70px;
+    right: 190px;
+    background: #16a085;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-weight: bold;
+    transition: all 0.3s;
+}
+
+.btn-citas:hover {
+    background: #138d75;
 }

@@ -13,6 +13,7 @@ use App\Http\Controllers\SolicitudServicioController;
 use App\Http\Controllers\VentaController;
 use App\Http\Controllers\ClienteVentaController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\AdminUsuarioController;
 
 /*
 |--------------------------------------------------------------------------
@@ -72,11 +73,18 @@ Route::prefix('admin')->middleware('admin')->name('admin.')->group(function () {
     Route::get('/inventario/{id}/delete', [InventarioController::class, 'confirmDelete'])->name('inventario.delete');
 
     // MOVIMIENTO DE STOCK (ADMIN) — RUTA CORRECTA Y FUERA DEL RESOURCE
-    Route::get('/movimiento_stock', [InventarioController::class, 'movimiento'])
-        ->name('inventario.movimiento_stock');
+    Route::get('/movimiento_stock', [InventarioController::class, 'movimiento'])->name('inventario.movimiento_stock');
 
     // DASHBOARD
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    
+    // USUARIOS
+
+    Route::get('/usuarios', [AdminUsuarioController::class, 'index'])->name('usuarios.index');
+    Route::post('/usuarios', [AdminUsuarioController::class, 'store'])->name('usuarios.store');
+    Route::get('/usuarios/{id}/editar', [AdminUsuarioController::class, 'edit'])->name('usuarios.edit');
+    Route::put('/usuarios/{id}', [AdminUsuarioController::class, 'update'])->name('usuarios.update');
+    Route::delete('/usuarios/{id}', [AdminUsuarioController::class, 'destroy'])->name('usuarios.destroy');
 });
 
 /*

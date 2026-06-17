@@ -1,9 +1,16 @@
 @extends('layouts.ventas')
 
 @section('content')
-<div class="ventas-container">
-    <div class="container">
+
         <link rel="stylesheet" href="{{ asset('css/ventas.css') }}">
+
+        {{-- BOTÓN VOLVER --}}
+    <a href="{{ route('empleado.citas.index') }}" class="btn-volver">
+        Volver
+    </a>
+
+    <div class="ventas-container">
+    <div class="container">
 
         <div class="ventas-wrapper">
             <div class="ventas-header">
@@ -15,12 +22,6 @@
      ventas realizadas
 </a>                
        
-
-
-            {{-- BOTÓN VOLVER --}}
-            <a href="{{ route('empleado.citas.index') }}" class="btn btn-secondary volver-btn">
-                Volver
-            </a>
            {{-- MENSAJES --}}
             @if(session('error'))
                 <div class="alert alert-danger" style="margin-top: 10px;">

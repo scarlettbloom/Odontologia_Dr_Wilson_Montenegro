@@ -15,25 +15,25 @@
         }
 
         body {
-            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+            background: linear-gradient(135deg, #007BFF 40%);
             min-height: 100vh;
         }
 
         .hero {
-            background: white;
+            background: #0d47a1;
             padding: 60px 20px;
             text-align: center;
             box-shadow: 0 4px 20px rgba(0, 0, 0, .08);
         }
 
         .hero h1 {
-            color: #1565c0;
+            color: #ffffff;
             font-size: 42px;
             margin-bottom: 15px;
         }
 
         .hero p {
-            color: #666;
+            color: #ffffff;
             font-size: 18px;
             max-width: 700px;
             margin: auto;
@@ -106,7 +106,14 @@
         footer {
             text-align: center;
             padding: 25px;
-            color: #666;
+            color: #ffffff;
+        }
+
+        .HeroFooter {
+            background: #0d47a1;
+            padding: 20px 20px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, .08);
         }
     </style>
 </head>
@@ -213,11 +220,11 @@
         </a>
 
     </div>
-
+<div class="HeroFooter">
     <footer>
         Clínica Odontológica • Atención para toda la familia
     </footer>
-
+</div>
 </body>
 
 </html>

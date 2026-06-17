@@ -98,14 +98,18 @@ body {
 .btn-ventas {
     position: absolute;
     top: 20px;
-    right: 312px;
-    background: #eec809;
+    right: 305px;
+    background: #d39d0a;
     color: white;
     padding: 10px 20px;
     border-radius: 6px;
     text-decoration: none;
     font-weight: bold;
     transition: all 0.3s;
+}
+
+.btn-ventas:hover {
+    background: #a78000;
 }
 
 .btn-servicios {
@@ -125,13 +129,25 @@ body {
     background: #2778aeb0;
 }
 
+.btn-usuarios {
+    position: absolute;
+    top: 70px;
+    right: 281px;
 
-.btn-ventas:hover {
-    background: #a79b00;
+    background: #34495e;
+    color: white;
+
+    padding: 10px 20px;
+    border-radius: 6px;
+
+    text-decoration: none;
+    font-weight: bold;
+    transition: all 0.3s;
 }
 
-
-
+.btn-usuarios:hover {
+    background: #2c3e50;
+}
 
 /* FORM */
 .form-section {
