@@ -9,14 +9,12 @@ use App\Models\MovimientoStock;
 
 class ClienteVentaController extends Controller
 {
-    // Mostrar inventario al cliente
     public function index()
     {
         $productos = Inventario::all();
         return view('cliente.inventario', compact('productos'));
     }
 
-    // Añadir producto al carrito (sesión)
     public function addToCart($id)
     {
         $producto = Inventario::find($id);
@@ -43,7 +41,6 @@ class ClienteVentaController extends Controller
         return redirect()->route('cliente.carrito.ver')->with('success', 'Producto agregado al carrito.');
     }
 
-    // Ver carrito
     public function verCarrito()
     {
         $carrito = session()->get('carrito', []);
@@ -52,7 +49,6 @@ class ClienteVentaController extends Controller
         return view('cliente.carrito', compact('carrito', 'total'));
     }
 
-    // Eliminar producto del carrito
     public function eliminarDelCarrito($id)
     {
         $carrito = session()->get('carrito', []);
@@ -62,7 +58,6 @@ class ClienteVentaController extends Controller
         return redirect()->route('cliente.carrito.ver')->with('success', 'Producto eliminado del carrito.');
     }
 
-    // Checkout (finalizar compra)
     public function checkout(Request $request)
     {
         $seleccionados = explode(',', $request->productos_seleccionados);
@@ -76,7 +71,6 @@ class ClienteVentaController extends Controller
             return redirect()->route('cliente.carrito.ver')->with('error', 'No seleccionaste productos para comprar.');
         }
 
-        // Validar datos del comprador
         $request->validate([
             'nombre'      => 'required',
             'telefono'    => 'required',
@@ -84,7 +78,6 @@ class ClienteVentaController extends Controller
             'metodo_pago' => 'required',
         ]);
 
-        // Registrar venta por cada producto
         foreach ($productosAComprar as $item) {
 
             $producto = Inventario::find($item['id']);
@@ -97,7 +90,7 @@ class ClienteVentaController extends Controller
                 return redirect()->back()->with('error', 'No hay suficiente stock de ' . $producto->nombre . '.');
             }
 
-            // Registrar venta en la tabla VENTAS
+            // REGISTRAR VENTA
             Venta::create([
                 'producto_id' => $producto->idinventario,
                 'cantidad'    => $item['cantidad'],
@@ -106,15 +99,14 @@ class ClienteVentaController extends Controller
                 'total'       => $producto->precio_unitario * $item['cantidad'],
             ]);
 
-            // Descontar stock
-           // Descontar stock
-$producto->stock -= $item['cantidad'];
-$producto->ultima_actualizacion = now(); // 🔥 ESTA ES LA LÍNEA QUE FALTABA
-$producto->save();
+            // DESCONTAR STOCK
+            $producto->stock -= $item['cantidad'];
+            $producto->ultima_actualizacion = now();
+            $producto->save();
 
-            // Registrar movimiento de stock
+            // MOVIMIENTO DE STOCK
             MovimientoStock::create([
-                'producto'    => $producto->idinventario,
+                'producto_id' => $producto->idinventario,
                 'tipo'        => 'salida',
                 'cantidad'    => $item['cantidad'],
                 'descripcion' => 'Venta cliente',
@@ -123,7 +115,6 @@ $producto->save();
             ]);
         }
 
-        // Mantener en el carrito los productos NO comprados
         $carritoRestante = array_filter($carrito, function ($item) use ($seleccionados) {
             return !in_array($item['id'], $seleccionados);
         });
@@ -133,14 +124,12 @@ $producto->save();
         return redirect()->route('cliente.compras')->with('success', 'Compra realizada correctamente.');
     }
 
-    // Historial de compras del cliente
     public function compras()
     {
         $ventas = Venta::orderBy('created_at', 'desc')->get();
         return view('cliente.compras', compact('ventas'));
     }
 
-    // Actualizar cantidad en el carrito
     public function actualizarCantidad(Request $request, $id)
     {
         $carrito = session()->get('carrito', []);
@@ -167,7 +156,6 @@ $producto->save();
         return back()->with('success', 'Cantidad actualizada.');
     }
 
-    // Mostrar formulario de checkout
     public function checkoutForm(Request $request)
     {
         $carrito = session()->get('carrito', []);
@@ -186,9 +174,4 @@ $producto->save();
 
         return view('cliente.checkout_form', compact('productosAComprar', 'total'));
     }
-
-    
-
 }
-
-

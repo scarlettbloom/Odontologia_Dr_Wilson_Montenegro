@@ -67,6 +67,10 @@
         <div class="text-center mt-3">
             <button type="submit" class="btn btn-success">Finalizar compra seleccionada</button>
             <a href="{{ route('cliente.inventario') }}" class="btn btn-secondary">Seguir comprando</a>
+            <a href="{{ route('cliente.inventario') }}" class="btn btn-primary">
+    🔙 Volver
+</a>
+
         </div>
     </form>
 

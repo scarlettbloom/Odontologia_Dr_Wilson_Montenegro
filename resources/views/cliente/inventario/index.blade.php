@@ -3,7 +3,13 @@
 @section('content')
 <div class="inventario-container">
     <h1 class="text-center">Inventario Disponible</h1>
+   
+<a href="{{ route('cliente.carrito.ver') }}" class="btn btn-success">
+    🛒 Ver carrito
+</a>
 
+     
+    
     <table class="table table-bordered text-center">
         <thead>
             <tr>
