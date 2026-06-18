@@ -43,7 +43,18 @@
 
         <div class="mb-3">
             <label>Teléfono</label>
-            <input type="text" name="telefono" class="form-control" required>
+           <input 
+    type="text" 
+    name="telefono" 
+    id="telefono" 
+    class="form-control" 
+    maxlength="10" 
+    pattern="\d{10}" 
+    title="Debe contener exactamente 10 números" 
+    required 
+    oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0,10)"
+>
+
         </div>
 
         <div class="mb-3">
