@@ -39,40 +39,38 @@ class AdminUsuarioController extends Controller
 
     // ── Crear usuario ────────────────────────────────────────────────────
     public function store(Request $request)
-    {
-        $request->validate([
-            'name'      => 'required|string|max:255',
-            'email'     => 'required|email|unique:users,email',
-            'telefono'  => 'required|digits:10',
-            'rol'       => 'required|in:administrador,empleado,cliente',
-            'password'  => 'required|min:6',
-        ]);
+{
+    $request->validate([
+        'name'      => 'required|string|max:255',
+        'email'     => 'required|email|unique:users,email',
+        'telefono'  => 'required|digits:10',
+        'rol'       => 'required|in:administrador,empleado,cliente',
+        'password'  => 'required|min:6',
+    ]);
 
+    DB::table('users')->insert([
+        'name'       => $request->name,
+        'email'      => $request->email,
+        'telefono'   => $request->telefono,
+        'rol'        => $request->rol,
+        'password'   => Hash::make($request->password),
+        'created_at' => now(),
+        'updated_at' => now(),
+    ]);
+
+    $idUsuario = DB::getPdo()->lastInsertId();
+
+    if ($request->rol === 'cliente') {
         DB::insert("
-            INSERT INTO users
-            (
-                name,
-                email,
-                telefono,
-                rol,
-                password,
-                created_at,
-                updated_at
-            )
-            VALUES (?, ?, ?, ?, ?, NOW(), NOW())
-        ", [
-            $request->name,
-            $request->email,
-            $request->telefono,
-            $request->rol,
-            Hash::make($request->password)
-        ]);
-
-        return redirect()
-            ->route('admin.usuarios.index')
-            ->with('success', 'Usuario registrado correctamente.');
+            INSERT INTO Cliente (ID)
+            VALUES (?)
+        ", [$idUsuario]);
     }
 
+    return redirect()
+        ->route('admin.usuarios.index')
+        ->with('success', 'Usuario registrado correctamente.');
+}
     // ── Mostrar formulario edición ──────────────────────────────────────
     public function edit($id)
     {
@@ -162,6 +160,23 @@ class AdminUsuarioController extends Controller
                 $id
             ]);
         }
+
+        if ($request->rol === 'cliente') {
+
+            $existeCliente = DB::selectOne("
+                SELECT IDcliente
+                FROM Cliente
+                WHERE ID = ?
+            ", [$id]);
+        
+            if (!$existeCliente) {
+        
+                DB::insert("
+                    INSERT INTO Cliente (ID)
+                    VALUES (?)
+                ", [$id]);
+            }
+        }        
 
         return redirect()
             ->route('admin.usuarios.index')

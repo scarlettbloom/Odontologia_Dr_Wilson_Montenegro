@@ -20,6 +20,7 @@ return new class extends Migration
                   ->on('producto')
                   ->onDelete('set null');
             $table->text('descripcion')->nullable();    
+            $table->dateTime('ultima_actualizacion')->nullable();
         });
     }
 };

@@ -18,6 +18,7 @@ Schema::create('movimientos_stock', function (Blueprint $table) {
     $table->integer('cantidad');
     $table->string('responsable');
     $table->timestamps();
+    $table->integer('producto_id')->unsigned()->nullable();
 });
 
     }};

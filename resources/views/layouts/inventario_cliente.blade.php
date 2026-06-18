@@ -24,17 +24,17 @@
             color: #004080;
         }
         .btn-warning {
-    background-color: #ffc107;
-    color: #000;
-    border: none;
-    padding: 8px 15px;
-    border-radius: 5px;
-    font-weight: 500;
+            background-color: #ffc107;
+            color: #000;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-weight: 500;
 }
-.btn-warning:hover {
-    background-color: #e0a800;
-    color: #fff;
-}
+        .btn-warning:hover {
+            background-color: #e0a800;
+            color: #fff;
+        }
 
         
 
@@ -71,7 +71,9 @@
         <div class="d-flex justify-content-between align-items-center mb-3">
     <h2 class="text-white fw-bold">CLIENTE</h2>
     <div>
-     
+    <a href="{{ route('cliente.carrito.ver') }}" class="btn btn-success">
+    🛒 Ver carrito
+    </a>
         <a href="{{ route('cliente.citas.index') }}" class="btn btn-warning ms-2">Volver a Citas</a>
         <form action="{{ route('logout') }}" method="POST" style="display:inline;">
             @csrf
@@ -82,7 +84,5 @@
 
         @yield('content')
     </div>
-<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-
 </body>
 </html>

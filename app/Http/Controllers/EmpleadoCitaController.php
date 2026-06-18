@@ -126,6 +126,17 @@ class EmpleadoCitaController extends Controller
                 ->with('error', 'La fecha y hora de salida debe ser posterior a la de entrada.');
         }
 
+        // 3. Validar horario laboral (06:00 AM - 08:00 PM)
+        $horaEntrada = Carbon::parse($request->fechaEntrada)->format('H:i');
+        $horaSalida = Carbon::parse($request->fechaSalida)->format('H:i');
+
+        if ($horaEntrada < '06:00' || $horaEntrada > '20:00' ||
+            $horaSalida < '06:00' || $horaSalida > '20:00') {
+
+            return redirect()->route('admin.citas.index')
+                ->with('error', 'Las citas solo pueden agendarse dentro del horario laboral (06:00 AM a 08:00 PM).');
+        }
+
         $conflicto = $this->verificarSolapamiento($request->fechaEntrada, $request->fechaSalida);
         if ($conflicto) {
             return redirect()->route('empleado.citas.index')
@@ -200,6 +211,17 @@ class EmpleadoCitaController extends Controller
         return redirect()->route('empleado.citas.index')
             ->with('error', 'La fecha y hora de salida debe ser posterior a la de entrada.');
     }
+
+    // 3. Validar horario laboral (06:00 AM - 08:00 PM)
+        $horaEntrada = Carbon::parse($request->fechaEntrada)->format('H:i');
+        $horaSalida = Carbon::parse($request->fechaSalida)->format('H:i');
+
+        if ($horaEntrada < '06:00' || $horaEntrada > '20:00' ||
+            $horaSalida < '06:00' || $horaSalida > '20:00') {
+
+            return redirect()->route('admin.citas.index')
+                ->with('error', 'Las citas solo pueden agendarse dentro del horario laboral (06:00 AM a 08:00 PM).');
+        }
 
     $conflicto = $this->verificarSolapamiento(
         $request->fechaEntrada,
