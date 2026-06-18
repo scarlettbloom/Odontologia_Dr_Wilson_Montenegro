@@ -79,7 +79,7 @@ class ClienteVentaController extends Controller
         // Validar datos del comprador
         $request->validate([
             'nombre'      => 'required',
-            'telefono'    => 'required',
+            'telefono'    => 'required|digits:10',
             'direccion'   => 'required',
             'metodo_pago' => 'required',
         ]);
