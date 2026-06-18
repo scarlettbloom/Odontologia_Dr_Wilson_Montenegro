@@ -14,8 +14,7 @@
 <div class="container">
 
     <div class="header">
-        <h1>ADMINISTRADOR</h1>
-        <h2>Gestión de Usuarios</h2>
+        <h1>GESTION DE USUARIOS</h1>
     </div>
 
     <!-- FORMULARIO -->

@@ -48,11 +48,11 @@
             <h4>Contacto</h4>
             <p>📍 Dg. 84 #79 - 36, Engativá, Bogotá, Cundinamarca, Colombia</p>
             <a href="https://wa.me/573185377946" target="_blank" class="btn-contacto whatsapp">
-                <i class="fab fa-whatsapp"></i>
+                <i class="fab fa-whatsapp"></i>318 5377946
             </a>
             <br>
             <a href="mailto:wilsonmontenegroodontologia@gmail.com" class="btn-contacto correo">
-                <i class="fas fa-envelope"></i>
+                <i class="fas fa-envelope"></i>wilsonmontenegroodontologia@gmail.com
             </a>
         </div>
         <div class="footer-col">
