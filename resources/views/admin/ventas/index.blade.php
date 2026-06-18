@@ -21,7 +21,11 @@
                      <a href="{{ route('admin.ventas.reporte') }}" class="btn btn-secondary volver-btn">
      ventas realizadas
 </a>                
-       
+       @if(session('error'))
+    <p style="color: #fff; background-color: #eb5e6f; padding: 10px; border-radius: 5px; text-align: center; font-weight: bold;">
+        {{ session('error') }}
+    </p>
+@endif
 
 
            {{-- MENSAJES --}}
