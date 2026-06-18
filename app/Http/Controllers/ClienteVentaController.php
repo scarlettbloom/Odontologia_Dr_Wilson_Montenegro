@@ -107,8 +107,10 @@ class ClienteVentaController extends Controller
             ]);
 
             // Descontar stock
-            $producto->stock -= $item['cantidad'];
-            $producto->save();
+           // Descontar stock
+$producto->stock -= $item['cantidad'];
+$producto->ultima_actualizacion = now(); // 🔥 ESTA ES LA LÍNEA QUE FALTABA
+$producto->save();
 
             // Registrar movimiento de stock
             MovimientoStock::create([

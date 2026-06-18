@@ -54,6 +54,12 @@ class VentaController extends Controller
     public function store(Request $request)
 {
     $carrito = json_decode($request->carrito, true);
+
+// Validar que el carrito NO esté vacío
+if (!$carrito || count($carrito) === 0) {
+    return redirect()->back()->with('error', 'No puedes guardar una venta sin productos.');
+}
+
     $descuentoGeneral = floatval($request->descuento); // ← VIENE DEL FORMULARIO
 
     foreach ($carrito as $item) {
@@ -106,15 +112,6 @@ class VentaController extends Controller
 {
     $ventas = Venta::with('producto')->get();
     return view($this->prefix() . '.ventas.reporte', compact('ventas'));
-}
-
-public function eliminarDelCarrito($id)
-{
-    $carrito = session()->get('carrito', []);
-    $carrito = array_filter($carrito, fn($item) => $item['id'] != $id);
-    session()->put('carrito', $carrito);
-
-    return redirect()->route('cliente.carrito.ver')->with('success', 'Producto eliminado del carrito.');
 }
 
 

@@ -126,12 +126,16 @@ class InventarioController extends Controller
         ]);
 
         $item->update($request->only([
-            'nombre',
-            'stock',
-            'precio_unitario',
-            'nombre_proveedor',
-            'descripcion'
-        ]));
+    'nombre',
+    'stock',
+    'precio_unitario',
+    'nombre_proveedor',
+    'descripcion'
+]));
+
+$item->ultima_actualizacion = now(); // 🔹 Guarda la fecha y hora actual
+$item->save();
+
 
         $rol = strtolower(trim(Auth::user()->rol));
 

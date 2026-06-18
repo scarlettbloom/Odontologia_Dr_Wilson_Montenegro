@@ -83,7 +83,15 @@
             <tr>
                 <td>{{ $item->nombre }}</td>
                 <td>{{ $item->stock }}</td>
-                <td>{{ $item->updated_at ? $item->updated_at->format('d/m/Y H:i') : 'Sin cambios' }}</td>
+                <td>
+    {{ $item->ultima_actualizacion 
+        ? \Carbon\Carbon::parse($item->ultima_actualizacion)->format('d/m/Y H:i')
+        : 'Sin cambios'
+    }}
+</td>
+
+
+                
             </tr>
             @endforeach
         </tbody>
