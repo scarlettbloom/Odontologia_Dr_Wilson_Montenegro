@@ -17,6 +17,7 @@ class Inventario extends Model
         'nombre_proveedor',
         'idproducto',
         'descripcion',
+        'ultima_actualizacion',
     ];
 
     public function movimientos()
