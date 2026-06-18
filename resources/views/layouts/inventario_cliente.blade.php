@@ -83,27 +83,6 @@
         @yield('content')
     </div>
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-    <footer>
-        <div class="container text-center">
-            <div class="row">
-                <div class="col-md-4">
-                    <h5>Dr. Wilson Montenegro</h5>
-                    <p>Odontología General y Especializada</p>
-                </div>
-                <div class="col-md-4">
-                    <h5>Contacto</h5>
-                    <p>📞 +57 318 5377946</p>
-                    <p>✉️ contacto@odontologia.com</p>
-                    <p>📍 Bogotá, Colombia</p>
-                </div>
-                <div class="col-md-4">
-                    <h5>Créditos</h5>
-                    <p>Hecho por:<br>Lucas Toro y Andrés Barrios</p>
-                </div>
-            </div>
-            <p class="mt-3">© 2024 - Todos los derechos reservados</p>
-        </div>
-    </footer>
 
 </body>
 </html>

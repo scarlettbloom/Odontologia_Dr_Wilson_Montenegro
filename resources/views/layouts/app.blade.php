@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Dr. Wilson Montenegro')</title>
     <link rel="stylesheet" href="{{ asset('css/estilos-index.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
     @yield('styles')
 </head>
 <body>
@@ -45,9 +46,14 @@
         </div>
         <div class="footer-col">
             <h4>Contacto</h4>
-            <p>📞 +57 318 5377946</p>
-            <p>📧 contacto@odontologia.com</p>
-            <p>📍 Bogotá, Colombia</p>
+            <p>📍 Dg. 84 #79 - 36, Engativá, Bogotá, Cundinamarca, Colombia</p>
+            <a href="https://wa.me/573185377946" target="_blank" class="btn-contacto whatsapp">
+                <i class="fab fa-whatsapp"></i>
+            </a>
+            <br>
+            <a href="mailto:wilsonmontenegroodontologia@gmail.com" class="btn-contacto correo">
+                <i class="fas fa-envelope"></i>
+            </a>
         </div>
         <div class="footer-col">
             <h4>Créditos</h4>
