@@ -10,7 +10,7 @@ return new class extends Migration
     public function up(): void
     {
        // database/migrations/2026_06_11_000000_create_movimientos_stock_table.php
-Schema::create('movimientos_stock', function (Blueprint $table) {
+Schema::create('movimiento_stocks', function (Blueprint $table) {
     $table->id();
     $table->date('fecha');
     $table->string('producto');
@@ -19,6 +19,7 @@ Schema::create('movimientos_stock', function (Blueprint $table) {
     $table->string('responsable');
     $table->timestamps();
     $table->integer('producto_id')->unsigned()->nullable();
+    $table->string('descripcion')->nullable();
 });
 
     }};

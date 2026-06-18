@@ -13,6 +13,7 @@ class MovimientoStock extends Model
         'tipo',
         'cantidad',
         'descripcion',
-        'responsable'
+        'responsable',
+        'fecha',
     ];
 }
