@@ -117,7 +117,7 @@ class ClienteVentaController extends Controller
                 'cantidad'    => $item['cantidad'],
                 'descripcion' => 'Venta cliente',
                 'responsable' => $request->nombre,
-                'fecha'       => now(),
+                
             ]);
         }
 
