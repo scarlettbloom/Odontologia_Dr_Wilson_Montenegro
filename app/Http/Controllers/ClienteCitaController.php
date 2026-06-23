@@ -102,7 +102,7 @@ class ClienteCitaController extends Controller
             return redirect()->route('cliente.citas.index')
                 ->with('error', 'No es posible agendar una cita en una fecha pasada.');
         }
-        
+
         // 2. Salida no puede ser igual ni anterior a entrada
         if (Carbon::parse($request->fechaSalida)->lte(Carbon::parse($request->fechaEntrada))) {
             return redirect()->route('cliente.citas.index')
@@ -116,7 +116,7 @@ class ClienteCitaController extends Controller
         if ($horaEntrada < '06:00' || $horaEntrada > '20:00' ||
             $horaSalida < '06:00' || $horaSalida > '20:00') {
 
-            return redirect()->route('admin.citas.index')
+            return redirect()->route('cliente.citas.index')
                 ->with('error', 'Las citas solo pueden agendarse dentro del horario laboral (06:00 AM a 08:00 PM).');
         }
 
@@ -153,7 +153,7 @@ class ClienteCitaController extends Controller
     public function edit($id)
     {
         $citas = $this->getCitas();
-        
+
         $servicios = DB::select("
             SELECT IDservicio, Nombre
             FROM Servicio

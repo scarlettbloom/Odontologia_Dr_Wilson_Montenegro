@@ -62,7 +62,7 @@ class EmpleadoCitaController extends Controller
         return redirect()->route('empleado.citas.index')
             ->with('error', 'Solo se puede buscar por nombre, estado o servicio.');
     }
-    
+
     $like   = "%{$search}%";
 
     $citas = DB::select("
@@ -119,7 +119,7 @@ class EmpleadoCitaController extends Controller
             return redirect()->route('empleado.citas.index')
              ->with('error', 'No es posible agendar una cita en una fecha pasada.');
         }
-        
+
         // 2. Salida no puede ser igual ni anterior a entrada
         if (Carbon::parse($request->fechaSalida)->lte(Carbon::parse($request->fechaEntrada))) {
             return redirect()->route('empleado.citas.index')
@@ -219,7 +219,7 @@ class EmpleadoCitaController extends Controller
         if ($horaEntrada < '06:00' || $horaEntrada > '20:00' ||
             $horaSalida < '06:00' || $horaSalida > '20:00') {
 
-            return redirect()->route('admin.citas.index')
+            return redirect()->route('empleado.citas.index')
                 ->with('error', 'Las citas solo pueden agendarse dentro del horario laboral (06:00 AM a 08:00 PM).');
         }
 
