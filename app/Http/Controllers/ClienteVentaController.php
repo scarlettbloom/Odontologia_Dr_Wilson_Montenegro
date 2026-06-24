@@ -113,11 +113,12 @@ class ClienteVentaController extends Controller
             // Registrar movimiento de stock
             MovimientoStock::create([
                 'producto_id' => $producto->idinventario,
+                'producto' => $producto->nombre,
                 'tipo'        => 'salida',
                 'cantidad'    => $item['cantidad'],
                 'descripcion' => 'Venta cliente',
                 'responsable' => $request->nombre,
-                
+                'fecha' => now(),  
             ]);
         }
 
