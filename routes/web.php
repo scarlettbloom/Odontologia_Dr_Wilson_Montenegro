@@ -51,6 +51,7 @@ Route::prefix('admin')->middleware('admin')->name('admin.')->group(function () {
     Route::put('/citas/{id}', [AdminCitaController::class, 'update'])->name('citas.update');
     Route::delete('/citas/{id}', [AdminCitaController::class, 'destroy'])->name('citas.destroy');
     Route::get('/citas/pdf/{id}', [AdminCitaController::class, 'generarPdf'])->name('citas.pdf');
+    Route::get('/factura/excel/{id}',[AdminCitaController::class,'generarExcel'])->name('factura.excel');
 
     // SERVICIOS
     Route::get('/servicios', [ServicioController::class, 'index'])->name('servicios.index');
@@ -67,6 +68,7 @@ Route::prefix('admin')->middleware('admin')->name('admin.')->group(function () {
     Route::get('/ventas/reporte', [VentaController::class, 'reporte'])->name('ventas.reporte');
     Route::get('/ventas/create', [VentaController::class, 'create'])->name('ventas.create');
     Route::get('/ventas/pdf/{id}',[VentaController::class, 'generarPdf'])->name('ventas.pdf');
+    Route::get('/ventas/excel/{id}',[VentaController::class,'generarExcel'])->name('ventas.excel');
 
     // INVENTARIO
     Route::resource('inventario', InventarioController::class);
@@ -77,7 +79,7 @@ Route::prefix('admin')->middleware('admin')->name('admin.')->group(function () {
 
     // DASHBOARD
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    
+
     // USUARIOS
 
     Route::get('/usuarios', [AdminUsuarioController::class, 'index'])->name('usuarios.index');
@@ -101,7 +103,8 @@ Route::prefix('empleado')->middleware('empleado')->name('empleado.')->group(func
     Route::put('/citas/{id}', [EmpleadoCitaController::class, 'update'])->name('citas.update');
     Route::delete('/citas/{id}', [EmpleadoCitaController::class, 'destroy'])->name('citas.destroy');
     Route::get('/citas/pdf/{id}', [EmpleadoCitaController::class, 'generarPdf'])->name('citas.pdf');
-    
+    Route::get('/factura/excel/{id}',[EmpleadoCitaController::class,'generarExcel'])->name('factura.excel');
+
      // SERVICIOS
      Route::get('/servicios', [ServicioController::class, 'index'])->name('servicios.index');
      Route::get('/servicios/create', [ServicioController::class, 'create'])->name('servicios.create');
@@ -116,7 +119,8 @@ Route::prefix('empleado')->middleware('empleado')->name('empleado.')->group(func
     Route::get('/ventas/descuento', [VentaController::class, 'descuento'])->name('ventas.descuento');
     Route::get('/ventas/reporte', [VentaController::class, 'reporte'])->name('ventas.reporte');
     Route::get('/ventas/create', [VentaController::class, 'create'])->name('ventas.create');
-    Route::get('/ventas/pdf/{id}',[VentaController::class, 'generarPdf'])->name('ventas.pdf');                                                              
+    Route::get('/ventas/pdf/{id}',[VentaController::class, 'generarPdf'])->name('ventas.pdf');
+    Route::get('/ventas/excel/{id}',[VentaController::class,'generarExcel'])->name('ventas.excel');
 
 
     // INVENTARIO EMPLEADO
@@ -126,7 +130,7 @@ Route::prefix('empleado')->middleware('empleado')->name('empleado.')->group(func
     // MOVIMIENTO DE STOCK (EMPLEADO) — MISMA VISTA DEL ADMIN
     Route::get('/movimiento_stock', [InventarioController::class, 'movimiento'])
         ->name('inventario.movimiento_stock');
-    
+
     // DASHBOARD
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 });
@@ -144,6 +148,7 @@ Route::prefix('cliente')->middleware('cliente')->name('cliente.')->group(functio
     Route::get('/citas/{id}/editar', [ClienteCitaController::class, 'edit'])->name('citas.edit');
     Route::put('/citas/{id}', [ClienteCitaController::class, 'update'])->name('citas.update');
     Route::get('/citas/pdf/{id}', [ClienteCitaController::class, 'generarPdf'])->name('citas.pdf');
+    Route::get('/factura/excel/{id}',[ClienteCitaController::class,'generarExcel'])->name('factura.excel');
 
     // INVENTARIO CLIENTE (solo catálogo)
     Route::get('/inventario', [InventarioController::class, 'clienteIndex'])->name('inventario');
@@ -161,7 +166,7 @@ Route::prefix('cliente')->middleware('cliente')->name('cliente.')->group(functio
     });
 
 
-    
+
 
 
 
@@ -171,4 +176,3 @@ Route::prefix('cliente')->middleware('cliente')->name('cliente.')->group(functio
 |--------------------------------------------------------------------------
 */
 Route::get('/servicios-publicos', fn() => view('servicios.publicos'))->name('servicios.publicos');
-                                                                                                                                            

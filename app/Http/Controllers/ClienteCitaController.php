@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Barryvdh\DomPDF\Facade\Pdf;
+use App\Exports\FacturaExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 /**
  * ClienteCitaController
@@ -48,6 +50,65 @@ class ClienteCitaController extends Controller
     $pdf = Pdf::loadView('pdf.cita', compact('cita'));
 
     return $pdf->stream('cita_'.$id.'.pdf');
+
+}
+
+// ── Facturas con Excel
+public function generarExcel($id)
+{
+
+    $cita = DB::selectOne("
+
+        SELECT
+
+            c.IDcita,
+
+            c.Fecha_entrada,
+
+            c.Fecha_salida,
+
+            c.Estado,
+
+            c.IDservicio,
+
+            u.Name AS NombrePaciente,
+
+            u.Email,
+
+            s.Nombre AS Servicio,
+
+            s.Costo AS Precio
+
+        FROM Cita c
+
+        INNER JOIN Cliente cl
+        ON c.IDcliente = cl.IDcliente
+
+        INNER JOIN Users u
+        ON cl.ID = u.ID
+
+        LEFT JOIN Servicio s
+        ON c.IDservicio = s.IDservicio
+
+        WHERE c.IDcita = ?
+
+    ",[$id]);
+
+
+    if(!$cita)
+    {
+        abort(404);
+    }
+
+
+    return Excel::download(
+
+        new FacturaExport($cita),
+
+        'Factura_'.$id.'.xlsx'
+
+    );
+
 }
 
     // ── Listar todas las citas ────────────────────────────────────────────

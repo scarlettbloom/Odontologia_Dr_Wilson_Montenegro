@@ -9,31 +9,31 @@
 @section('content')
     <div class="container">
         <div class="header">
-           <h1>CLIENTE</h1>
+            <h1>CLIENTE</h1>
             <h2>Agenda de Citas</h2>
 
             <a href="{{ route('cliente.inventario') }}">
-                        <button type="button" class="btn-ventas ">
-                            Ventas
-                        </button>
-                    </a>
+                <button type="button" class="btn-ventas ">
+                    Ventas
+                </button>
+            </a>
 
-                    <a href="{{ route('servicios.publicos') }}">
-                        <button type="button" class="btn-servicios">
-                            Servicios
-                        </button>
-                    </a>
+            <a href="{{ route('servicios.publicos') }}">
+                <button type="button" class="btn-servicios">
+                    Servicios
+                </button>
+            </a>
 
-                <a href="{{ route('cliente.inventario') }}">
-                    <button type="button" class="btn-inventario">
-                        Inventario
-                    </button>
-                </a>
+            <a href="{{ route('cliente.inventario') }}">
+                <button type="button" class="btn-inventario">
+                    Inventario
+                </button>
+            </a>
 
-                <form action="{{ route('logout') }}" method="POST" style="display:inline;">
-                    @csrf
-                    <button type="submit" class="btn-cerrarsesion">Cerrar sesión</button>
-                </form>
+            <form action="{{ route('logout') }}" method="POST" style="display:inline;">
+                @csrf
+                <button type="submit" class="btn-cerrarsesion">Cerrar sesión</button>
+            </form>
         </div>
 
         <!-- FORMULARIO AGENDAR / EDITAR -->
@@ -56,7 +56,7 @@
                                 <select name="idservicio" required>
                                     <option value="">Seleccione servicio</option>
 
-                                    @foreach($servicios as $servicio)
+                                    @foreach ($servicios as $servicio)
                                         <option value="{{ $servicio->IDservicio }}">
                                             {{ $servicio->Nombre }}
                                         </option>
@@ -91,7 +91,7 @@
                                     required></td>
                             <td>
                                 <select name="idservicio" required>
-                                    @foreach($servicios as $servicio)
+                                    @foreach ($servicios as $servicio)
                                         <option value="{{ $servicio->IDservicio }}"
                                             {{ $citaEditar->IDservicio == $servicio->IDservicio ? 'selected' : '' }}>
                                             {{ $servicio->Nombre }}
@@ -149,6 +149,8 @@
                                     Editar</a>
                                 <a href="{{ route('cliente.citas.pdf', $cita->IDcita) }}" class="btn-warning2"
                                     target="_blank">🖨️ Imprimir</a>
+                                <a href="{{ route('cliente.factura.excel', $cita->IDcita) }}" class="btn-warning2"
+                                    target="_blank">Descargar Excel</a>
                             </td>
                         </tr>
                     @empty
