@@ -7,6 +7,8 @@ use App\Models\Inventario;
 use App\Models\Venta;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
+use App\Exports\VentaExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class VentaController extends Controller
 {
@@ -30,6 +32,25 @@ class VentaController extends Controller
 
     return $pdf->stream('venta_'.$id.'.pdf');
 }
+
+// ── Facturas con Excel
+public function generarExcel($id)
+{
+
+    $venta = Venta::with('producto')
+                    ->findOrFail($id);
+
+
+    return Excel::download(
+
+        new VentaExport($venta),
+
+        'Venta_'.$id.'.xlsx'
+
+    );
+
+}
+
     /**
      * Mostrar formulario para crear una nueva venta
      */

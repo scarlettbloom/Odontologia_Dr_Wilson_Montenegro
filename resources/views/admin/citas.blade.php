@@ -7,181 +7,188 @@
 @endsection
 
 @section('content')
-<div class="container">
-    <div class="header">
-        <h1>ADMINISTRADOR</h1>
-        <h2>Gestión de Citas</h2>
+    <div class="container">
+        <div class="header">
+            <h1>ADMINISTRADOR</h1>
+            <h2>Gestión de Citas</h2>
 
-<a href="{{ route('admin.ventas.index') }}">
-    <button type="button" class="btn-ventas">
-        Ventas
-    </button>
-</a>
+            <a href="{{ route('admin.ventas.index') }}">
+                <button type="button" class="btn-ventas">
+                    Ventas
+                </button>
+            </a>
 
-<a href="{{ route('admin.servicios.create') }}">
-    <button type="button" class="btn-servicios">
-        Servicios
-    </button>
-</a>
-
-
-<a href="{{ route('admin.inventario.index') }}">
-    <button type="button" class="btn-inventario">
-        Inventario
-    </button>
-</a>
-
-<a href="{{ route('admin.dashboard') }}">
-    <button type="button" class="btn-reportes">
-        Reportes
-    </button>
-</a>
-
-<a href="{{ route('admin.usuarios.index') }}">
-    <button type="button" class="btn-usuarios">
-        Usuarios
-    </button>
-</a>
+            <a href="{{ route('admin.servicios.create') }}">
+                <button type="button" class="btn-servicios">
+                    Servicios
+                </button>
+            </a>
 
 
-<form action="{{ route('logout') }}" method="POST" style="display:inline;">
-            @csrf
-            <button type="submit" class="btn-cerrarsesion">Cerrar sesión</button>
+            <a href="{{ route('admin.inventario.index') }}">
+                <button type="button" class="btn-inventario">
+                    Inventario
+                </button>
+            </a>
+
+            <a href="{{ route('admin.dashboard') }}">
+                <button type="button" class="btn-reportes">
+                    Reportes
+                </button>
+            </a>
+
+            <a href="{{ route('admin.usuarios.index') }}">
+                <button type="button" class="btn-usuarios">
+                    Usuarios
+                </button>
+            </a>
+
+
+            <form action="{{ route('logout') }}" method="POST" style="display:inline;">
+                @csrf
+                <button type="submit" class="btn-cerrarsesion">Cerrar sesión</button>
             </form>
-    </div>
+        </div>
 
-    <!-- FORMULARIO AGENDAR / EDITAR -->
-    <div class="form-section">
-        <h2 class="list-title">
-            {{ isset($citaEditar) ? '✏️ Editar Cita' : '➕ Agendar Nueva Cita' }}
-        </h2>
-        <form method="POST" action="{{ isset($citaEditar) ? route('admin.citas.update', $citaEditar->IDcita) : route('admin.citas.store') }}">
-            @csrf
-            @if(isset($citaEditar))
-                @method('PUT')
-            @endif
-            <table class="form-table">
-                <tr>
-                    <th>Fecha Entrada:</th>
-                    <th>Fecha Salida:</th>
-                    <th>Servicio:</th>
-                    <th>Cliente:</th>
-                    <th>Estado:</th>
-                    <th>Acción:</th>
-                </tr>
-                <tr>
-                    <td><input type="datetime-local" name="fechaEntrada"
-                               value="{{ isset($citaEditar) ? \Carbon\Carbon::parse($citaEditar->Fecha_entrada)->format('Y-m-d\TH:i') : '' }}"
-                               required></td>
-                    <td><input type="datetime-local" name="fechaSalida"
-                               value="{{ isset($citaEditar) ? \Carbon\Carbon::parse($citaEditar->Fecha_salida)->format('Y-m-d\TH:i') : '' }}"
-                               required></td>
-                    <td>
-                        <select name="idservicio" required>
-                            <option value="">Seleccione servicio</option>
-                            @foreach($servicios as $servicio)
-                                <option value="{{ $servicio->IDservicio }}"
-                                    {{ isset($citaEditar) && $citaEditar->IDservicio == $servicio->IDservicio ? 'selected' : '' }}>
-                                    {{ $servicio->Nombre }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </td>
-                    <td>
-                        <select name="idcliente" required>
-                            <option value=""> Seleccione Cliente</option>
-                            @foreach($cliente as $c)
-                                <option value="{{ $c->IDcliente }}"
-                                    {{ isset($citaEditar) && $citaEditar->IDcliente == $c->IDcliente ? 'selected' : '' }}>
-                                    {{ $c->Nombre }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </td>
-                    <td>
-                        <select name="estado" required>
-                            @foreach(['Pendiente','Confirmada','Cancelada','Atendida'] as $estado)
-                                <option value="{{ $estado }}"
-                                    {{ isset($citaEditar) && $citaEditar->Estado == $estado ? 'selected' : '' }}>
-                                    {{ $estado }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </td>
-                    <td>
-                        @if(isset($citaEditar))
-                            <button type="submit" class="btn-agendar">💾 Guardar cambios</button>
-                            <a href="{{ route('admin.citas.index') }}" class="btn-cancelar">❌ Cancelar</a>
-                        @else
-                            <button type="submit" class="btn-agendar">Agendar</button>
-                        @endif
-                    </td>
-                </tr>
-            </table>
-        </form>
-    </div>
-
-    <!-- BUSCADOR -->
-    <div class="search-bar">
-        <form method="GET" action="{{ route('admin.citas.index') }}">
-            <input type="text" name="search" placeholder="Buscar por nombre, estado o servicio..."
-                   value="{{ request('search') }}">
-            <button type="submit">Buscar</button>
-        </form>
-    </div>
-
-    <!-- ALERTAS -->
-    @if(session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
-    @endif
-    @if(session('error'))
-        <div class="alert alert-error">{{ session('error') }}</div>
-    @endif
-
-    <!-- TABLA -->
-    <div class="table-section">
-        <h2 class="list-title">📋 Lista de Citas</h2>
-        <table class="data-table">
-            <thead>
-                <tr>
-                    <th>ID USUARIO</th>
-                    <th>NOMBRE</th>
-                    <th>FECHA ENTRADA</th>
-                    <th>FECHA SALIDA</th>
-                    <th>ESTADO</th>
-                    <th>SERVICIO</th>
-                    <th>ACCIONES</th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse($citas as $cita)
+        <!-- FORMULARIO AGENDAR / EDITAR -->
+        <div class="form-section">
+            <h2 class="list-title">
+                {{ isset($citaEditar) ? '✏️ Editar Cita' : '➕ Agendar Nueva Cita' }}
+            </h2>
+            <form method="POST"
+                action="{{ isset($citaEditar) ? route('admin.citas.update', $citaEditar->IDcita) : route('admin.citas.store') }}">
+                @csrf
+                @if (isset($citaEditar))
+                    @method('PUT')
+                @endif
+                <table class="form-table">
                     <tr>
-                        <td>{{ $cita->ID }}</td>
-                        <td>{{ $cita->Nombre }}</td>
-                        <td>{{ \Carbon\Carbon::parse($cita->Fecha_entrada)->format('d/m/Y H:i') }}</td>
-                        <td>{{ \Carbon\Carbon::parse($cita->Fecha_salida)->format('d/m/Y H:i') }}</td>
+                        <th>Fecha Entrada:</th>
+                        <th>Fecha Salida:</th>
+                        <th>Servicio:</th>
+                        <th>Cliente:</th>
+                        <th>Estado:</th>
+                        <th>Acción:</th>
+                    </tr>
+                    <tr>
+                        <td><input type="datetime-local" name="fechaEntrada"
+                                value="{{ isset($citaEditar) ? \Carbon\Carbon::parse($citaEditar->Fecha_entrada)->format('Y-m-d\TH:i') : '' }}"
+                                required></td>
+                        <td><input type="datetime-local" name="fechaSalida"
+                                value="{{ isset($citaEditar) ? \Carbon\Carbon::parse($citaEditar->Fecha_salida)->format('Y-m-d\TH:i') : '' }}"
+                                required></td>
                         <td>
-                            <span class="estado-badge estado-{{ strtolower($cita->Estado) }}">
-                                {{ $cita->Estado }}
-                            </span>
+                            <select name="idservicio" required>
+                                <option value="">Seleccione servicio</option>
+                                @foreach ($servicios as $servicio)
+                                    <option value="{{ $servicio->IDservicio }}"
+                                        {{ isset($citaEditar) && $citaEditar->IDservicio == $servicio->IDservicio ? 'selected' : '' }}>
+                                        {{ $servicio->Nombre }}
+                                    </option>
+                                @endforeach
+                            </select>
                         </td>
-                        <td>{{ $cita->Servicio }}</td>
                         <td>
-                            <a href="{{ route('admin.citas.edit', $cita->IDcita) }}" class="btn-warning">✏️ Editar</a>
-                            <form action="{{ route('admin.citas.destroy', $cita->IDcita) }}" method="POST" style="display:inline;"
-                                  onsubmit="return confirm('¿Seguro que deseas eliminar esta cita?')">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn-danger">🗑️ Eliminar</button>
-                            </form>
-                             <a href="{{ route('admin.citas.pdf', $cita->IDcita) }}" class="btn-warning2" target="_blank">🖨️ Imprimir</a>
+                            <select name="idcliente" required>
+                                <option value=""> Seleccione Cliente</option>
+                                @foreach ($cliente as $c)
+                                    <option value="{{ $c->IDcliente }}"
+                                        {{ isset($citaEditar) && $citaEditar->IDcliente == $c->IDcliente ? 'selected' : '' }}>
+                                        {{ $c->Nombre }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </td>
+                        <td>
+                            <select name="estado" required>
+                                @foreach (['Pendiente', 'Confirmada', 'Cancelada', 'Atendida'] as $estado)
+                                    <option value="{{ $estado }}"
+                                        {{ isset($citaEditar) && $citaEditar->Estado == $estado ? 'selected' : '' }}>
+                                        {{ $estado }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </td>
+                        <td>
+                            @if (isset($citaEditar))
+                                <button type="submit" class="btn-agendar">💾 Guardar cambios</button>
+                                <a href="{{ route('admin.citas.index') }}" class="btn-cancelar">❌ Cancelar</a>
+                            @else
+                                <button type="submit" class="btn-agendar">Agendar</button>
+                            @endif
                         </td>
                     </tr>
-                @empty
-                    <tr><td colspan="7" class="no-data">No hay citas registradas</td></tr>
-                @endforelse
-            </tbody>
-        </table>
+                </table>
+            </form>
+        </div>
+
+        <!-- BUSCADOR -->
+        <div class="search-bar">
+            <form method="GET" action="{{ route('admin.citas.index') }}">
+                <input type="text" name="search" placeholder="Buscar por nombre, estado o servicio..."
+                    value="{{ request('search') }}">
+                <button type="submit">Buscar</button>
+            </form>
+        </div>
+
+        <!-- ALERTAS -->
+        @if (session('success'))
+            <div class="alert alert-success">{{ session('success') }}</div>
+        @endif
+        @if (session('error'))
+            <div class="alert alert-error">{{ session('error') }}</div>
+        @endif
+
+        <!-- TABLA -->
+        <div class="table-section">
+            <h2 class="list-title">📋 Lista de Citas</h2>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>ID USUARIO</th>
+                        <th>NOMBRE</th>
+                        <th>FECHA ENTRADA</th>
+                        <th>FECHA SALIDA</th>
+                        <th>ESTADO</th>
+                        <th>SERVICIO</th>
+                        <th>ACCIONES</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($citas as $cita)
+                        <tr>
+                            <td>{{ $cita->ID }}</td>
+                            <td>{{ $cita->Nombre }}</td>
+                            <td>{{ \Carbon\Carbon::parse($cita->Fecha_entrada)->format('d/m/Y H:i') }}</td>
+                            <td>{{ \Carbon\Carbon::parse($cita->Fecha_salida)->format('d/m/Y H:i') }}</td>
+                            <td>
+                                <span class="estado-badge estado-{{ strtolower($cita->Estado) }}">
+                                    {{ $cita->Estado }}
+                                </span>
+                            </td>
+                            <td>{{ $cita->Servicio }}</td>
+                            <td>
+                                <a href="{{ route('admin.citas.edit', $cita->IDcita) }}" class="btn-warning">✏️ Editar</a>
+                                <form action="{{ route('admin.citas.destroy', $cita->IDcita) }}" method="POST"
+                                    style="display:inline;"
+                                    onsubmit="return confirm('¿Seguro que deseas eliminar esta cita?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn-danger">🗑️ Eliminar</button>
+                                </form>
+                                <a href="{{ route('admin.citas.pdf', $cita->IDcita) }}" class="btn-warning2"
+                                    target="_blank">🖨️ Imprimir</a>
+                                <a href="{{ route('admin.factura.excel', $cita->IDcita) }}" class="btn-warning2"
+                                    target="_blank">Descargar Excel</a>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="7" class="no-data">No hay citas registradas</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
 @endsection

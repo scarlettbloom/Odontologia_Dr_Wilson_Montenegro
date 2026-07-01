@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Auth;
+use App\Exports\FacturaExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 /**
  * EmpleadoCitaController
@@ -51,6 +53,64 @@ class EmpleadoCitaController extends Controller
     return $pdf->stream('cita_'.$id.'.pdf');
 }
 
+// ── Facturas con Excel
+public function generarExcel($id)
+{
+
+    $cita = DB::selectOne("
+
+        SELECT
+
+            c.IDcita,
+
+            c.Fecha_entrada,
+
+            c.Fecha_salida,
+
+            c.Estado,
+
+            c.IDservicio,
+
+            u.Name AS NombrePaciente,
+
+            u.Email,
+
+            s.Nombre AS Servicio,
+
+            s.Costo AS Precio
+
+        FROM Cita c
+
+        INNER JOIN Cliente cl
+        ON c.IDcliente = cl.IDcliente
+
+        INNER JOIN Users u
+        ON cl.ID = u.ID
+
+        LEFT JOIN Servicio s
+        ON c.IDservicio = s.IDservicio
+
+        WHERE c.IDcita = ?
+
+    ",[$id]);
+
+
+    if(!$cita)
+    {
+        abort(404);
+    }
+
+
+    return Excel::download(
+
+        new FacturaExport($cita),
+
+        'Factura_'.$id.'.xlsx'
+
+    );
+
+}
+
     // ── Listar citas con búsqueda ─────────────────────────────────────────
     public function index(Request $request)
 {
@@ -62,7 +122,7 @@ class EmpleadoCitaController extends Controller
         return redirect()->route('empleado.citas.index')
             ->with('error', 'Solo se puede buscar por nombre, estado o servicio.');
     }
-    
+
     $like   = "%{$search}%";
 
     $citas = DB::select("
@@ -119,7 +179,7 @@ class EmpleadoCitaController extends Controller
             return redirect()->route('empleado.citas.index')
              ->with('error', 'No es posible agendar una cita en una fecha pasada.');
         }
-        
+
         // 2. Salida no puede ser igual ni anterior a entrada
         if (Carbon::parse($request->fechaSalida)->lte(Carbon::parse($request->fechaEntrada))) {
             return redirect()->route('empleado.citas.index')
@@ -219,7 +279,7 @@ class EmpleadoCitaController extends Controller
         if ($horaEntrada < '06:00' || $horaEntrada > '20:00' ||
             $horaSalida < '06:00' || $horaSalida > '20:00') {
 
-            return redirect()->route('admin.citas.index')
+            return redirect()->route('empleado.citas.index')
                 ->with('error', 'Las citas solo pueden agendarse dentro del horario laboral (06:00 AM a 08:00 PM).');
         }
 
