@@ -48,13 +48,20 @@
                        class="input-line w-full bg-transparent text-lg">
                 @error('precio_unitario') <span class="text-red-500 text-xs mt-1">{{ $message }}</span> @enderror
             </div>
+<div class="form-group">
+    <label for="proveedor_id">Proveedor:</label>
+    <select name="nombre_proveedor" id="nombre_proveedor" class="form-control">
+    @foreach($proveedors as $proveedor)
+        <option value="{{ $proveedor->nombre }}" 
+            {{ $item->nombre_proveedor == $proveedor->nombre ? 'selected' : '' }}>
+            {{ $proveedor->nombre }}
+        </option>
+    @endforeach
+</select>
 
-            <div class="flex flex-col">
-                <label class="text-sm font-semibold text-slate-500 mb-1">Nombre proveedor:</label>
-                <input type="text" name="nombre_proveedor" value="{{ old('nombre_proveedor', $item->nombre_proveedor) }}"
-                       class="input-line w-full bg-transparent text-lg">
-                @error('nombre_proveedor') <span class="text-red-500 text-xs mt-1">{{ $message }}</span> @enderror
-            </div>
+</div>
+
+
 
             <div class="flex flex-col">
     <label class="text-sm font-semibold text-slate-500 mb-1">Descripción del producto:</label>

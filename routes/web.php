@@ -14,6 +14,7 @@ use App\Http\Controllers\VentaController;
 use App\Http\Controllers\ClienteVentaController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AdminUsuarioController;
+use App\Http\Controllers\ProveedorController;
 
 /*
 |--------------------------------------------------------------------------
@@ -68,18 +69,28 @@ Route::prefix('admin')->middleware('admin')->name('admin.')->group(function () {
     Route::get('/ventas/create', [VentaController::class, 'create'])->name('ventas.create');
     Route::get('/ventas/pdf/{id}',[VentaController::class, 'generarPdf'])->name('ventas.pdf');
 
-    // INVENTARIO
+    // INVENTARIO (ADMIN)
     Route::resource('inventario', InventarioController::class);
     Route::get('/inventario/{id}/delete', [InventarioController::class, 'confirmDelete'])->name('inventario.delete');
+    // OJO: no redefinimos admin.inventario.index, ya lo crea el resource:
+    // GET /admin/inventario  → nombre: admin.inventario.
+    Route::get('/inventario/{id}/toggle', [InventarioController::class, 'toggleEstado'])
+    ->name('inventario.toggle');
 
-    // MOVIMIENTO DE STOCK (ADMIN) — RUTA CORRECTA Y FUERA DEL RESOURCE
-    Route::get('/movimiento_stock', [InventarioController::class, 'movimiento'])->name('inventario.movimiento_stock');
+
+    // PROVEEDORES (ADMIN)
+    Route::resource('proveedors', ProveedorController::class);
+    Route::get('/proveedors/{id}/delete', [ProveedorController::class, 'confirmDelete'])
+        ->name('proveedors.delete');
+
+    // MOVIMIENTO DE STOCK (ADMIN)
+    Route::get('/movimiento_stock', [InventarioController::class, 'movimiento'])
+        ->name('inventario.movimiento_stock');
 
     // DASHBOARD
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    
-    // USUARIOS
 
+    // USUARIOS
     Route::get('/usuarios', [AdminUsuarioController::class, 'index'])->name('usuarios.index');
     Route::post('/usuarios', [AdminUsuarioController::class, 'store'])->name('usuarios.store');
     Route::get('/usuarios/{id}/editar', [AdminUsuarioController::class, 'edit'])->name('usuarios.edit');
@@ -101,32 +112,25 @@ Route::prefix('empleado')->middleware('empleado')->name('empleado.')->group(func
     Route::put('/citas/{id}', [EmpleadoCitaController::class, 'update'])->name('citas.update');
     Route::delete('/citas/{id}', [EmpleadoCitaController::class, 'destroy'])->name('citas.destroy');
     Route::get('/citas/pdf/{id}', [EmpleadoCitaController::class, 'generarPdf'])->name('citas.pdf');
-    
-     // SERVICIOS
-     Route::get('/servicios', [ServicioController::class, 'index'])->name('servicios.index');
-     Route::get('/servicios/create', [ServicioController::class, 'create'])->name('servicios.create');
-     Route::post('/servicios', [ServicioController::class, 'store'])->name('servicios.store');
-     Route::get('/servicios/{id}/edit', [ServicioController::class, 'edit'])->name('servicios.edit');
-     Route::put('/servicios/{id}', [ServicioController::class, 'update'])->name('servicios.update');
-     Route::delete('/servicios/{id}', [ServicioController::class, 'destroy'])->name('servicios.destroy');
 
-    // VENTAS
-    Route::get('/ventas', [VentaController::class, 'index'])->name('ventas.index');
-    Route::post('/ventas', [VentaController::class, 'store'])->name('ventas.store');
-    Route::get('/ventas/descuento', [VentaController::class, 'descuento'])->name('ventas.descuento');
-    Route::get('/ventas/reporte', [VentaController::class, 'reporte'])->name('ventas.reporte');
-    Route::get('/ventas/create', [VentaController::class, 'create'])->name('ventas.create');
-    Route::get('/ventas/pdf/{id}',[VentaController::class, 'generarPdf'])->name('ventas.pdf');                                                              
+    // SERVICIOS
+    Route::get('/servicios', [ServicioController::class, 'index'])->name('servicios.index');
+    Route::get('/servicios/create', [ServicioController::class, 'create'])->name('servicios.create');
+    Route::post('/servicios', [ServicioController::class, 'store'])->name('servicios.store');
+    Route::get('/servicios/{id}/edit', [ServicioController::class, 'edit'])->name('servicios.edit');
+    Route::put('/servicios/{id}', [ServicioController::class, 'update'])->name('servicios.update');
+    Route::delete('/servicios/{id}', [ServicioController::class, 'destroy'])->name('servicios.destroy');
 
-
-    // INVENTARIO EMPLEADO
+    // INVENTARIO (EMPLEADO)
     Route::resource('inventario', InventarioController::class);
     Route::get('/inventario/{id}/delete', [InventarioController::class, 'confirmDelete'])->name('inventario.delete');
+    // Aquí el resource crea:
+    // GET /empleado/inventario → nombre: empleado.inventario.index
 
-    // MOVIMIENTO DE STOCK (EMPLEADO) — MISMA VISTA DEL ADMIN
+    // MOVIMIENTO DE STOCK (EMPLEADO)
     Route::get('/movimiento_stock', [InventarioController::class, 'movimiento'])
         ->name('inventario.movimiento_stock');
-    
+
     // DASHBOARD
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 });
@@ -137,7 +141,10 @@ Route::prefix('empleado')->middleware('empleado')->name('empleado.')->group(func
 |--------------------------------------------------------------------------
 */
 Route::prefix('cliente')->middleware('cliente')->name('cliente.')->group(function () {
-    Route::put('/carrito/actualizar/{id}', [ClienteVentaController::class, 'actualizarCantidad'])->name('carrito.actualizar');
+
+    Route::put('/carrito/actualizar/{id}', [ClienteVentaController::class, 'actualizarCantidad'])
+        ->name('carrito.actualizar');
+
     // CITAS
     Route::get('/citas', [ClienteCitaController::class, 'index'])->name('citas.index');
     Route::post('/citas', [ClienteCitaController::class, 'store'])->name('citas.store');
@@ -156,14 +163,8 @@ Route::prefix('cliente')->middleware('cliente')->name('cliente.')->group(functio
     Route::post('/checkout', [ClienteVentaController::class, 'checkout'])->name('checkout');
     Route::get('/compras', [ClienteVentaController::class, 'compras'])->name('compras');
     Route::post('/checkout/form', [ClienteVentaController::class, 'checkoutForm'])->name('checkout_form');
-     Route::get('/checkout/form', [ClienteVentaController::class, 'checkoutForm'])->name('checkout_form');
-
-    });
-
-
-    
-
-
+    Route::get('/checkout/form', [ClienteVentaController::class, 'checkoutForm'])->name('checkout_form');
+});
 
 /*
 |--------------------------------------------------------------------------
@@ -171,4 +172,3 @@ Route::prefix('cliente')->middleware('cliente')->name('cliente.')->group(functio
 |--------------------------------------------------------------------------
 */
 Route::get('/servicios-publicos', fn() => view('servicios.publicos'))->name('servicios.publicos');
-                                                                                                                                            

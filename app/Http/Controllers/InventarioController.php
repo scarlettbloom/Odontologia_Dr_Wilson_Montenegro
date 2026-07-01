@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Inventario;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Proveedor;
 
 class InventarioController extends Controller
 { 
@@ -12,30 +13,33 @@ class InventarioController extends Controller
     // INDEX
     // ============================
     public function index(Request $request)
-    {
-        $buscar = $request->get('buscar');
+{
+    $buscar = $request->get('buscar');
 
-        $items = Inventario::when($buscar, function ($query, $buscar) {
-            return $query->where('nombre', 'LIKE', "%{$buscar}%")
-                         ->orWhere('nombre_proveedor', 'LIKE', "%{$buscar}%");
-        })->get();
+    $items = Inventario::when($buscar, function ($query, $buscar) {
+        return $query->where('nombre', 'LIKE', "%{$buscar}%")
+                     ->orWhere('nombre_proveedor', 'LIKE', "%{$buscar}%");
+    })->get();
 
-        $rol = strtolower(trim(Auth::user()->rol));
+    // 🔹 Agregar proveedores
+    $proveedores = \App\Models\Proveedor::all();
 
-        if ($rol === 'administrador' || $rol === 'admin') {
-            return view('admin.index', compact('items'));
-        }
+    $rol = strtolower(trim(Auth::user()->rol));
 
-        if ($rol === 'empleado') {
-            return view('empleado.index', compact('items'));
-        }
-
-        if ($rol === 'cliente') {
-            return redirect()->route('cliente.inventario');
-        }
-
-        abort(403, 'Rol no autorizado');
+    if ($rol === 'administrador' || $rol === 'admin') {
+        return view('admin.index', compact('items', 'proveedores'));
     }
+
+    if ($rol === 'empleado') {
+        return view('empleado.index', compact('items', 'proveedores'));
+    }
+
+    if ($rol === 'cliente') {
+        return redirect()->route('cliente.inventario');
+    }
+
+    abort(403, 'Rol no autorizado');
+}
 
     // ============================
     // CREATE
@@ -95,20 +99,22 @@ class InventarioController extends Controller
     // EDIT
     // ============================
     public function edit($id)
-    {
-        $item = Inventario::findOrFail($id);
-        $rol = strtolower(trim(Auth::user()->rol));
+{
+    $item = Inventario::findOrFail($id);
+    $rol = strtolower(trim(Auth::user()->rol));
+    $proveedors = Proveedor::all();
 
-        if ($rol === 'administrador' || $rol === 'admin') {
-            return view('admin.edit', compact('item'));
-        }
-
-        if ($rol === 'empleado') {
-            return view('empleado.edit', compact('item'));
-        }
-
-        abort(403);
+    if ($rol === 'administrador' || $rol === 'admin') {
+        return view('admin.edit', compact('item', 'proveedors'));
     }
+
+    if ($rol === 'empleado') {
+        return view('empleado.edit', compact('item', 'proveedors'));
+    }
+
+    abort(403);
+}
+
 
     // ============================
     // UPDATE
@@ -269,4 +275,16 @@ $item->save();
 
         return redirect()->route('cliente.carrito.ver')->with('success', 'Producto agregado al carrito.');
     }
+
+    public function toggleEstado($id)
+{
+    $item = Inventario::findOrFail($id);
+
+    $item->estado = $item->estado === 'activo' ? 'inactivo' : 'activo';
+    $item->save();
+
+    return redirect()->route('admin.inventario.index')
+                     ->with('success', 'Estado del producto actualizado.');
+}
+
 }

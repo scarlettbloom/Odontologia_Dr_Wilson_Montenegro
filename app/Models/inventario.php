@@ -18,6 +18,7 @@ class Inventario extends Model
         'idproducto',
         'descripcion',
         'ultima_actualizacion',
+        'estado'
     ];
 
     public function movimientos()

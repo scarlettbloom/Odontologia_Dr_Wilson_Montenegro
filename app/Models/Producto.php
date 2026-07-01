@@ -20,4 +20,11 @@ class Producto extends Model
         'idadmin',
         'descripcion',
     ];
+
+    public function proveedor()
+{
+    return $this->belongsTo(Proveedor::class);
 }
+
+}
+
