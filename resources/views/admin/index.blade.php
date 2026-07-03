@@ -5,7 +5,24 @@
     <title>Inventario</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* 🔒 Fila deshabilitada */
+        .fila-inactiva {
+            background-color: #e5e7eb !important; /* slate-200 */
+            opacity: 0.55;
+        }
+
+        /* 🔒 Botón deshabilitado */
+        .btn-disabled {
+            background-color: #9ca3af !important; /* gray-400 */
+            color: #f3f4f6 !important; /* gray-100 */
+            cursor: not-allowed !important;
+            pointer-events: none !important;
+        }
+    </style>
 </head>
+
 <body class="bg-slate-100 font-sans">
 
 <div class="max-w-6xl mx-auto mt-8 bg-white shadow-xl rounded-xl p-8">
@@ -67,9 +84,11 @@
                     <th class="px-4 py-3 text-center">Acciones</th>
                 </tr>
             </thead>
+
             <tbody class="divide-y divide-slate-100">
                 @forelse($items as $item)
-                    <tr class="hover:bg-slate-50">
+
+                    <tr class="hover:bg-slate-50 {{ $item->estado === 'inactivo' ? 'fila-inactiva' : '' }}">
                         <td class="px-4 py-3 font-mono text-slate-500">{{ $item->idinventario }}</td>
                         <td class="px-4 py-3 font-semibold">{{ $item->nombre }}</td>
                         <td class="px-4 py-3">{{ $item->stock }}</td>
@@ -78,31 +97,44 @@
                         <td class="px-4 py-3" style="max-width: 250px; word-wrap: break-word;">
                             {{ $item->descripcion }}
                         </td>
+
                         <td class="px-4 py-3 text-center">
                             <div class="flex justify-center gap-2">
+
+                                {{-- EDITAR --}}
                                 <a href="{{ route('admin.inventario.edit', $item->idinventario) }}"
-                                   class="bg-yellow-400 hover:bg-yellow-500 text-white px-3 py-1 rounded text-xs font-semibold">
+                                   class="{{ $item->estado === 'inactivo'
+                                            ? 'btn-disabled'
+                                            : 'bg-yellow-400 hover:bg-yellow-500 text-white' }}
+                                          px-3 py-1 rounded text-xs font-semibold">
                                    <i class="fa-solid fa-pen"></i> Editar
                                 </a>
+
+                                {{-- ELIMINAR --}}
                                 <a href="{{ route('admin.inventario.delete', $item->idinventario) }}"
-                                   class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-xs font-semibold">
+                                   class="{{ $item->estado === 'inactivo'
+                                            ? 'btn-disabled'
+                                            : 'bg-red-500 hover:bg-red-600 text-white' }}
+                                          px-3 py-1 rounded text-xs font-semibold">
                                    <i class="fa-solid fa-trash"></i> Eliminar
                                 </a>
 
+                                {{-- TOGGLE --}}
                                 <a href="{{ route('admin.inventario.toggle', $item->idinventario) }}"
-   class="bg-gray-600 hover:bg-gray-700 text-white px-3 py-1 rounded text-xs font-semibold">
+                                   class="bg-gray-600 hover:bg-gray-700 text-white px-3 py-1 rounded text-xs font-semibold">
 
-    @if($item->estado === 'activo')
-        <i class="fa-solid fa-ban"></i> Deshabilitar
-    @else
-        <i class="fa-solid fa-check"></i> Habilitar
-    @endif
+                                    @if($item->estado === 'activo')
+                                        <i class="fa-solid fa-ban"></i> Deshabilitar
+                                    @else
+                                        <i class="fa-solid fa-check"></i> Habilitar
+                                    @endif
 
-</a>
+                                </a>
 
                             </div>
                         </td>
                     </tr>
+
                 @empty
                     <tr>
                         <td colspan="7" class="text-center py-10 text-slate-400">
@@ -133,6 +165,7 @@
                     <th class="px-4 py-3 text-center">Acciones</th>
                 </tr>
             </thead>
+
             <tbody class="divide-y divide-slate-100">
                 @foreach($proveedores as $proveedor)
                     <tr class="hover:bg-slate-50">
@@ -142,17 +175,19 @@
                         <td class="px-4 py-3">{{ $proveedor->telefono }}</td>
                         <td class="px-4 py-3">{{ $proveedor->email }}</td>
                         <td class="px-4 py-3">{{ $proveedor->direccion }}</td>
+
                         <td class="px-4 py-3 text-center">
                             <div class="flex justify-center gap-2">
+
                                 <a href="{{ route('admin.proveedors.edit', $proveedor->id) }}"
                                    class="bg-yellow-400 hover:bg-yellow-500 text-white px-3 py-1 rounded text-xs font-semibold">
                                    <i class="fa-solid fa-pen"></i> Editar
                                 </a>
-                               <a href="{{ route('admin.proveedors.delete', $proveedor->id) }}"
-   class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-xs font-semibold">
-    <i class="fa-solid fa-trash"></i> Eliminar
-</a>
 
+                                <a href="{{ route('admin.proveedors.delete', $proveedor->id) }}"
+                                   class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-xs font-semibold">
+                                   <i class="fa-solid fa-trash"></i> Eliminar
+                                </a>
 
                             </div>
                         </td>
@@ -165,3 +200,4 @@
 
 </body>
 </html>
+

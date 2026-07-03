@@ -13,51 +13,51 @@ class InventarioController extends Controller
     // INDEX
     // ============================
     public function index(Request $request)
-{
-    $buscar = $request->get('buscar');
+    {
+        $buscar = $request->get('buscar');
 
-    $items = Inventario::when($buscar, function ($query, $buscar) {
-        return $query->where('nombre', 'LIKE', "%{$buscar}%")
-                     ->orWhere('nombre_proveedor', 'LIKE', "%{$buscar}%");
-    })->get();
+        $items = Inventario::when($buscar, function ($query, $buscar) {
+            return $query->where('nombre', 'LIKE', "%{$buscar}%")
+                         ->orWhere('nombre_proveedor', 'LIKE', "%{$buscar}%");
+        })->get();
 
-    // 🔹 Agregar proveedores
-    $proveedores = \App\Models\Proveedor::all();
+        $proveedores = Proveedor::all();
+        $rol = strtolower(trim(Auth::user()->rol));
 
-    $rol = strtolower(trim(Auth::user()->rol));
+        if ($rol === 'administrador' || $rol === 'admin') {
+            return view('admin.index', compact('items', 'proveedores'));
+        }
 
-    if ($rol === 'administrador' || $rol === 'admin') {
-        return view('admin.index', compact('items', 'proveedores'));
+        if ($rol === 'empleado') {
+            return view('empleado.index', compact('items', 'proveedores'));
+        }
+
+        if ($rol === 'cliente') {
+            return redirect()->route('cliente.inventario');
+        }
+
+        abort(403, 'Rol no autorizado');
     }
-
-    if ($rol === 'empleado') {
-        return view('empleado.index', compact('items', 'proveedores'));
-    }
-
-    if ($rol === 'cliente') {
-        return redirect()->route('cliente.inventario');
-    }
-
-    abort(403, 'Rol no autorizado');
-}
 
     // ============================
     // CREATE
     // ============================
-    public function create()
-    {
-        $rol = strtolower(trim(Auth::user()->rol));
+  public function create()
+{
+    $rol = strtolower(trim(Auth::user()->rol));
+    $proveedors = \App\Models\Proveedor::all(); // 🔹 Agregar esta línea
 
-        if ($rol === 'administrador' || $rol === 'admin') {
-            return view('admin.create');
-        }
-
-        if ($rol === 'empleado') {
-            return view('empleado.create');
-        }
-
-        abort(403);
+    if ($rol === 'administrador' || $rol === 'admin') {
+        return view('admin.create', compact('proveedors')); // 🔹 Pasar a la vista
     }
+
+    if ($rol === 'empleado') {
+        return view('empleado.create', compact('proveedors'));
+    }
+
+    abort(403);
+}
+
 
     // ============================
     // STORE
@@ -99,22 +99,27 @@ class InventarioController extends Controller
     // EDIT
     // ============================
     public function edit($id)
-{
-    $item = Inventario::findOrFail($id);
-    $rol = strtolower(trim(Auth::user()->rol));
-    $proveedors = Proveedor::all();
+    {
+        $item = Inventario::findOrFail($id);
 
-    if ($rol === 'administrador' || $rol === 'admin') {
-        return view('admin.edit', compact('item', 'proveedors'));
+        // 🔒 Bloquear edición si está inactivo
+        if ($item->estado === 'inactivo') {
+            return redirect()->back()->with('error', 'Este producto está deshabilitado y no puede ser editado.');
+        }
+
+        $rol = strtolower(trim(Auth::user()->rol));
+        $proveedors = Proveedor::all();
+
+        if ($rol === 'administrador' || $rol === 'admin') {
+            return view('admin.edit', compact('item', 'proveedors'));
+        }
+
+        if ($rol === 'empleado') {
+            return view('empleado.edit', compact('item', 'proveedors'));
+        }
+
+        abort(403);
     }
-
-    if ($rol === 'empleado') {
-        return view('empleado.edit', compact('item', 'proveedors'));
-    }
-
-    abort(403);
-}
-
 
     // ============================
     // UPDATE
@@ -122,6 +127,11 @@ class InventarioController extends Controller
     public function update(Request $request, $id)
     {
         $item = Inventario::findOrFail($id);
+
+        // 🔒 Bloquear actualización si está inactivo
+        if ($item->estado === 'inactivo') {
+            return redirect()->back()->with('error', 'Este producto está deshabilitado y no puede ser actualizado.');
+        }
 
         $request->validate([
             'nombre'           => 'required|string|max:50',
@@ -132,16 +142,15 @@ class InventarioController extends Controller
         ]);
 
         $item->update($request->only([
-    'nombre',
-    'stock',
-    'precio_unitario',
-    'nombre_proveedor',
-    'descripcion'
-]));
+            'nombre',
+            'stock',
+            'precio_unitario',
+            'nombre_proveedor',
+            'descripcion'
+        ]));
 
-$item->ultima_actualizacion = now(); // 🔹 Guarda la fecha y hora actual
-$item->save();
-
+        $item->ultima_actualizacion = now();
+        $item->save();
 
         $rol = strtolower(trim(Auth::user()->rol));
 
@@ -164,6 +173,12 @@ $item->save();
     public function destroy($id)
     {
         $item = Inventario::findOrFail($id);
+
+        // 🔒 Bloquear eliminación si está inactivo
+        if ($item->estado === 'inactivo') {
+            return redirect()->back()->with('error', 'Este producto está deshabilitado y no puede ser eliminado.');
+        }
+
         $item->delete();
 
         $rol = strtolower(trim(Auth::user()->rol));
@@ -252,8 +267,8 @@ $item->save();
         }
 
         $carrito = session()->get('carrito', []);
-
         $existe = false;
+
         foreach ($carrito as &$item) {
             if ($item['id'] == $producto->idinventario) {
                 $item['cantidad']++;
@@ -276,15 +291,18 @@ $item->save();
         return redirect()->route('cliente.carrito.ver')->with('success', 'Producto agregado al carrito.');
     }
 
+    // ============================
+    // TOGGLE ESTADO
+    // ============================
     public function toggleEstado($id)
-{
-    $item = Inventario::findOrFail($id);
+    {
+        $item = Inventario::findOrFail($id);
 
-    $item->estado = $item->estado === 'activo' ? 'inactivo' : 'activo';
-    $item->save();
+        $item->estado = $item->estado === 'activo' ? 'inactivo' : 'activo';
+        $item->save();
 
-    return redirect()->route('admin.inventario.index')
-                     ->with('success', 'Estado del producto actualizado.');
+        return redirect()->route('admin.inventario.index')
+                         ->with('success', 'Estado del producto actualizado.');
+    }
 }
 
-}
