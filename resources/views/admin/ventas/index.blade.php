@@ -64,18 +64,38 @@
                         </thead>
                         <tbody>
                             @foreach($productos as $p)
-                            <tr>
-                                <td>{{ $p->nombre }}</td>
-                                <td>${{ $p->precio_unitario }}</td>
-                                <td>{{ $p->stock }}</td>
-                                <td>
-                                    <button class="btn btn-primary btn-add"
-                                        onclick="agregarProducto({{ $p->idinventario }}, '{{ $p->nombre }}', {{ $p->precio_unitario }}, {{ $p->stock }})">
-                                        + Agregar
-                                    </button>
-                                </td>
-                            </tr>
-                            @endforeach
+<tr style="{{ $p->estado == 0 ? 'opacity:0.5; background:#f3f4f6;' : '' }}">
+    <td>{{ $p->nombre }}</td>
+    <td>${{ number_format($p->precio_unitario,2) }}</td>
+    <td>{{ $p->stock }}</td>
+
+    <td>
+        @if($p->estado == 'activo')
+
+            <button
+                class="btn btn-primary btn-add"
+                onclick="agregarProducto(
+                    {{ $p->idinventario }},
+                    '{{ $p->nombre }}',
+                    {{ $p->precio_unitario }},
+                    {{ $p->stock }}
+                )">
+                + Agregar
+            </button>
+
+        @else
+
+            <button
+                class="btn"
+                style="background:#9ca3af;color:white;cursor:not-allowed;"
+                disabled>
+                Deshabilitado
+            </button>
+
+        @endif
+    </td>
+</tr>
+@endforeach
                         </tbody>
                     </table>
                 </div>
