@@ -3,11 +3,11 @@
 @section('content')
 <style>
     body {
-        background-color: #f8fafc !important; /* color gris claro */
+        background-color: #f8fafc !important;
     }
 
     main {
-        background-color: transparent !important; /* elimina el fondo azul del contenedor principal */
+        background-color: transparent !important;
     }
 
     .container-proveedor {
@@ -90,32 +90,75 @@
     <form action="{{ route('admin.proveedors.store') }}" method="POST">
         @csrf
 
+        <!-- Nombre -->
         <div class="form-group">
             <label for="nombre">Nombre</label>
-            <input type="text" name="nombre" id="nombre" required>
+            <input
+                type="text"
+                name="nombre"
+                id="nombre"
+                required
+                minlength="3"
+                maxlength="100"
+                pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ0-9\s.,&-]+"
+                title="El nombre debe tener entre 3 y 100 caracteres.">
         </div>
 
+        <!-- Contacto -->
         <div class="form-group">
             <label for="contacto">Contacto</label>
-            <input type="text" name="contacto" id="contacto">
+            <input
+                type="text"
+                name="contacto"
+                id="contacto"
+                required
+                minlength="3"
+                maxlength="100"
+                pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+"
+                title="Solo se permiten letras y espacios.">
         </div>
 
+        <!-- Teléfono -->
         <div class="form-group">
             <label for="telefono">Teléfono</label>
-            <input type="text" name="telefono" id="telefono">
+            <input
+                type="text"
+                name="telefono"
+                id="telefono"
+                required
+                minlength="10"
+                maxlength="10"
+                pattern="[0-9]{10}"
+                inputmode="numeric"
+                oninput="this.value=this.value.replace(/[^0-9]/g,'')"
+                title="Debe contener exactamente 10 números.">
         </div>
 
+        <!-- Email -->
         <div class="form-group">
             <label for="email">Email</label>
-            <input type="email" name="email" id="email">
+            <input
+                type="email"
+                name="email"
+                id="email"
+                required
+                maxlength="100">
         </div>
 
+        <!-- Dirección -->
         <div class="form-group">
             <label for="direccion">Dirección</label>
-            <input type="text" name="direccion" id="direccion">
+            <input
+                type="text"
+                name="direccion"
+                id="direccion"
+                required
+                minlength="5"
+                maxlength="255">
         </div>
 
         <button type="submit" class="btn-guardar">Guardar</button>
     </form>
 </div>
+
 @endsection
