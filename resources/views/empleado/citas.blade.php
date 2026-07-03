@@ -221,7 +221,7 @@
                                 </form>
                                 <a href="{{ route('empleado.citas.pdf', $cita->IDcita) }}" class="btn-warning2"
                                     target="_blank">🖨️ Imprimir</a>
-                                <a href="{{ route('empleado.factura.excel', $cita->IDcita) }}" class="btn-warning2"
+                                <a href="{{ route('empleado.factura.excel', $cita->IDcita) }}" class="btn-warning3"
                                     target="_blank">Excel</a>
                             </td>
                         </tr>

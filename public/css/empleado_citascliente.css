@@ -417,6 +417,26 @@ select:focus {
     transform: translateY(-2px);
 }
 
+.btn-warning3 {
+    background: #05720a;
+    color: white;
+    padding: 10px 12px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    display: inline-block;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    font-size: 14px;
+    margin-right: 5px;
+    margin-bottom: 6px;
+}
+
+.btn-warning3:hover {
+    background: #0d9914;
+    transform: translateY(-2px);
+}
+
 .btn-danger {
     background: #e74c3c;
     color: white;

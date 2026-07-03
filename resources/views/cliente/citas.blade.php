@@ -141,7 +141,7 @@
                                     Editar</a>
                                 <a href="{{ route('cliente.citas.pdf', $cita->IDcita) }}" class="btn-warning2"
                                     target="_blank">🖨️ Imprimir</a>
-                                <a href="{{ route('cliente.factura.excel', $cita->IDcita) }}" class="btn-warning2"
+                                <a href="{{ route('cliente.factura.excel', $cita->IDcita) }}" class="btn-warning3"
                                     target="_blank">Excel</a>
                             </td>
                         </tr>
