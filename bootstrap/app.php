@@ -15,6 +15,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'admin' => \App\Http\Middleware\AdminMiddleware::class,
             'empleado' => \App\Http\Middleware\EmpleadoMiddleware::class,
             'cliente' => \App\Http\Middleware\ClienteMiddleware::class,
+                'nocache' => \App\Http\Middleware\NoCache::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

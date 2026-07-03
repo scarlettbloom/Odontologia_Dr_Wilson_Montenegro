@@ -43,7 +43,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 | ADMINISTRADOR
 |--------------------------------------------------------------------------
 */
-Route::prefix('admin')->middleware('admin')->name('admin.')->group(function () {
+Route::prefix('admin')->middleware(['admin', 'nocache'])->name('admin.')->group(function () {
 
     // CITAS
     Route::get('/citas', [AdminCitaController::class, 'index'])->name('citas.index');
@@ -99,7 +99,7 @@ Route::prefix('admin')->middleware('admin')->name('admin.')->group(function () {
 | EMPLEADO
 |--------------------------------------------------------------------------
 */
-Route::prefix('empleado')->middleware('empleado')->name('empleado.')->group(function () {
+Route::prefix('empleado')->middleware(['empleado', 'nocache'])->name('empleado.')->group(function () {
 
     // CITAS
     Route::get('/citas', [EmpleadoCitaController::class, 'index'])->name('citas.index');
@@ -144,7 +144,7 @@ Route::prefix('empleado')->middleware('empleado')->name('empleado.')->group(func
 | CLIENTE
 |--------------------------------------------------------------------------
 */
-Route::prefix('cliente')->middleware('cliente')->name('cliente.')->group(function () {
+Route::prefix('cliente')->middleware(['cliente', 'nocache'])->name('cliente.')->group(function () {
 
     Route::put('/carrito/actualizar/{id}', [ClienteVentaController::class, 'actualizarCantidad'])
         ->name('carrito.actualizar');
