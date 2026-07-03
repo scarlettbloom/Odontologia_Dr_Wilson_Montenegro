@@ -25,7 +25,6 @@ class ClienteCitaController extends Controller
         SELECT
             c.IDcita,
             c.Fecha_entrada,
-            c.Fecha_salida,
             c.Estado,
             c.IDservicio,
 
@@ -64,8 +63,6 @@ public function generarExcel($id)
             c.IDcita,
 
             c.Fecha_entrada,
-
-            c.Fecha_salida,
 
             c.Estado,
 
@@ -122,7 +119,6 @@ public function generarExcel($id)
             u.name AS Nombre,
             u.Email,
             c.Fecha_entrada,
-            c.Fecha_salida,
             c.Estado,
             c.IDservicio,
             s.Nombre AS Servicio
@@ -154,9 +150,10 @@ public function generarExcel($id)
     {
         $request->validate([
             'fechaEntrada' => 'required|date',
-            'fechaSalida'  => 'required|date',
             'idservicio'   => 'required|integer',
         ]);
+
+        $fechaSalida = $this->calcularFechaSalida($request->fechaEntrada);
 
         // 1. Fecha no puede ser pasada
         if (Carbon::parse($request->fechaEntrada)->lt(now())) {
@@ -164,15 +161,9 @@ public function generarExcel($id)
                 ->with('error', 'No es posible agendar una cita en una fecha pasada.');
         }
 
-        // 2. Salida no puede ser igual ni anterior a entrada
-        if (Carbon::parse($request->fechaSalida)->lte(Carbon::parse($request->fechaEntrada))) {
-            return redirect()->route('cliente.citas.index')
-                ->with('error', 'La fecha y hora de salida debe ser posterior a la de entrada.');
-        }
-
-        // 3. Validar horario laboral (06:00 AM - 08:00 PM)
+        // 2. Validar horario laboral (06:00 AM - 08:00 PM)
         $horaEntrada = Carbon::parse($request->fechaEntrada)->format('H:i');
-        $horaSalida = Carbon::parse($request->fechaSalida)->format('H:i');
+        $horaSalida = Carbon::parse($fechaSalida)->format('H:i');
 
         if ($horaEntrada < '06:00' || $horaEntrada > '20:00' ||
             $horaSalida < '06:00' || $horaSalida > '20:00') {
@@ -194,7 +185,7 @@ public function generarExcel($id)
                 ->with('error', 'Cliente no encontrado.');
         }
 
-        $conflicto = $this->verificarSolapamiento($request->fechaEntrada, $request->fechaSalida);
+        $conflicto = $this->verificarSolapamiento($request->fechaEntrada, $fechaSalida);
         if ($conflicto) {
             return redirect()->route('cliente.citas.index')
                 ->with('error', 'Esta hora está ocupada. Disponible desde: ' .
@@ -204,7 +195,7 @@ public function generarExcel($id)
         DB::insert("
             INSERT INTO Cita (Fecha_entrada, Fecha_salida, Estado, IDservicio, IDcliente)
             VALUES (?, ?, 'Pendiente', ?, ?)
-        ", [$request->fechaEntrada, $request->fechaSalida, $request->idservicio, $cliente->IDcliente]);
+        ", [$request->fechaEntrada, $fechaSalida, $request->idservicio, $cliente->IDcliente]);
 
         return redirect()->route('cliente.citas.index')
             ->with('success', 'Cita agendada correctamente (queda en Pendiente hasta confirmación del administrador).');
@@ -223,7 +214,7 @@ public function generarExcel($id)
 
         $citaEditar = DB::selectOne("
             SELECT IDcita AS IDcita, Fecha_entrada AS Fecha_entrada,
-                   Fecha_salida AS Fecha_salida, Estado AS Estado,
+                   Estado AS Estado,
                    IDservicio AS IDservicio, IDcliente AS IDcliente
             FROM Cita
             WHERE IDcita = ?
@@ -256,9 +247,10 @@ $usuario = DB::selectOne("
 {
     $request->validate([
         'fechaEntrada' => 'required|date',
-        'fechaSalida'  => 'required|date',  // quitado after:fechaEntrada
         'idservicio'   => 'required|integer',
     ]);
+
+    $fechaSalida = $this->calcularFechaSalida($request->fechaEntrada);
 
     $userId = session('IDusuario');
 
@@ -280,24 +272,18 @@ $usuario = DB::selectOne("
             ->with('error', 'No es posible editar una cita con una fecha y hora pasada.');
     }
 
-    // 2. Salida no puede ser igual ni anterior a entrada
-    if (Carbon::parse($request->fechaSalida)->lte(Carbon::parse($request->fechaEntrada))) {
-        return redirect()->route('cliente.citas.index')
-            ->with('error', 'La fecha y hora de salida debe ser posterior a la de entrada.');
-    }
-
-    // 3. Validar horario laboral (06:00 AM - 08:00 PM)
+    // 2. Validar horario laboral (06:00 AM - 08:00 PM)
         $horaEntrada = Carbon::parse($request->fechaEntrada)->format('H:i');
-        $horaSalida = Carbon::parse($request->fechaSalida)->format('H:i');
+        $horaSalida = Carbon::parse($fechaSalida)->format('H:i');
 
         if ($horaEntrada < '06:00' || $horaEntrada > '20:00' ||
             $horaSalida < '06:00' || $horaSalida > '20:00') {
 
-            return redirect()->route('admin.citas.index')
+            return redirect()->route('cliente.citas.index')
                 ->with('error', 'Las citas solo pueden agendarse dentro del horario laboral (06:00 AM a 08:00 PM).');
         }
 
-    $conflicto = $this->verificarSolapamiento($request->fechaEntrada, $request->fechaSalida, $id);
+    $conflicto = $this->verificarSolapamiento($request->fechaEntrada, $fechaSalida, $id);
     if ($conflicto) {
         return redirect()->route('cliente.citas.index')
             ->with('error', 'Esta hora está ocupada. Disponible desde: ' .
@@ -308,7 +294,7 @@ $usuario = DB::selectOne("
         UPDATE Cita
         SET Fecha_entrada=?, Fecha_salida=?, Estado='Pendiente', IDservicio=?
         WHERE IDcita=?
-    ", [$request->fechaEntrada, $request->fechaSalida, $request->idservicio, $id]);
+    ", [$request->fechaEntrada, $fechaSalida, $request->idservicio, $id]);
 
     return redirect()->route('cliente.citas.index')
         ->with('success', 'Cita actualizada correctamente (queda en Pendiente hasta confirmación del administrador).');
@@ -324,7 +310,6 @@ $usuario = DB::selectOne("
                u.name AS Nombre,
                u.Email,
                c.Fecha_entrada,
-               c.Fecha_salida,
                c.Estado,
                c.IDservicio,
                s.Nombre AS Servicio
@@ -353,5 +338,10 @@ $usuario = DB::selectOne("
             ", [$entrada, $salida]);
         }
         return $row->disponible_desde ?? null;
+    }
+
+    private function calcularFechaSalida(string $entrada): string
+    {
+        return Carbon::parse($entrada)->addHour()->format('Y-m-d H:i:s');
     }
 }

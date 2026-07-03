@@ -45,13 +45,11 @@
                     <table class="form-table">
                         <tr>
                             <th>Fecha Entrada:</th>
-                            <th>Fecha Salida:</th>
                             <th>Servicio:</th>
                             <th>Acción:</th>
                         </tr>
                         <tr>
                             <td><input type="datetime-local" name="fechaEntrada" required></td>
-                            <td><input type="datetime-local" name="fechaSalida" required></td>
                             <td>
                                 <select name="idservicio" required>
                                     <option value="">Seleccione servicio</option>
@@ -78,16 +76,12 @@
                     <table class="form-table">
                         <tr>
                             <th>Fecha Entrada:</th>
-                            <th>Fecha Salida:</th>
                             <th>Servicio:</th>
                             <th>Acción:</th>
                         </tr>
                         <tr>
                             <td><input type="datetime-local" name="fechaEntrada"
                                     value="{{ \Carbon\Carbon::parse($citaEditar->Fecha_entrada)->format('Y-m-d\TH:i') }}"
-                                    required></td>
-                            <td><input type="datetime-local" name="fechaSalida"
-                                    value="{{ \Carbon\Carbon::parse($citaEditar->Fecha_salida)->format('Y-m-d\TH:i') }}"
                                     required></td>
                             <td>
                                 <select name="idservicio" required>
@@ -126,7 +120,6 @@
                     <tr>
                         <th>NOMBRE</th>
                         <th>FECHA ENTRADA</th>
-                        <th>FECHA SALIDA</th>
                         <th>ESTADO</th>
                         <th>SERVICIO</th>
                         <th>ACCIONES</th>
@@ -137,7 +130,6 @@
                         <tr>
                             <td>{{ $cita->Nombre }}</td>
                             <td>{{ \Carbon\Carbon::parse($cita->Fecha_entrada)->format('d/m/Y H:i') }}</td>
-                            <td>{{ \Carbon\Carbon::parse($cita->Fecha_salida)->format('d/m/Y H:i') }}</td>
                             <td>
                                 <span class="estado-badge estado-{{ strtolower($cita->Estado) }}">
                                     {{ $cita->Estado }}
@@ -150,12 +142,12 @@
                                 <a href="{{ route('cliente.citas.pdf', $cita->IDcita) }}" class="btn-warning2"
                                     target="_blank">🖨️ Imprimir</a>
                                 <a href="{{ route('cliente.factura.excel', $cita->IDcita) }}" class="btn-warning2"
-                                    target="_blank">Descargar Excel</a>
+                                    target="_blank">Excel</a>
                             </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="7" class="no-data">No hay citas registradas</td>
+                            <td colspan="5" class="no-data">No hay citas registradas</td>
                         </tr>
                     @endforelse
                 </tbody>

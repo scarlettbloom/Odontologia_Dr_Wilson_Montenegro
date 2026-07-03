@@ -149,11 +149,6 @@
     </tr>
 
     <tr>
-        <th>Fecha Salida</th>
-        <td>{{ \Carbon\Carbon::parse($cita->Fecha_salida)->format('d/m/Y H:i') }}</td>
-    </tr>
-
-    <tr>
         <th>Estado</th>
         <td>{{ $cita->Estado }}</td>
     </tr>

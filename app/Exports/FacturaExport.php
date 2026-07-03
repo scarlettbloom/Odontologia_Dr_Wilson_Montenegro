@@ -21,47 +21,25 @@ class FacturaExport implements FromArray, WithStyles, ShouldAutoSize
     }
 
     public function array(): array
-    {
-        return [
+{
+    return [
+        ['ODONTOLOGÍA DR. WILSON MONTENEGRO'],
+        ['Factura de Atención Odontológica'],
 
-            ['ODONTOLOGÍA DR. WILSON MONTENEGRO'],
-            ['Factura de Atención Odontológica'],
-            [],
+        ['Factura N°', 'FAC-' . $this->cita->IDcita],
+        ['Paciente', $this->cita->NombrePaciente],
+        ['Correo', $this->cita->Email],
+        ['Servicio', $this->cita->Servicio],
+        ['Precio', '$ ' . number_format($this->cita->Precio, 0, ',', '.')],
+        ['Fecha Entrada', $this->cita->Fecha_entrada],
+        ['Estado', $this->cita->Estado],
 
-            ['Factura N°', 'FAC-' . $this->cita->IDcita],
-
-            ['Paciente', $this->cita->NombrePaciente],
-
-            ['Correo', $this->cita->Email],
-
-            ['Servicio', $this->cita->Servicio],
-
-            ['Precio',
-                '$ ' . number_format(
-                    $this->cita->Precio,
-                    0,
-                    ',',
-                    '.'
-                )
-            ],
-
-            ['Fecha Entrada', $this->cita->Fecha_entrada],
-
-            ['Fecha Salida', $this->cita->Fecha_salida],
-
-            ['Estado', $this->cita->Estado],
-
-            [],
-
-            ['Observación'],
-
-            [
-                'Este documento certifica la programación y/o atención de la cita odontológica registrada en el sistema.'
-            ]
-
-        ];
-    }
-
+        [
+            'Observación',
+            'Este documento certifica la programación y/o atención de la cita odontológica registrada en el sistema.'
+        ]
+    ];
+}
 
     public function styles(Worksheet $sheet)
     {
@@ -69,8 +47,8 @@ class FacturaExport implements FromArray, WithStyles, ShouldAutoSize
         $sheet->mergeCells('A1:B1');
         $sheet->mergeCells('A2:B2');
 
+        $sheet->mergeCells('A12:B12');
         $sheet->mergeCells('A13:B13');
-        $sheet->mergeCells('A14:B14');
 
 
         return [
@@ -129,7 +107,7 @@ class FacturaExport implements FromArray, WithStyles, ShouldAutoSize
 
 
             // ETIQUETAS
-            'A4:A11' => [
+            'A4:A10' => [
 
                 'font' => [
 
@@ -154,7 +132,7 @@ class FacturaExport implements FromArray, WithStyles, ShouldAutoSize
 
 
             // OBSERVACION
-            13 => [
+            12 => [
 
                 'font' => [
 
@@ -167,7 +145,7 @@ class FacturaExport implements FromArray, WithStyles, ShouldAutoSize
 
 
             // BORDES
-            'A4:B11' => [
+            'A4:B10' => [
 
                 'borders' => [
 

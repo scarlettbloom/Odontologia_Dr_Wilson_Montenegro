@@ -26,7 +26,6 @@ class EmpleadoCitaController extends Controller
         SELECT
             c.IDcita,
             c.Fecha_entrada,
-            c.Fecha_salida,
             c.Estado,
             c.IDservicio,
 
@@ -64,8 +63,6 @@ public function generarExcel($id)
             c.IDcita,
 
             c.Fecha_entrada,
-
-            c.Fecha_salida,
 
             c.Estado,
 
@@ -131,7 +128,6 @@ public function generarExcel($id)
        u.name AS Nombre,
        u.Email,
        c.Fecha_entrada AS Fecha_entrada,
-       c.Fecha_salida AS Fecha_salida,
        c.Estado AS Estado,
        s.Nombre AS Servicio,
        c.IDservicio
@@ -168,11 +164,12 @@ public function generarExcel($id)
     {
         $request->validate([
         'fechaEntrada' => 'required|date',
-        'fechaSalida'  => 'required|date',
         'idservicio' => 'required|integer',
         'idcliente'    => 'required|integer',
         'estado'       => 'required|string',
         ]);
+
+        $fechaSalida = $this->calcularFechaSalida($request->fechaEntrada);
 
         // 1. Fecha no puede ser pasada
         if (Carbon::parse($request->fechaEntrada)->lt(now())) {
@@ -180,24 +177,18 @@ public function generarExcel($id)
              ->with('error', 'No es posible agendar una cita en una fecha pasada.');
         }
 
-        // 2. Salida no puede ser igual ni anterior a entrada
-        if (Carbon::parse($request->fechaSalida)->lte(Carbon::parse($request->fechaEntrada))) {
-            return redirect()->route('empleado.citas.index')
-                ->with('error', 'La fecha y hora de salida debe ser posterior a la de entrada.');
-        }
-
-        // 3. Validar horario laboral (06:00 AM - 08:00 PM)
+        // 2. Validar horario laboral (06:00 AM - 08:00 PM)
         $horaEntrada = Carbon::parse($request->fechaEntrada)->format('H:i');
-        $horaSalida = Carbon::parse($request->fechaSalida)->format('H:i');
+        $horaSalida = Carbon::parse($fechaSalida)->format('H:i');
 
         if ($horaEntrada < '06:00' || $horaEntrada > '20:00' ||
             $horaSalida < '06:00' || $horaSalida > '20:00') {
 
-            return redirect()->route('admin.citas.index')
+            return redirect()->route('empleado.citas.index')
                 ->with('error', 'Las citas solo pueden agendarse dentro del horario laboral (06:00 AM a 08:00 PM).');
         }
 
-        $conflicto = $this->verificarSolapamiento($request->fechaEntrada, $request->fechaSalida);
+        $conflicto = $this->verificarSolapamiento($request->fechaEntrada, $fechaSalida);
         if ($conflicto) {
             return redirect()->route('empleado.citas.index')
                 ->with('error', 'Esta hora está ocupada. Disponible desde: ' .
@@ -207,7 +198,7 @@ public function generarExcel($id)
         DB::insert("
             INSERT INTO Cita (Fecha_entrada, Fecha_salida, IDservicio, Estado, IDcliente)
             VALUES (?, ?, ?, ?, ?)
-        ", [$request->fechaEntrada, $request->fechaSalida, $request->idservicio, $request->estado, $request->idcliente]);
+        ", [$request->fechaEntrada, $fechaSalida, $request->idservicio, $request->estado, $request->idcliente]);
 
         return redirect()->route('empleado.citas.index')->with('success', 'Cita agendada correctamente.');
     }
@@ -234,7 +225,6 @@ public function generarExcel($id)
     $citaEditar = DB::selectOne("
         SELECT c.IDcita,
                c.Fecha_entrada,
-               c.Fecha_salida,
                c.Estado,
                c.IDservicio,
                c.IDcliente
@@ -255,26 +245,20 @@ public function generarExcel($id)
     {
     $request->validate([
         'fechaEntrada' => 'required|date',
-        'fechaSalida'  => 'required|date',
         'idservicio' => 'required|integer',
         'estado'       => 'required|string',
         'idcliente'    => 'required|integer',
     ]);
+    $fechaSalida = $this->calcularFechaSalida($request->fechaEntrada);
     // 1. Fecha no puede ser pasada
     if (Carbon::parse($request->fechaEntrada)->lt(now())) {
         return redirect()->route('empleado.citas.index')
             ->with('error', 'No es posible editar una cita con una fecha pasada.');
     }
 
-    // 2. Salida no puede ser igual ni anterior a entrada
-    if (Carbon::parse($request->fechaSalida)->lte(Carbon::parse($request->fechaEntrada))) {
-        return redirect()->route('empleado.citas.index')
-            ->with('error', 'La fecha y hora de salida debe ser posterior a la de entrada.');
-    }
-
-    // 3. Validar horario laboral (06:00 AM - 08:00 PM)
+    // 2. Validar horario laboral (06:00 AM - 08:00 PM)
         $horaEntrada = Carbon::parse($request->fechaEntrada)->format('H:i');
-        $horaSalida = Carbon::parse($request->fechaSalida)->format('H:i');
+        $horaSalida = Carbon::parse($fechaSalida)->format('H:i');
 
         if ($horaEntrada < '06:00' || $horaEntrada > '20:00' ||
             $horaSalida < '06:00' || $horaSalida > '20:00') {
@@ -285,7 +269,7 @@ public function generarExcel($id)
 
     $conflicto = $this->verificarSolapamiento(
         $request->fechaEntrada,
-        $request->fechaSalida,
+        $fechaSalida,
         $id
     );
 
@@ -305,7 +289,7 @@ public function generarExcel($id)
         WHERE IDcita = ?
     ", [
         $request->fechaEntrada,
-        $request->fechaSalida,
+        $fechaSalida,
         $request->idservicio,
         $request->estado,
         $request->idcliente,
@@ -329,9 +313,8 @@ public function generarExcel($id)
             SELECT c.IDcita AS IDcita,
                u.ID,
                u.name AS Nombre,
-               u.Email
+               u.Email,
                c.Fecha_entrada AS Fecha_entrada,
-               c.Fecha_salida AS Fecha_salida,
                c.Estado AS Estado,
                s.Nombre AS Servicio,
                c.IDservicio
@@ -359,5 +342,10 @@ public function generarExcel($id)
             ", [$entrada, $salida]);
         }
         return $row->disponible_desde ?? null;
+    }
+
+    private function calcularFechaSalida(string $entrada): string
+    {
+        return Carbon::parse($entrada)->addHour()->format('Y-m-d H:i:s');
     }
 }

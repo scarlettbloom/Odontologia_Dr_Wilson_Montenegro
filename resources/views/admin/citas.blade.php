@@ -64,7 +64,6 @@
                 <table class="form-table">
                     <tr>
                         <th>Fecha Entrada:</th>
-                        <th>Fecha Salida:</th>
                         <th>Servicio:</th>
                         <th>Cliente:</th>
                         <th>Estado:</th>
@@ -73,9 +72,6 @@
                     <tr>
                         <td><input type="datetime-local" name="fechaEntrada"
                                 value="{{ isset($citaEditar) ? \Carbon\Carbon::parse($citaEditar->Fecha_entrada)->format('Y-m-d\TH:i') : '' }}"
-                                required></td>
-                        <td><input type="datetime-local" name="fechaSalida"
-                                value="{{ isset($citaEditar) ? \Carbon\Carbon::parse($citaEditar->Fecha_salida)->format('Y-m-d\TH:i') : '' }}"
                                 required></td>
                         <td>
                             <select name="idservicio" required>
@@ -148,7 +144,6 @@
                         <th>ID USUARIO</th>
                         <th>NOMBRE</th>
                         <th>FECHA ENTRADA</th>
-                        <th>FECHA SALIDA</th>
                         <th>ESTADO</th>
                         <th>SERVICIO</th>
                         <th>ACCIONES</th>
@@ -160,7 +155,6 @@
                             <td>{{ $cita->ID }}</td>
                             <td>{{ $cita->Nombre }}</td>
                             <td>{{ \Carbon\Carbon::parse($cita->Fecha_entrada)->format('d/m/Y H:i') }}</td>
-                            <td>{{ \Carbon\Carbon::parse($cita->Fecha_salida)->format('d/m/Y H:i') }}</td>
                             <td>
                                 <span class="estado-badge estado-{{ strtolower($cita->Estado) }}">
                                     {{ $cita->Estado }}
@@ -168,23 +162,23 @@
                             </td>
                             <td>{{ $cita->Servicio }}</td>
                             <td>
-                                <a href="{{ route('admin.citas.edit', $cita->IDcita) }}" class="btn-warning">✏️ Editar</a>
+                                <a href="{{ route('admin.citas.edit', $cita->IDcita) }}" class="btn-warning">Editar</a>
                                 <form action="{{ route('admin.citas.destroy', $cita->IDcita) }}" method="POST"
                                     style="display:inline;"
                                     onsubmit="return confirm('¿Seguro que deseas eliminar esta cita?')">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn-danger">🗑️ Eliminar</button>
+                                    <button type="submit" class="btn-danger">Eliminar</button>
                                 </form>
                                 <a href="{{ route('admin.citas.pdf', $cita->IDcita) }}" class="btn-warning2"
-                                    target="_blank">🖨️ Imprimir</a>
+                                    target="_blank">Imprimir</a>
                                 <a href="{{ route('admin.factura.excel', $cita->IDcita) }}" class="btn-warning2"
-                                    target="_blank">Descargar Excel</a>
+                                    target="_blank">Excel</a>
                             </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="7" class="no-data">No hay citas registradas</td>
+                            <td colspan="6" class="no-data">No hay citas registradas</td>
                         </tr>
                     @endforelse
                 </tbody>
