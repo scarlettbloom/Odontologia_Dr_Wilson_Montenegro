@@ -78,6 +78,7 @@ class InventarioController extends Controller
             'precio_unitario',
             'nombre_proveedor',
             'descripcion'
+            'estado' => 'activo'
         ]));
 
         $rol = strtolower(trim(Auth::user()->rol));
