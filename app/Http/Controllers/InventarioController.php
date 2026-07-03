@@ -72,15 +72,14 @@ class InventarioController extends Controller
             'descripcion'      => 'required|string|max:250',
         ]);
 
-        Inventario::create($request->only([
-            'nombre',
-            'stock',
-            'precio_unitario',
-            'nombre_proveedor',
-            'descripcion'
-            'estado' => 'activo'
-        ]));
-
+       Inventario::create([
+    'nombre' => $request->nombre,
+    'stock' => $request->stock,
+    'precio_unitario' => $request->precio_unitario,
+    'nombre_proveedor' => $request->nombre_proveedor,
+    'descripcion' => $request->descripcion,
+    'estado' => 'activo',
+]);
         $rol = strtolower(trim(Auth::user()->rol));
 
         if ($rol === 'administrador' || $rol === 'admin') {
@@ -306,4 +305,3 @@ class InventarioController extends Controller
                          ->with('success', 'Estado del producto actualizado.');
     }
 }
-
