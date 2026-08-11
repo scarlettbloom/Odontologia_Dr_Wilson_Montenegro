@@ -2,122 +2,107 @@
 
 @section('content')
 
-        <link rel="stylesheet" href="{{ asset('css/ventas.css') }}">
+<link rel="stylesheet" href="{{ asset('css/modulo_empleado_ventas.css') }}">
 
-        {{-- BOTÓN VOLVER --}}
-    <a href="{{ route('empleado.citas.index') }}" class="btn-volver">
-        Volver
+<a href="{{ route('empleado.citas.index') }}" class="btn-volver">Volver</a>
+
+<div class="ventas-container">
+
+    <div class="ventas-header">
+        <h1>Módulo de Ventas</h1>
+        <span class="user-role">Empleado</span>
+    </div>
+
+    <a href="{{ route('empleado.ventas.reporte') }}" class="btn-ventas-realizadas">
+        Ventas realizadas
     </a>
 
-    <div class="ventas-container">
-    <div class="container">
+    @if(session('error'))
+        <p class="alert-error">{{ session('error') }}</p>
+    @endif
 
-        <div class="ventas-wrapper">
-            <div class="ventas-header">
-                <h1>Módulo de Ventas</h1>
-                <span class="user-role">Empleado</span>
-                
-            </div>
-                     <a href="{{ route('empleado.ventas.reporte') }}" class="btn btn-secondary volver-btn">
-     ventas realizadas
-</a>                
-       @if(session('error'))
-    <p style="color: #fff; background-color: #eb5e6f; padding: 10px; border-radius: 5px; text-align: center; font-weight: bold;">
-        {{ session('error') }}
-    </p>
-@endif
-           {{-- MENSAJES --}}
-            @if(session('error'))
-                <div class="alert alert-danger" style="margin-top: 10px;">
-                    {{ session('error') }}
-                </div>
-            @endif
+    @if(session('success'))
+        <p class="alert-success">{{ session('success') }}</p>
+    @endif
 
-            @if(session('success'))
-                <div class="alert alert-success" style="margin-top: 10px;">
-                    {{ session('success') }}
-                </div>
-            @endif
-
-            {{-- BUSCADOR --}}
-            <div class="search-box">
-                <input type="text" id="buscar" placeholder="Buscar producto...">
-                <button class="btn btn-primary">Buscar</button>
-            </div>
-
-            <div class="ventas-grid">
-
-                {{-- INVENTARIO --}}
-                <div class="inventario-box">
-                    <h2>Productos disponibles</h2>
-
-                    <table class="ventas-table">
-                        <thead>
-                            <tr>
-                                <th>Producto</th>
-                                <th>Precio</th>
-                                <th>Stock</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($productos as $p)
-                            <tr>
-                                <td>{{ $p->nombre }}</td>
-                                <td>${{ $p->precio_unitario }}</td>
-                                <td>{{ $p->stock }}</td>
-                                <td>
-                                    <button class="btn btn-primary btn-add"
-                                        onclick="agregarProducto({{ $p->idinventario }}, '{{ $p->nombre }}', {{ $p->precio_unitario }}, {{ $p->stock }})">
-                                        + Agregar
-                                    </button>
-                                </td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-
-                {{-- CARRITO --}}
-                <div class="carrito-box">
-                    <h2>Carrito de venta</h2>
-
-
-                    <table class="ventas-table" id="tabla-carrito">
-                        <thead>
-                            <tr>
-                                <th>Producto</th>
-                                <th>Cant.</th>
-                                <th>Precio</th>
-                                <th>Subtotal</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody id="carrito-body">
-                            {{-- Se llena con JS --}}
-                        </tbody>
-                    </table>
-
-                    <div class="totales-box">
-                        <p>Subtotal: <span id="subtotal">$0</span></p>
-                        <p>Descuento: <input type="number" id="descuento" value="0" min="0"></p>
-                        <p class="total">Total: <span id="total">$0</span></p>
-                    </div>
-
-                    <form action="{{ route('empleado.ventas.store') }}" method="POST" id="form-venta">
-                        @csrf
-                        <input type="hidden" name="carrito" id="input-carrito">
-                        <input type="hidden" name="descuento" id="input-descuento">
-
-                        <button type="submit" class="btn btn-primary">Guardar venta</button>
-                        <a href="{{ route('empleado.ventas.index') }}" class="btn btn-danger">Cancelar</a>
-                    </form>
-                </div>
-
-            </div>
-        </div>
+    <div class="search-box">
+        <input type="text" id="buscar" placeholder="Buscar producto...">
+        <button>Buscar</button>
     </div>
+
+    <div class="ventas-grid">
+
+        {{-- INVENTARIO --}}
+        <div class="inventario-box">
+            <h2>Productos disponibles</h2>
+
+            <table class="ventas-table">
+                <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Precio</th>
+                        <th>Stock</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($productos as $p)
+                    <tr>
+                        <td>{{ $p->nombre }}</td>
+                        <td>${{ $p->precio_unitario }}</td>
+                        <td>{{ $p->stock }}</td>
+                        <td>
+                            <button class="btn-add"
+                                onclick="agregarProducto({{ $p->idinventario }}, '{{ $p->nombre }}', {{ $p->precio_unitario }}, {{ $p->stock }})">
+                                + Agregar
+                            </button>
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+
+        {{-- CARRITO --}}
+        <div class="carrito-box">
+            <h2>Carrito de venta</h2>
+
+            <table class="ventas-table" id="tabla-carrito">
+                <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Cant.</th>
+                        <th>Precio</th>
+                        <th>Subtotal</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="carrito-body">
+                    {{-- Se llena con JS --}}
+                </tbody>
+            </table>
+
+            <div class="totales-box">
+                <p>Subtotal: <span id="subtotal">$0</span></p>
+                <p>Descuento: <input type="number" id="descuento" value="0" min="0"></p>
+                <p class="total">Total: <span id="total">$0</span></p>
+            </div>
+
+            <form action="{{ route('empleado.ventas.store') }}" method="POST" id="form-venta">
+                @csrf
+                <input type="hidden" name="carrito" id="input-carrito">
+                <input type="hidden" name="descuento" id="input-descuento">
+
+                <button type="submit" class="btn-guardar">Guardar venta</button>
+                <a href="{{ route('empleado.ventas.index') }}" class="btn-cancelar">Cancelar</a>
+            </form>
+        </div>
+
+    </div>
+
 </div>
+
+@endsection
 
 <script>
 let carrito = [];
@@ -192,7 +177,7 @@ function renderCarrito() {
                 </td>
                 <td>$${p.precio.toFixed(2)}</td>
                 <td>$${sub.toFixed(2)}</td>
-                <td><button class="btn btn-danger" onclick="eliminarProducto('${p.id}')">X</button></td>
+                <td><button class="btn-cancelar" onclick="eliminarProducto('${p.id}')">X</button></td>
             </tr>
         `;
     });
@@ -208,11 +193,9 @@ function renderCarrito() {
     document.getElementById("input-descuento").value = descuento;
 
     document.getElementById("descuento").addEventListener("input", function() {
-    document.getElementById("input-descuento").value = this.value;
-    renderCarrito(); // actualiza el total en pantalla
-});
-
+        document.getElementById("input-descuento").value = this.value;
+        renderCarrito();
+    });
 }
-
 </script>
-@endsection
+

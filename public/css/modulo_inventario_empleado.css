@@ -1,0 +1,580 @@
+/* ============================
+   MÓDULO INVENTARIO EMPLEADO – AGREGAR PRODUCTO
+   ============================ */
+
+/* Contenedor principal */
+.card-container {
+    max-width: 64rem;
+    margin: 2rem auto;
+    background-color: #ffffff;
+    border-radius: 0.75rem;
+    overflow: hidden;
+    border: 1px solid #cbd5e1;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+/* Header */
+.header-admin {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background-color: white;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+/* Título */
+.titulo-form {
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-align: center;
+    color: #1e293b;
+    margin-bottom: 2.5rem;
+}
+
+/* Inputs con línea inferior */
+.input-line {
+    border: none;
+    border-bottom: 2px solid #cbd5e1;
+    border-radius: 0;
+    padding-left: 0;
+    background-color: transparent;
+    font-size: 1.125rem;
+}
+
+.input-line:focus {
+    outline: none;
+    border-bottom-color: #3b82f6;
+    box-shadow: none;
+}
+
+/* Botón guardar */
+.btn-guardar {
+    width: 10rem;
+    background-color: #1e293b;
+    color: white;
+    font-weight: bold;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    transition: background-color .2s ease, transform .1s ease;
+}
+
+.btn-guardar:hover {
+    background-color: #0f172a;
+}
+
+.btn-guardar:active {
+    transform: scale(0.95);
+}
+
+/* Botón cancelar */
+.btn-cancelar {
+    width: 10rem;
+    background-color: white;
+    border: 2px solid #1e293b;
+    color: #1e293b;
+    font-weight: bold;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    text-align: center;
+    transition: background-color .2s ease, transform .1s ease;
+}
+
+.btn-cancelar:hover {
+    background-color: #f8fafc;
+}
+
+.btn-cancelar:active {
+    transform: scale(0.95);
+}
+
+
+/* ============================
+   MÓDULO INVENTARIO EMPLEADO – ELIMINAR PRODUCTO
+   ============================ */
+
+/* Contenedor principal */
+.card-container {
+    max-width: 64rem;
+    margin: 2rem auto;
+    background-color: #ffffff;
+    border-radius: 0.75rem;
+    overflow: hidden;
+    border: 1px solid #cbd5e1;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+/* Header */
+.header-admin {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background-color: white;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+/* Navegación superior (Agregar / Editar / Eliminar) */
+.nav-actions {
+    display: inline-flex;
+    background-color: #f1f5f9;
+    padding: 0.4rem;
+    border-radius: 0.75rem;
+    border: 1px solid #cbd5e1;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.nav-disabled {
+    padding: 0.65rem 1.5rem;
+    color: #94a3b8;
+    font-weight: 600;
+    font-size: 0.875rem;
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.nav-active {
+    padding: 0.65rem 1.5rem;
+    background-color: #ef4444;
+    color: white;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    font-size: 0.875rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+/* Título */
+.titulo-form {
+    font-size: 1.75rem;
+    font-weight: bold;
+    text-align: center;
+    color: #1e293b;
+    margin-bottom: 0.5rem;
+}
+
+.subtitulo-form {
+    text-align: center;
+    color: #94a3b8;
+    font-size: 0.875rem;
+    margin-bottom: 2.5rem;
+}
+
+/* Inputs de solo lectura */
+.input-line {
+    border: none;
+    border-bottom: 2px solid #cbd5e1;
+    background-color: transparent;
+    font-size: 1.125rem;
+    color: #94a3b8;
+    cursor: not-allowed;
+}
+
+.input-line:focus {
+    outline: none;
+}
+
+/* Alerta de eliminación */
+.alert-delete {
+    max-width: 32rem;
+    margin: 0 auto 2rem auto;
+    background-color: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+}
+
+.alert-delete-icon {
+    color: #ef4444;
+    font-size: 1.75rem;
+}
+
+.alert-delete-title {
+    font-weight: bold;
+    color: #b91c1c;
+}
+
+.alert-delete-text {
+    color: #ef4444;
+    font-size: 0.875rem;
+}
+
+/* Botón eliminar */
+.btn-eliminar {
+    width: 10rem;
+    background-color: #ef4444;
+    color: white;
+    font-weight: bold;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    transition: background-color .2s ease, transform .1s ease;
+}
+
+.btn-eliminar:hover {
+    background-color: #dc2626;
+}
+
+.btn-eliminar:active {
+    transform: scale(0.95);
+}
+
+/* Botón cancelar */
+.btn-cancelar {
+    width: 10rem;
+    background-color: white;
+    border: 2px solid #1e293b;
+    color: #1e293b;
+    font-weight: bold;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    text-align: center;
+    transition: background-color .2s ease, transform .1s ease;
+}
+
+.btn-cancelar:hover {
+    background-color: #f8fafc;
+}
+
+.btn-cancelar:active {
+    transform: scale(0.95);
+}
+
+
+/* ============================
+   MÓDULO INVENTARIO EMPLEADO – EDITAR PRODUCTO
+   ============================ */
+
+/* Contenedor principal */
+.card-container {
+    max-width: 64rem;
+    margin: 2rem auto;
+    background-color: #ffffff;
+    border-radius: 0.75rem;
+    overflow: hidden;
+    border: 1px solid #cbd5e1;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+/* Header */
+.header-admin {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background-color: white;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+/* Título */
+.titulo-form {
+    font-size: 1.75rem;
+    font-weight: bold;
+    text-align: center;
+    color: #1e293b;
+    margin-bottom: 2.5rem;
+}
+
+/* Inputs */
+.input-line {
+    border: none;
+    border-bottom: 2px solid #cbd5e1;
+    background-color: transparent;
+    font-size: 1.125rem;
+}
+
+.input-line:focus {
+    outline: none;
+    border-bottom-color: #3b82f6;
+}
+
+/* Botón actualizar */
+.btn-actualizar {
+    width: 10rem;
+    background-color: #1e293b;
+    color: white;
+    font-weight: bold;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    transition: background-color .2s ease, transform .1s ease;
+}
+
+.btn-actualizar:hover {
+    background-color: #0f172a;
+}
+
+.btn-actualizar:active {
+    transform: scale(0.95);
+}
+
+/* Botón cancelar */
+.btn-cancelar {
+    width: 10rem;
+    background-color: white;
+    border: 2px solid #1e293b;
+    color: #1e293b;
+    font-weight: bold;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    text-align: center;
+    transition: background-color .2s ease, transform .1s ease;
+}
+
+.btn-cancelar:hover {
+    background-color: #f8fafc;
+}
+
+.btn-cancelar:active {
+    transform: scale(0.95);
+}
+
+
+/* ============================
+   MÓDULO INVENTARIO EMPLEADO – INVENTARIO PRINCIPAL
+   ============================ */
+
+/* Contenedor principal */
+.inventario-container {
+    max-width: 72rem;
+    margin: 2rem auto;
+    background-color: #ffffff;
+    border-radius: 0.75rem;
+    padding: 2rem;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+/* Botón volver */
+.btn-volver {
+    background-color: #1e293b;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    transition: background-color .2s ease;
+}
+
+.btn-volver:hover {
+    background-color: #0f172a;
+}
+
+/* Header */
+.inventario-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.inventario-title {
+    font-size: 1.75rem;
+    font-weight: bold;
+    color: #1e293b;
+    border-bottom: 2px solid #3b82f6;
+    padding-bottom: 0.25rem;
+}
+
+.user-role {
+    font-weight: bold;
+    color: #475569;
+    font-size: 0.875rem;
+}
+
+/* Mensajes */
+.alert-success {
+    background-color: #dcfce7;
+    border: 1px solid #86efac;
+    color: #166534;
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+/* Buscador */
+.search-input {
+    width: 100%;
+    border: 1px solid #cbd5e1;
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+    margin-bottom: 1rem;
+    transition: border-color .2s ease;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: #3b82f6;
+}
+
+/* Botones superiores */
+.btn-primary {
+    background-color: #2563eb;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    transition: background-color .2s ease;
+}
+
+.btn-primary:hover {
+    background-color: #1d4ed8;
+}
+
+.btn-purple {
+    background-color: #7c3aed;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    transition: background-color .2s ease;
+}
+
+.btn-purple:hover {
+    background-color: #6d28d9;
+}
+
+/* Tabla */
+.table-container {
+    overflow-x: auto;
+    border: 1px solid #cbd5e1;
+    border-radius: 0.5rem;
+}
+
+.table-inventario {
+    width: 100%;
+    text-align: left;
+    font-size: 0.875rem;
+}
+
+.table-inventario thead {
+    background-color: #1e293b;
+    color: white;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+}
+
+.table-inventario th,
+.table-inventario td {
+    padding: 0.75rem 1rem;
+}
+
+.table-inventario tbody tr:hover {
+    background-color: #f8fafc;
+}
+
+/* Botones de acciones */
+.btn-edit {
+    background-color: #facc15;
+    color: #1e293b;
+    padding: 0.4rem 0.75rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    font-size: 0.75rem;
+}
+
+.btn-edit:hover {
+    background-color: #eab308;
+}
+
+.btn-delete {
+    background-color: #ef4444;
+    color: white;
+    padding: 0.4rem 0.75rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    font-size: 0.75rem;
+}
+
+.btn-delete:hover {
+    background-color: #dc2626;
+}
+
+/* Mensaje vacío */
+.empty-message {
+    text-align: center;
+    padding: 2.5rem 0;
+    color: #94a3b8;
+}
+
+.empty-message i {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+
+/* ============================
+   MÓDULO INVENTARIO EMPLEADO – MOVIMIENTO DE STOCK
+   ============================ */
+
+/* Contenedor principal */
+.movimiento-container {
+    max-width: 72rem;
+    margin: 2rem auto;
+    background-color: #ffffff;
+    border-radius: 0.75rem;
+    padding: 2rem;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+/* Título */
+.movimiento-title {
+    font-size: 1.75rem;
+    font-weight: bold;
+    text-align: center;
+    color: #1e293b;
+    margin-bottom: 1rem;
+}
+
+/* Botón volver */
+.btn-volver {
+    display: inline-block;
+    margin-bottom: 1rem;
+    color: #2563eb;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.btn-volver:hover {
+    text-decoration: underline;
+}
+
+/* Tabla */
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+    border: 1px solid #cbd5e1;
+    border-radius: 0.75rem;
+    background-color: white;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.table-stock {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table-stock thead {
+    background-color: #2563eb;
+    color: white;
+}
+
+.table-stock th,
+.table-stock td {
+    padding: 0.75rem 1rem;
+    text-align: left;
+}
+
+.table-stock tbody tr:hover {
+    background-color: #f1f5f9;
+}
+
+/* Footer */
+.footer {
+    text-align: center;
+    margin-top: 2rem;
+    color: #64748b;
+    font-size: 0.875rem;
+}

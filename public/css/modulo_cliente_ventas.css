@@ -1,0 +1,321 @@
+/* ============================
+   MÓDULO CLIENTE – CARRITO
+   ============================ */
+
+.carrito-container {
+    max-width: 70rem;
+    margin: 2rem auto;
+    background: #ffffff;
+    padding: 2rem;
+    border-radius: 0.75rem;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+/* Título */
+.carrito-container h1 {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #1e293b;
+    margin-bottom: 1rem;
+}
+
+/* Alertas */
+.alert-success {
+    background-color: #dcfce7;
+    border: 1px solid #86efac;
+    color: #166534;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+/* Tabla */
+.carrito-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1rem;
+}
+
+.carrito-table th {
+    background-color: #1e293b;
+    color: white;
+    padding: 0.75rem;
+    text-align: center;
+}
+
+.carrito-table td {
+    padding: 0.75rem;
+    border-bottom: 1px solid #e2e8f0;
+    text-align: center;
+}
+
+/* Botones */
+.btn-eliminar {
+    background-color: #ef4444;
+    color: white;
+    padding: 0.4rem 0.75rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+}
+
+.btn-eliminar:hover {
+    background-color: #dc2626;
+}
+
+.btn-finalizar {
+    background-color: #16a34a;
+    color: white;
+    padding: 0.6rem 1rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+}
+
+.btn-finalizar:hover {
+    background-color: #15803d;
+}
+
+.btn-seguir,
+.btn-volver {
+    background-color: #2563eb;
+    color: white;
+    padding: 0.6rem 1rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+}
+
+.btn-seguir:hover,
+.btn-volver:hover {
+    background-color: #1d4ed8;
+}
+
+/* Total */
+#totalSeleccionado {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #1e293b;
+    text-align: right;
+    margin-top: 1rem;
+}
+
+
+/* ============================
+   MÓDULO CLIENTE – CHECKOUT
+   ============================ */
+
+.checkout-container {
+    max-width: 60rem;
+    margin: 2rem auto;
+    background: #ffffff;
+    padding: 2rem;
+    border-radius: 0.75rem;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+/* Títulos */
+.checkout-container h2 {
+    text-align: center;
+    font-size: 2rem;
+    font-weight: bold;
+    color: #1e293b;
+    margin-bottom: 1rem;
+}
+
+.checkout-container h4 {
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin-top: 1rem;
+    color: #334155;
+}
+
+.checkout-container h3 {
+    text-align: right;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #1e293b;
+}
+
+/* Tabla */
+.checkout-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1rem;
+}
+
+.checkout-table th {
+    background-color: #1e293b;
+    color: white;
+    padding: 0.75rem;
+    text-align: center;
+}
+
+.checkout-table td {
+    padding: 0.75rem;
+    border-bottom: 1px solid #e2e8f0;
+    text-align: center;
+}
+
+/* Inputs */
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    font-weight: 600;
+    color: #475569;
+    display: block;
+    margin-bottom: 0.4rem;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 0.6rem;
+    border: 1px solid #cbd5e1;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: #2563eb;
+}
+
+/* Subformulario tarjeta */
+#subformulario_tarjeta {
+    background: #f8fafc;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin-top: 1rem;
+}
+
+/* Botón confirmar */
+.btn-confirmar {
+    background-color: #16a34a;
+    color: white;
+    padding: 0.8rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    width: 100%;
+    margin-top: 1rem;
+}
+
+.btn-confirmar:hover {
+    background-color: #15803d;
+}
+
+
+/* ============================
+   MÓDULO CLIENTE – FINALIZAR COMPRA
+   ============================ */
+
+.checkout-container {
+    max-width: 50rem;
+    margin: 2rem auto;
+    background: #ffffff;
+    padding: 2rem;
+    border-radius: 0.75rem;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+/* Título */
+.checkout-container h1 {
+    text-align: center;
+    font-size: 2rem;
+    font-weight: bold;
+    color: #1e293b;
+    margin-bottom: 1.5rem;
+}
+
+/* Formulario */
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    font-weight: 600;
+    color: #475569;
+    display: block;
+    margin-bottom: 0.4rem;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 0.6rem;
+    border: 1px solid #cbd5e1;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: #2563eb;
+}
+
+/* Botón confirmar */
+.btn-confirmar {
+    background-color: #16a34a;
+    color: white;
+    padding: 0.8rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    width: 100%;
+    margin-top: 1rem;
+}
+
+.btn-confirmar:hover {
+    background-color: #15803d;
+}
+
+
+/* ============================
+   MÓDULO CLIENTE – HISTORIAL DE COMPRAS
+   ============================ */
+
+.compras-container {
+    max-width: 70rem;
+    margin: 2rem auto;
+    background: #ffffff;
+    padding: 2rem;
+    border-radius: 0.75rem;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+/* Título */
+.compras-container h1 {
+    text-align: center;
+    font-size: 2rem;
+    font-weight: bold;
+    color: #1e293b;
+    margin-bottom: 1.5rem;
+}
+
+/* Tabla */
+.compras-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1rem;
+}
+
+.compras-table th {
+    background-color: #1e293b;
+    color: white;
+    padding: 0.75rem;
+    text-align: center;
+}
+
+.compras-table td {
+    padding: 0.75rem;
+    border-bottom: 1px solid #e2e8f0;
+    text-align: center;
+}
+
+/* Mensaje vacío */
+.no-compras {
+    text-align: center;
+    font-size: 1.1rem;
+    color: #64748b;
+    margin-top: 1rem;
+}

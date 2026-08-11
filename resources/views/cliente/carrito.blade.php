@@ -1,16 +1,20 @@
 @extends('layouts.inventario_cliente')
 
 @section('content')
+
+<link rel="stylesheet" href="{{ asset('css/modulo_cliente_ventas.css') }}">
+
 <div class="carrito-container">
-    <h1 class="text-center">🛒 Carrito</h1>
+
+    <h1>🛒 Carrito</h1>
 
     @if(session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
+        <div class="alert-success">{{ session('success') }}</div>
     @endif
 
     @if(count($carrito) > 0)
 
-    <table class="table table-bordered text-center">
+    <table class="carrito-table">
         <thead>
             <tr>
                 <th>Seleccionar</th>
@@ -26,7 +30,10 @@
             @foreach($carrito as $item)
             <tr>
                 <td>
-                    <input type="checkbox" form="checkoutForm" name="productos_seleccionados[]" value="{{ $item['id'] }}">
+                    <input type="checkbox" 
+                           form="checkoutForm" 
+                           name="productos_seleccionados[]" 
+                           value="{{ $item['id'] }}">
                 </td>
 
                 <td>{{ $item['nombre'] }}</td>
@@ -35,14 +42,12 @@
                     <form action="{{ route('cliente.carrito.actualizar', $item['id']) }}" method="POST">
                         @csrf
                         @method('PUT')
-                        <input 
-                            type="number" 
-                            name="cantidad" 
-                            value="{{ $item['cantidad'] }}" 
-                            min="1" 
-                            style="width:60px; text-align:center;"
-                            onchange="this.form.submit()"
-                        >
+                        <input type="number"
+                               name="cantidad"
+                               value="{{ $item['cantidad'] }}"
+                               min="1"
+                               style="width:60px; text-align:center;"
+                               onchange="this.form.submit()">
                     </form>
                 </td>
 
@@ -51,56 +56,61 @@
                 <td>${{ number_format($item['precio'] * $item['cantidad'], 0, ',', '.') }}</td>
 
                 <td>
-                    <a href="{{ route('cliente.carrito.eliminar', $item['id']) }}" class="btn btn-danger btn-sm">Eliminar</a>
+                    <a href="{{ route('cliente.carrito.eliminar', $item['id']) }}" 
+                       class="btn-eliminar">Eliminar</a>
                 </td>
             </tr>
             @endforeach
         </tbody>
     </table>
 
-    <h4 id="totalSeleccionado" class="text-end">Total seleccionado: $0</h4>
+    <h4 id="totalSeleccionado">Total seleccionado: $0</h4>
 
-
-    <!-- FORMULARIO DEL CHECKOUT (SEPARADO) -->
+    <!-- FORMULARIO DEL CHECKOUT -->
     <form id="checkoutForm" action="{{ route('cliente.checkout_form') }}" method="POST">
         @csrf
-        <div class="text-center mt-3">
-            <button type="submit" class="btn btn-success">Finalizar compra seleccionada</button>
-            <a href="{{ route('cliente.inventario') }}" class="btn btn-secondary">Seguir comprando</a>
-            <a href="{{ route('cliente.inventario') }}" class="btn btn-primary">
-    🔙 Volver
-</a>
 
+        <div class="text-center mt-3">
+            <button type="submit" class="btn-finalizar">Finalizar compra seleccionada</button>
+
+            <a href="{{ route('cliente.inventario') }}" class="btn-seguir">Seguir comprando</a>
+
+            <a href="{{ route('cliente.inventario') }}" class="btn-volver">🔙 Volver</a>
         </div>
     </form>
 
     @else
         <p class="text-center">Tu carrito está vacío.</p>
         <div class="text-center">
-            <a href="{{ route('cliente.inventario') }}" class="btn btn-primary">Ver productos</a>
+            <a href="{{ route('cliente.inventario') }}" class="btn-volver">Ver productos</a>
         </div>
     @endif
+
 </div>
 
 <script>
-    function actualizarTotal() {
-        let total = 0;
-        document.querySelectorAll('input[name="productos_seleccionados[]"]:checked').forEach(checkbox => {
+function actualizarTotal() {
+    let total = 0;
+
+    document.querySelectorAll('input[name="productos_seleccionados[]"]:checked')
+        .forEach(checkbox => {
             const fila = checkbox.closest('tr');
-            const subtotalTexto = fila.querySelector('td:nth-child(5)').innerText.replace('$', '').replace('.', '').replace(',', '');
-            const subtotal = parseFloat(subtotalTexto);
-            total += subtotal;
+            const subtotalTexto = fila.querySelector('td:nth-child(5)').innerText
+                .replace('$', '')
+                .replace(/\./g, '')
+                .replace(',', '');
+            total += parseFloat(subtotalTexto);
         });
-        document.getElementById('totalSeleccionado').innerText = 'Total seleccionado: $' + total.toLocaleString('es-CO');
-    }
 
-    // Actualizar total cuando se seleccionan productos
-    document.querySelectorAll('input[name="productos_seleccionados[]"]').forEach(checkbox => {
-        checkbox.addEventListener('change', actualizarTotal);
-    });
+    document.getElementById('totalSeleccionado').innerText =
+        'Total seleccionado: $' + total.toLocaleString('es-CO');
+}
 
-    // Calcular total inicial
-    actualizarTotal();
+document.querySelectorAll('input[name="productos_seleccionados[]"]')
+    .forEach(checkbox => checkbox.addEventListener('change', actualizarTotal));
+
+actualizarTotal();
 </script>
 
 @endsection
+
