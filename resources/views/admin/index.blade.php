@@ -3,40 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <title>Inventario</title>
+
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <style>
-        /* 🔒 Fila deshabilitada */
-        .fila-inactiva {
-            background-color: #e5e7eb !important; /* slate-200 */
-            opacity: 0.55;
-        }
-
-        /* 🔒 Botón deshabilitado */
-        .btn-disabled {
-            background-color: #9ca3af !important; /* gray-400 */
-            color: #f3f4f6 !important; /* gray-100 */
-            cursor: not-allowed !important;
-            pointer-events: none !important;
-        }
-    </style>
+    <!-- CSS del módulo de ventas -->
+    <link rel="stylesheet" href="{{ asset('css/modulo_inventario.css') }}">
 </head>
 
 <body class="bg-slate-100 font-sans">
 
-<div class="max-w-6xl mx-auto mt-8 bg-white shadow-xl rounded-xl p-8">
-    <a href="{{ route('admin.citas.index') }}">
-        <button type="button" class="text-blue-600 font-semibold hover:underline mb-4">
-            ← Volver a Citas
-        </button>
+<div class="inventario-container">
+
+    <a href="{{ route('admin.citas.index') }}" class="btn-volver">
+        ← Volver a Citas
     </a>
 
     {{-- Header --}}
-    <div class="flex justify-between items-center mb-6">
-        <h1 class="text-2xl font-bold text-slate-800 border-b-2 border-blue-500 pb-1">Inventario</h1>
-        <span class="text-sm font-bold text-slate-600">Administrador
-            <i class="fa-solid fa-user ml-1"></i>
+    <div class="inventario-header">
+        <h1 class="inventario-title">Inventario</h1>
+        <span class="text-sm font-bold text-slate-600">
+            Administrador <i class="fa-solid fa-user ml-1"></i>
         </span>
     </div>
 
@@ -51,37 +38,36 @@
     <form method="GET" action="{{ route('admin.inventario.index') }}" class="mb-4">
         <input type="text" name="buscar" value="{{ request('buscar') }}"
                placeholder="Filtrar por nombre o proveedor..."
-               class="w-full border border-slate-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400">
+               class="buscador-input">
     </form>
 
     {{-- Botones --}}
     <div class="flex gap-3 mb-6 flex-wrap">
-        <a href="{{ route('admin.inventario.create') }}"
-           class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-semibold text-sm">
+        <a href="{{ route('admin.inventario.create') }}" class="btn-top btn-top-blue">
             <i class="fa-solid fa-plus mr-1"></i> Nuevo producto
         </a>
-        <a href="{{ route('admin.inventario.movimiento_stock') }}"
-           class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg font-semibold text-sm">
+
+        <a href="{{ route('admin.inventario.movimiento_stock') }}" class="btn-top btn-top-purple">
             <i class="fa-solid fa-arrows-rotate mr-1"></i> Movimiento de stock
         </a>
-        <a href="{{ route('admin.proveedors.create') }}"
-           class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-semibold text-sm">
+
+        <a href="{{ route('admin.proveedors.create') }}" class="btn-top btn-top-green">
             <i class="fa-solid fa-user-plus mr-1"></i> Nuevo proveedor
         </a>
     </div>
 
     {{-- Tabla de inventario --}}
-    <div class="overflow-x-auto rounded-lg border border-slate-200">
+    <div class="table-container">
         <table class="w-full text-sm text-left">
-            <thead class="bg-slate-800 text-white uppercase text-xs">
+            <thead class="table-header">
                 <tr>
-                    <th class="px-4 py-3">ID</th>
-                    <th class="px-4 py-3">Nombre</th>
-                    <th class="px-4 py-3">Stock</th>
-                    <th class="px-4 py-3">Precio Unitario</th>
-                    <th class="px-4 py-3">Proveedor</th>
-                    <th class="px-4 py-3">Descripción</th>
-                    <th class="px-4 py-3 text-center">Acciones</th>
+                    <th class="table-cell">ID</th>
+                    <th class="table-cell">Nombre</th>
+                    <th class="table-cell">Stock</th>
+                    <th class="table-cell">Precio Unitario</th>
+                    <th class="table-cell">Proveedor</th>
+                    <th class="table-cell">Descripción</th>
+                    <th class="table-cell text-center">Acciones</th>
                 </tr>
             </thead>
 
@@ -89,24 +75,24 @@
                 @forelse($items as $item)
 
                     <tr class="hover:bg-slate-50 {{ $item->estado === 'inactivo' ? 'fila-inactiva' : '' }}">
-                        <td class="px-4 py-3 font-mono text-slate-500">{{ $item->idinventario }}</td>
-                        <td class="px-4 py-3 font-semibold">{{ $item->nombre }}</td>
-                        <td class="px-4 py-3">{{ $item->stock }}</td>
-                        <td class="px-4 py-3">${{ number_format($item->precio_unitario, 2) }}</td>
-                        <td class="px-4 py-3">{{ $item->nombre_proveedor }}</td>
-                        <td class="px-4 py-3" style="max-width: 250px; word-wrap: break-word;">
+                        <td class="table-cell font-mono text-slate-500">{{ $item->idinventario }}</td>
+                        <td class="table-cell font-semibold">{{ $item->nombre }}</td>
+                        <td class="table-cell">{{ $item->stock }}</td>
+                        <td class="table-cell">${{ number_format($item->precio_unitario, 2) }}</td>
+                        <td class="table-cell">{{ $item->nombre_proveedor }}</td>
+
+                        <td class="table-cell table-description">
                             {{ $item->descripcion }}
                         </td>
 
-                        <td class="px-4 py-3 text-center">
+                        <td class="table-cell text-center">
                             <div class="flex justify-center gap-2">
 
                                 {{-- EDITAR --}}
                                 <a href="{{ route('admin.inventario.edit', $item->idinventario) }}"
                                    class="{{ $item->estado === 'inactivo'
                                             ? 'btn-disabled'
-                                            : 'bg-yellow-400 hover:bg-yellow-500 text-white' }}
-                                          px-3 py-1 rounded text-xs font-semibold">
+                                            : 'btn-accion btn-edit' }}">
                                    <i class="fa-solid fa-pen"></i> Editar
                                 </a>
 
@@ -114,14 +100,13 @@
                                 <a href="{{ route('admin.inventario.delete', $item->idinventario) }}"
                                    class="{{ $item->estado === 'inactivo'
                                             ? 'btn-disabled'
-                                            : 'bg-red-500 hover:bg-red-600 text-white' }}
-                                          px-3 py-1 rounded text-xs font-semibold">
+                                            : 'btn-accion btn-delete' }}">
                                    <i class="fa-solid fa-trash"></i> Eliminar
                                 </a>
 
                                 {{-- TOGGLE --}}
                                 <a href="{{ route('admin.inventario.toggle', $item->idinventario) }}"
-                                   class="bg-gray-600 hover:bg-gray-700 text-white px-3 py-1 rounded text-xs font-semibold">
+                                   class="btn-accion btn-toggle">
 
                                     @if($item->estado === 'activo')
                                         <i class="fa-solid fa-ban"></i> Deshabilitar
@@ -149,43 +134,43 @@
 </div>
 
 {{-- Tabla de proveedores --}}
-<div class="max-w-6xl mx-auto mt-8 bg-white shadow-xl rounded-xl p-8">
-    <h2 class="text-2xl font-bold text-slate-800 border-b-2 border-blue-500 pb-1 mb-6">Proveedores</h2>
+<div class="inventario-container">
+    <h2 class="proveedores-title">Proveedores</h2>
 
-    <div class="overflow-x-auto rounded-lg border border-slate-200">
+    <div class="table-container">
         <table class="w-full text-sm text-left">
-            <thead class="bg-slate-800 text-white uppercase text-xs">
+            <thead class="table-header">
                 <tr>
-                    <th class="px-4 py-3">ID</th>
-                    <th class="px-4 py-3">Nombre</th>
-                    <th class="px-4 py-3">Contacto</th>
-                    <th class="px-4 py-3">Teléfono</th>
-                    <th class="px-4 py-3">Email</th>
-                    <th class="px-4 py-3">Dirección</th>
-                    <th class="px-4 py-3 text-center">Acciones</th>
+                    <th class="table-cell">ID</th>
+                    <th class="table-cell">Nombre</th>
+                    <th class="table-cell">Contacto</th>
+                    <th class="table-cell">Teléfono</th>
+                    <th class="table-cell">Email</th>
+                    <th class="table-cell">Dirección</th>
+                    <th class="table-cell text-center">Acciones</th>
                 </tr>
             </thead>
 
             <tbody class="divide-y divide-slate-100">
                 @foreach($proveedores as $proveedor)
                     <tr class="hover:bg-slate-50">
-                        <td class="px-4 py-3 font-mono text-slate-500">{{ $proveedor->id }}</td>
-                        <td class="px-4 py-3 font-semibold">{{ $proveedor->nombre }}</td>
-                        <td class="px-4 py-3">{{ $proveedor->contacto }}</td>
-                        <td class="px-4 py-3">{{ $proveedor->telefono }}</td>
-                        <td class="px-4 py-3">{{ $proveedor->email }}</td>
-                        <td class="px-4 py-3">{{ $proveedor->direccion }}</td>
+                        <td class="table-cell font-mono text-slate-500">{{ $proveedor->id }}</td>
+                        <td class="table-cell font-semibold">{{ $proveedor->nombre }}</td>
+                        <td class="table-cell">{{ $proveedor->contacto }}</td>
+                        <td class="table-cell">{{ $proveedor->telefono }}</td>
+                        <td class="table-cell">{{ $proveedor->email }}</td>
+                        <td class="table-cell">{{ $proveedor->direccion }}</td>
 
-                        <td class="px-4 py-3 text-center">
+                        <td class="table-cell text-center">
                             <div class="flex justify-center gap-2">
 
                                 <a href="{{ route('admin.proveedors.edit', $proveedor->id) }}"
-                                   class="bg-yellow-400 hover:bg-yellow-500 text-white px-3 py-1 rounded text-xs font-semibold">
+                                   class="btn-accion btn-edit">
                                    <i class="fa-solid fa-pen"></i> Editar
                                 </a>
 
                                 <a href="{{ route('admin.proveedors.delete', $proveedor->id) }}"
-                                   class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-xs font-semibold">
+                                   class="btn-accion btn-delete">
                                    <i class="fa-solid fa-trash"></i> Eliminar
                                 </a>
 
@@ -200,4 +185,5 @@
 
 </body>
 </html>
+
 

@@ -1,0 +1,487 @@
+/* ============================
+   MÓDULO VENTAS – VENTA REGISTRADA
+   ============================ */
+
+/* Contenedor principal */
+.venta-container {
+    text-align: center;
+    padding: 2rem;
+}
+
+/* Título */
+.venta-title {
+    font-size: 1.75rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    color: #1e293b; /* slate-800 */
+}
+
+/* Texto informativo */
+.venta-info {
+    font-size: 1rem;
+    color: #475569; /* slate-600 */
+    margin-bottom: 0.5rem;
+}
+
+/* Botón nueva venta */
+.btn-nueva-venta {
+    background-color: #2563eb; /* blue-600 */
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    margin-top: 1rem;
+    display: inline-block;
+    transition: background-color .2s ease;
+}
+
+.btn-nueva-venta:hover {
+    background-color: #1d4ed8; /* blue-700 */
+}
+
+/* Botón comprobante */
+.btn-comprobante {
+    background-color: #64748b; /* slate-500 */
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    margin-left: 0.5rem;
+    display: inline-block;
+    transition: background-color .2s ease;
+}
+
+.btn-comprobante:hover {
+    background-color: #475569; /* slate-600 */
+}
+
+
+/* ============================
+   MÓDULO VENTAS – REGISTRAR NUEVA VENTA
+   ============================ */
+
+/* Contenedor principal */
+.ventas-container {
+    max-width: 600px;
+    margin: 2rem auto;
+    background-color: #ffffff;
+    padding: 2rem;
+    border-radius: 0.75rem;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+/* Título */
+.ventas-title {
+    font-size: 1.75rem;
+    font-weight: bold;
+    color: #1e293b; /* slate-800 */
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+/* Formulario */
+.form-group {
+    margin-bottom: 1.25rem;
+    text-align: left;
+}
+
+.form-group label {
+    font-weight: 600;
+    color: #475569; /* slate-600 */
+    margin-bottom: 0.25rem;
+    display: block;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #cbd5e1;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    background-color: #ffffff;
+}
+
+/* Botón guardar */
+.btn-guardar-venta {
+    background-color: #2563eb; /* blue-600 */
+    color: white;
+    padding: 0.6rem 1.2rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    margin-right: 0.5rem;
+    transition: background-color .2s ease, transform .1s ease;
+}
+
+.btn-guardar-venta:hover {
+    background-color: #1d4ed8; /* blue-700 */
+}
+
+.btn-guardar-venta:active {
+    transform: scale(0.95);
+}
+
+/* Botón cancelar */
+.btn-cancelar-venta {
+    background-color: #dc2626; /* red-600 */
+    color: white;
+    padding: 0.6rem 1.2rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    transition: background-color .2s ease, transform .1s ease;
+}
+
+.btn-cancelar-venta:hover {
+    background-color: #b91c1c; /* red-700 */
+}
+
+.btn-cancelar-venta:active {
+    transform: scale(0.95);
+}
+
+
+/* ============================
+   MÓDULO VENTAS – PANEL PRINCIPAL
+   ============================ */
+
+/* Botón volver */
+.btn-volver {
+    display: inline-block;
+    margin-bottom: 1rem;
+    color: #2563eb; /* blue-600 */
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.btn-volver:hover {
+    text-decoration: underline;
+}
+
+/* Contenedor general */
+.ventas-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem;
+}
+
+/* Wrapper */
+.ventas-wrapper {
+    background-color: #ffffff;
+    padding: 2rem;
+    border-radius: 0.75rem;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+/* Header */
+.ventas-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.ventas-header h1 {
+    font-size: 1.75rem;
+    font-weight: bold;
+    color: #1e293b;
+}
+
+.user-role {
+    font-weight: bold;
+    color: #475569;
+}
+
+/* Botón ventas realizadas */
+.btn-ventas-realizadas {
+    background-color: #64748b; /* slate-500 */
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    display: inline-block;
+    margin-bottom: 1rem;
+}
+
+.btn-ventas-realizadas:hover {
+    background-color: #475569;
+}
+
+/* Alertas */
+.alert-danger-custom {
+    background-color: #eb5e6f;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.alert-success-custom {
+    background-color: #4ade80; /* green-400 */
+    color: #064e3b; /* green-900 */
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+    font-weight: bold;
+}
+
+/* Buscador */
+.search-box {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.search-box input {
+    flex: 1;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #cbd5e1;
+    border-radius: 0.5rem;
+}
+
+.search-box button {
+    background-color: #2563eb;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+}
+
+.search-box button:hover {
+    background-color: #1d4ed8;
+}
+
+/* Grid principal */
+.ventas-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+}
+
+/* Inventario */
+.inventario-box h2,
+.carrito-box h2 {
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+/* Tabla */
+.ventas-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+    border-radius: 0.5rem;
+    overflow: hidden;
+}
+
+.ventas-table th {
+    background-color: #1e293b;
+    color: white;
+    padding: 0.75rem;
+    text-align: left;
+}
+
+.ventas-table td {
+    padding: 0.75rem;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.ventas-table tr:hover {
+    background-color: #f8fafc;
+}
+
+/* Fila deshabilitada */
+.fila-deshabilitada {
+    opacity: 0.5;
+    background-color: #f3f4f6;
+}
+
+/* Botón agregar */
+.btn-add {
+    background-color: #2563eb;
+    color: white;
+    padding: 0.4rem 0.75rem;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+.btn-add:hover {
+    background-color: #1d4ed8;
+}
+
+/* Botón deshabilitado */
+.btn-disabled {
+    background-color: #9ca3af;
+    color: white;
+    padding: 0.4rem 0.75rem;
+    border-radius: 0.5rem;
+    cursor: not-allowed;
+}
+
+/* Carrito */
+.totales-box {
+    margin-top: 1rem;
+    font-size: 1rem;
+}
+
+.totales-box p {
+    margin-bottom: 0.5rem;
+}
+
+.total {
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+
+/* Botones del formulario */
+.btn-guardar {
+    background-color: #2563eb;
+    color: white;
+    padding: 0.6rem 1.2rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+}
+
+.btn-guardar:hover {
+    background-color: #1d4ed8;
+}
+
+.btn-cancelar {
+    background-color: #dc2626;
+    color: white;
+    padding: 0.6rem 1.2rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+}
+
+.btn-cancelar:hover {
+    background-color: #b91c1c;
+}
+
+
+/* ============================
+   MÓDULO VENTAS – REPORTE DE VENTAS
+   ============================ */
+
+/* Contenedor general */
+.ventas-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem;
+}
+
+/* Wrapper */
+.ventas-wrapper {
+    background-color: #ffffff;
+    padding: 2rem;
+    border-radius: 0.75rem;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+/* Header */
+.ventas-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.ventas-header h1 {
+    font-size: 1.75rem;
+    font-weight: bold;
+    color: #1e293b;
+}
+
+.user-role {
+    font-weight: bold;
+    color: #475569;
+}
+
+/* Botón volver */
+.btn-volver-ventas {
+    background-color: #64748b; /* slate-500 */
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    display: inline-block;
+    margin-bottom: 1rem;
+}
+
+.btn-volver-ventas:hover {
+    background-color: #475569;
+}
+
+/* Botón movimiento de stock */
+.btn-movimiento {
+    background-color: #2563eb; /* blue-600 */
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    display: inline-block;
+    margin-bottom: 1rem;
+}
+
+.btn-movimiento:hover {
+    background-color: #1d4ed8;
+}
+
+/* Tabla */
+.reporte-box {
+    margin-top: 1.5rem;
+}
+
+.ventas-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+    border-radius: 0.5rem;
+    overflow: hidden;
+}
+
+.ventas-table th {
+    background-color: #1e293b;
+    color: white;
+    padding: 0.75rem;
+    text-align: left;
+}
+
+.ventas-table td {
+    padding: 0.75rem;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.ventas-table tr:hover {
+    background-color: #f8fafc;
+}
+
+/* Botón imprimir */
+.btn-warning {
+    background-color: #facc15; /* yellow-400 */
+    color: #1e293b;
+    padding: 0.4rem 0.75rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    display: inline-block;
+}
+
+.btn-warning:hover {
+    background-color: #eab308; /* yellow-500 */
+}
+
+/* Botón Excel */
+.btn-warning2 {
+    background-color: #10b981; /* green-500 */
+    color: white;
+    padding: 0.4rem 0.75rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    display: inline-block;
+}
+
+.btn-warning2:hover {
+    background-color: #059669; /* green-600 */
+}

@@ -1,0 +1,549 @@
+/* ============================
+   Estilos del módulo de ventas
+   ============================ */
+
+/* Inputs con línea inferior */
+.input-line {
+    border: none;
+    border-bottom: 2px solid #cbd5e1;
+    border-radius: 0;
+    padding-left: 0;
+    background-color: transparent;
+    font-size: 1.125rem; /* text-lg */
+}
+
+.input-line:focus {
+    outline: none;
+    border-bottom-color: #3b82f6;
+    box-shadow: none;
+}
+
+/* Botón principal (Guardar) */
+.btn-guardar {
+    width: 10rem; /* w-40 */
+    background-color: #1e293b; /* slate-800 */
+    color: white;
+    font-weight: bold;
+    padding: 0.75rem; /* py-3 */
+    border-radius: 0.5rem; /* rounded-lg */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    transition: background-color .2s ease;
+}
+
+.btn-guardar:hover {
+    background-color: #0f172a; /* slate-900 */
+}
+
+/* Botón cancelar */
+.btn-cancelar {
+    width: 10rem; /* w-40 */
+    background-color: white;
+    border: 2px solid #1e293b; /* slate-800 */
+    color: #1e293b;
+    font-weight: bold;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    text-align: center;
+}
+
+/* Encabezado */
+.header-admin {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background-color: white;
+    border-bottom: 1px solid #e2e8f0; /* slate-100 */
+}
+
+/* Contenedor principal */
+.card-container {
+    max-width: 64rem; /* max-w-5xl */
+    margin: 2rem auto;
+    background-color: white;
+    border-radius: 0.75rem;
+    overflow: hidden;
+    border: 1px solid #cbd5e1; /* slate-200 */
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+/* Título */
+.titulo-form {
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-align: center;
+    color: #1e293b;
+    margin-bottom: 2.5rem;
+}
+
+
+/* ============================
+   MÓDULO VENTAS – ELIMINAR PRODUCTO
+   ============================ */
+
+/* Línea inferior de inputs */
+.input-line {
+    border: none;
+    border-bottom: 2px solid #cbd5e1;
+    border-radius: 0;
+    padding-left: 0;
+    background-color: transparent;
+    font-size: 1.125rem; /* text-lg */
+}
+
+/* Inputs deshabilitados */
+.input-disabled {
+    color: #94a3b8; /* slate-400 */
+    cursor: not-allowed;
+}
+
+/* Contenedor principal */
+.card-container {
+    max-width: 64rem; /* max-w-5xl */
+    margin: 2rem auto;
+    background-color: white;
+    border-radius: 0.75rem;
+    overflow: hidden;
+    border: 1px solid #cbd5e1; /* slate-200 */
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+/* Header */
+.header-admin {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background-color: white;
+    border-bottom: 1px solid #e2e8f0; /* slate-100 */
+}
+
+/* Pestañas superiores */
+.tab-disabled {
+    padding: 0.625rem 1.5rem;
+    color: #94a3b8;
+    font-weight: 600;
+    font-size: 0.875rem;
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.tab-active {
+    padding: 0.625rem 1.5rem;
+    background-color: #ef4444; /* red-500 */
+    color: white;
+    font-weight: 600;
+    font-size: 0.875rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+/* Título */
+.titulo-form {
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-align: center;
+    color: #1e293b;
+    margin-bottom: 0.5rem;
+}
+
+/* Subtítulo */
+.subtitulo-form {
+    text-align: center;
+    color: #94a3b8;
+    font-size: 0.875rem;
+    margin-bottom: 2.5rem;
+}
+
+/* Alerta de eliminación */
+.alert-danger {
+    max-width: 42rem;
+    margin: 0 auto 2rem auto;
+    background-color: #fef2f2; /* red-50 */
+    border: 1px solid #fecaca; /* red-200 */
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+}
+
+/* Botón eliminar */
+.btn-eliminar {
+    width: 10rem;
+    background-color: #ef4444; /* red-500 */
+    color: white;
+    font-weight: bold;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    transition: background-color .2s ease, transform .1s ease;
+}
+
+.btn-eliminar:hover {
+    background-color: #dc2626; /* red-600 */
+}
+
+.btn-eliminar:active {
+    transform: scale(0.95);
+}
+
+/* Botón cancelar */
+.btn-cancelar {
+    width: 10rem;
+    background-color: white;
+    border: 2px solid #1e293b; /* slate-800 */
+    color: #1e293b;
+    font-weight: bold;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    text-align: center;
+    transition: background-color .2s ease, transform .1s ease;
+}
+
+.btn-cancelar:hover {
+    background-color: #f8fafc; /* slate-50 */
+}
+
+.btn-cancelar:active {
+    transform: scale(0.95);
+}
+
+
+/* ============================
+   MÓDULO VENTAS – EDITAR PRODUCTO
+   ============================ */
+
+/* Inputs con línea inferior */
+.input-line {
+    border: none;
+    border-bottom: 2px solid #cbd5e1;
+    border-radius: 0;
+    padding-left: 0;
+    background-color: transparent;
+    font-size: 1.125rem; /* text-lg */
+}
+
+.input-line:focus {
+    outline: none;
+    border-bottom-color: #3b82f6;
+    box-shadow: none;
+}
+
+/* Contenedor principal */
+.card-container {
+    max-width: 64rem; /* max-w-5xl */
+    margin: 2rem auto;
+    background-color: white;
+    border-radius: 0.75rem;
+    overflow: hidden;
+    border: 1px solid #cbd5e1; /* slate-200 */
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+/* Header */
+.header-admin {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background-color: white;
+    border-bottom: 1px solid #e2e8f0; /* slate-100 */
+}
+
+/* Título */
+.titulo-form {
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-align: center;
+    color: #1e293b;
+    margin-bottom: 2.5rem;
+}
+
+/* Botón actualizar */
+.btn-actualizar {
+    width: 10rem;
+    background-color: #1e293b; /* slate-800 */
+    color: white;
+    font-weight: bold;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    transition: background-color .2s ease, transform .1s ease;
+}
+
+.btn-actualizar:hover {
+    background-color: #0f172a; /* slate-900 */
+}
+
+.btn-actualizar:active {
+    transform: scale(0.95);
+}
+
+/* Botón cancelar */
+.btn-cancelar {
+    width: 10rem;
+    background-color: white;
+    border: 2px solid #1e293b; /* slate-800 */
+    color: #1e293b;
+    font-weight: bold;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    text-align: center;
+    transition: background-color .2s ease, transform .1s ease;
+}
+
+.btn-cancelar:hover {
+    background-color: #f8fafc; /* slate-50 */
+}
+
+.btn-cancelar:active {
+    transform: scale(0.95);
+}
+
+/* Select proveedor */
+.select-proveedor {
+    width: 100%;
+    border: 1px solid #cbd5e1;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    background-color: white;
+}
+
+/* ============================
+   MÓDULO VENTAS – INVENTARIO
+   ============================ */
+
+/* Fila inactiva */
+.fila-inactiva {
+    background-color: #e5e7eb !important; /* slate-200 */
+    opacity: 0.55;
+}
+
+/* Botón deshabilitado */
+.btn-disabled {
+    background-color: #9ca3af !important; /* gray-400 */
+    color: #f3f4f6 !important; /* gray-100 */
+    cursor: not-allowed !important;
+    pointer-events: none !important;
+}
+
+/* Contenedor general */
+.inventario-container {
+    max-width: 72rem; /* max-w-6xl */
+    margin: 2rem auto;
+    background-color: white;
+    border-radius: 0.75rem;
+    padding: 2rem;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+/* Botón volver */
+.btn-volver {
+    color: #2563eb; /* blue-600 */
+    font-weight: 600;
+    margin-bottom: 1rem;
+    transition: text-decoration .2s ease;
+}
+
+.btn-volver:hover {
+    text-decoration: underline;
+}
+
+/* Header */
+.inventario-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.inventario-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #1e293b;
+    border-bottom: 2px solid #3b82f6; /* blue-500 */
+    padding-bottom: 0.25rem;
+}
+
+/* Buscador */
+.buscador-input {
+    width: 100%;
+    border: 1px solid #cbd5e1;
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+}
+
+/* Botones superiores */
+.btn-top {
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    font-size: 0.875rem;
+    color: white;
+    transition: background-color .2s ease;
+}
+
+.btn-top-blue {
+    background-color: #2563eb;
+}
+
+.btn-top-blue:hover {
+    background-color: #1d4ed8;
+}
+
+.btn-top-purple {
+    background-color: #9333ea;
+}
+
+.btn-top-purple:hover {
+    background-color: #7e22ce;
+}
+
+.btn-top-green {
+    background-color: #16a34a;
+}
+
+.btn-top-green:hover {
+    background-color: #15803d;
+}
+
+/* Tabla */
+.table-container {
+    overflow-x: auto;
+    border: 1px solid #cbd5e1;
+    border-radius: 0.5rem;
+}
+
+.table-header {
+    background-color: #1e293b; /* slate-800 */
+    color: white;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+}
+
+.table-cell {
+    padding: 0.75rem 1rem;
+}
+
+.table-description {
+    max-width: 250px;
+    word-wrap: break-word;
+}
+
+/* Botones de acciones */
+.btn-accion {
+    padding: 0.25rem 0.75rem;
+    border-radius: 0.25rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: white;
+    transition: background-color .2s ease;
+}
+
+.btn-edit {
+    background-color: #facc15; /* yellow-400 */
+}
+
+.btn-edit:hover {
+    background-color: #eab308; /* yellow-500 */
+}
+
+.btn-delete {
+    background-color: #ef4444; /* red-500 */
+}
+
+.btn-delete:hover {
+    background-color: #dc2626; /* red-600 */
+}
+
+.btn-toggle {
+    background-color: #4b5563; /* gray-600 */
+}
+
+.btn-toggle:hover {
+    background-color: #374151; /* gray-700 */
+}
+
+/* Tabla de proveedores */
+.proveedores-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #1e293b;
+    border-bottom: 2px solid #3b82f6;
+    padding-bottom: 0.25rem;
+    margin-bottom: 1.5rem;
+}
+
+
+/* ============================
+   MÓDULO VENTAS – MOVIMIENTO DE STOCK
+   ============================ */
+
+/* Página general */
+.mov-stock-body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background-color: #f4f6f9;
+    margin: 0;
+    padding: 40px;
+    color: #333;
+}
+
+/* Título */
+.mov-stock-title {
+    text-align: center;
+    color: #2c3e50;
+    margin-bottom: 20px;
+}
+
+/* Botón volver */
+.mov-stock-back {
+    display: inline-block;
+    margin-bottom: 20px;
+    color: #3498db;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.mov-stock-back:hover {
+    text-decoration: underline;
+}
+
+/* Tabla */
+.mov-stock-table {
+    width: 80%;
+    margin: 0 auto;
+    border-collapse: collapse;
+    background-color: #fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.mov-stock-th {
+    background-color: #3498db;
+    color: white;
+    padding: 12px;
+    text-align: left;
+    font-size: 16px;
+}
+
+.mov-stock-td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+}
+
+.mov-stock-row:hover {
+    background-color: #f1f1f1;
+}
+
+/* Footer */
+.mov-stock-footer {
+    text-align: center;
+    margin-top: 40px;
+    font-size: 14px;
+    color: #777;
+}
+
